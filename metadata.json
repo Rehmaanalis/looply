@@ -1,0 +1,8 @@
+{
+  "name": "Looply",
+  "description": "Local-First Visual Animation Studio: upload images, build keyframe animations on a visual canvas and timeline, preview in real time, and export production-ready CSS animations and ZIP packages.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
