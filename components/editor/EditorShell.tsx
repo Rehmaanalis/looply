@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import Toolbar from './Toolbar';
 import AssetPanel from './AssetPanel';
 import LayerPanel from './LayerPanel';
@@ -13,6 +14,7 @@ import ProjectsModal from './ProjectsModal';
 import SpringConfigModal from './SpringConfigModal';
 import CubicBezierModal from './CubicBezierModal';
 import StaggerModal from './StaggerModal';
+import LeaveBackupModal from './LeaveBackupModal';
 import {
   PanelLeftClose,
   PanelLeftOpen,
@@ -55,6 +57,8 @@ export default function EditorShell() {
   const [undoStack, setUndoStack] = useState<ProjectData[]>([]);
   const [redoStack, setRedoStack] = useState<ProjectData[]>([]);
 
+  const router = useRouter();
+
   // Modals
   const [isExportOpen, setIsExportOpen] = useState(false);
   const [isPresetsOpen, setIsPresetsOpen] = useState(false);
@@ -62,6 +66,17 @@ export default function EditorShell() {
   const [isSpringOpen, setIsSpringOpen] = useState(false);
   const [isBezierOpen, setIsBezierOpen] = useState(false);
   const [isStaggerOpen, setIsStaggerOpen] = useState(false);
+  const [isLeaveModalOpen, setIsLeaveModalOpen] = useState(false);
+
+  // Leave & Backup Handlers
+  const handleLeaveApp = useCallback(() => {
+    setIsLeaveModalOpen(true);
+  }, []);
+
+  const handleConfirmLeave = useCallback(() => {
+    setIsLeaveModalOpen(false);
+    router.push('/');
+  }, [router]);
 
   // Active side panel tab on mobile ('assets' | 'layers')
   const [leftTab, setLeftTab] = useState<'assets' | 'layers'>('assets');
@@ -76,10 +91,13 @@ export default function EditorShell() {
       const activeId = await getActiveProjectId();
       let loaded = await loadProject(activeId);
 
-      // Upgrade demo sample project if it still has the old loader icon
+      // Upgrade demo sample project if it still has the old loader icon or unencoded SVGs
       if (loaded && loaded.id === 'demo-sample-project') {
         const hasOldLoader = loaded.layers.some((l) => l.id === 'layer-halo' || l.assetId === 'asset-ring');
-        if (hasOldLoader) {
+        const hasUnencodedSvg = Object.values(loaded.assets || {}).some(
+          (a) => a.dataUrl && a.dataUrl.includes(';utf8,')
+        );
+        if (hasOldLoader || hasUnencodedSvg) {
           loaded = createDefaultSampleProject();
           await saveProject(loaded);
         }
@@ -100,6 +118,37 @@ export default function EditorShell() {
       }
     }
     init();
+  }, []);
+
+  // Intercept beforeunload (browser close / tab close / reload)
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = '';
+      return '';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
+  // Intercept browser back button to display the backup notification modal
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.history.pushState({ looplyStudio: true }, '');
+
+    const handlePopState = (e: PopStateEvent) => {
+      e.preventDefault();
+      window.history.pushState({ looplyStudio: true }, '');
+      setIsLeaveModalOpen(true);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
   }, []);
 
   // Animation playback loop using requestAnimationFrame with speed & reduced motion
@@ -607,6 +656,7 @@ export default function EditorShell() {
         isRightPanelOpen={isRightPanelOpen}
         onToggleLeftPanel={() => setIsLeftPanelOpen((p) => !p)}
         onToggleRightPanel={() => setIsRightPanelOpen((p) => !p)}
+        onLeaveApp={handleLeaveApp}
       />
 
       {/* Main Workspace Area */}
@@ -862,6 +912,14 @@ export default function EditorShell() {
         onClose={() => setIsStaggerOpen(false)}
         layers={project.layers}
         onApplyStagger={handleApplyStagger}
+      />
+
+      {/* Leave & Backup Notification Modal */}
+      <LeaveBackupModal
+        project={project}
+        isOpen={isLeaveModalOpen}
+        onClose={() => setIsLeaveModalOpen(false)}
+        onConfirmLeave={handleConfirmLeave}
       />
     </div>
   );

@@ -7,7 +7,6 @@ import {
   Copy,
   Check,
   FileCode,
-  Archive,
   Layers,
   Sparkles,
   ShieldCheck,
@@ -19,10 +18,20 @@ import {
   ExternalLink,
   FileJson,
   Database,
+  Smartphone,
+  AlertTriangle,
+  ChevronDown,
+  ChevronUp,
+  SlidersHorizontal,
 } from 'lucide-react';
 import { ProjectData } from '@/types/animation';
 import { generateAnimationCSS } from '@/lib/export/cssGenerator';
-import { createProjectZip, triggerDownload } from '@/lib/export/zipExporter';
+import { generateReanimatedExport } from '@/lib/export/reanimated';
+import {
+  ReanimatedOutputMode,
+  ReanimatedLanguage,
+  ReanimatedExportTarget,
+} from '@/lib/export/reanimated/types';
 
 interface ExportModalProps {
   project: ProjectData;
@@ -31,17 +40,22 @@ interface ExportModalProps {
 }
 
 export default function ExportModal({ project, isOpen, onClose }: ExportModalProps) {
-  const [activeTab, setActiveTab] = useState<'zip' | 'code' | 'json' | 'report'>('code');
+  const [activeTab, setActiveTab] = useState<'code' | 'reanimated' | 'json' | 'report'>('code');
   const [codeSubView, setCodeSubView] = useState<'both' | 'css' | 'html'>('both');
   const [assetMode, setAssetMode] = useState<'inline' | 'zip'>('inline');
   const [jsonFormat, setJsonFormat] = useState<'formatted' | 'minified'>('formatted');
   const [showLivePreview, setShowLivePreview] = useState(false);
-  const [isExportingZip, setIsExportingZip] = useState(false);
   const [copiedType, setCopiedType] = useState<string | null>(null);
+
+  // Reanimated Export options
+  const [rnOutputMode, setRnOutputMode] = useState<ReanimatedOutputMode>('interpolation');
+  const [rnExportTarget, setRnExportTarget] = useState<ReanimatedExportTarget>('component');
+  const [rnLanguage, setRnLanguage] = useState<ReanimatedLanguage>('typescript');
+  const [rnIncludeGuide, setRnIncludeGuide] = useState(true);
+  const [rnShowDiagnostics, setRnShowDiagnostics] = useState(false);
 
   // Accessibility options
   const [includeReducedMotion, setIncludeReducedMotion] = useState(true);
-  const [includeAriaLabels, setIncludeAriaLabels] = useState(true);
 
   // Generate code dynamically based on current project & asset mode
   const generated = useMemo(() => {
@@ -50,17 +64,16 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
     });
   }, [project, assetMode]);
 
+  // Live preview must always use inline data URLs so the iframe can render graphics without a web server assets directory
+  const previewGenerated = useMemo(() => {
+    return generateAnimationCSS(project, {
+      mode: 'inline',
+    });
+  }, [project]);
+
   // Extract clean embed HTML containing all layers and images
   const extractStageHTML = () => {
-    let stageHtml = generated.stageHtml;
-
-    if (includeAriaLabels) {
-      stageHtml = stageHtml.replace(
-        '<div class="looply-stage">',
-        `<div class="looply-stage" role="img" aria-label="Animated visual: ${project.name}">`
-      );
-    }
-    return stageHtml;
+    return generated.stageHtml;
   };
 
   const getEffectiveCSS = () => {
@@ -98,6 +111,17 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
     return `${(bytes / 1024).toFixed(1)} KB`;
   }, [activeJson]);
 
+  // Reanimated code generation
+  const reanimatedResult = useMemo(() => {
+    return generateReanimatedExport(project, {
+      outputMode: rnOutputMode,
+      exportTarget: rnExportTarget,
+      language: rnLanguage,
+      includeIntegrationGuide: rnIncludeGuide,
+      masterTimelineSync: true,
+    });
+  }, [project, rnOutputMode, rnExportTarget, rnLanguage, rnIncludeGuide]);
+
   if (!isOpen) return null;
 
   const stageHTML = extractStageHTML();
@@ -106,33 +130,21 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
   // Combined self-contained embed HTML + CSS
   const combinedCode = `<!-- HTML Markup -->\n${stageHTML}\n\n<!-- CSS Stylesheet -->\n<style>\n${effectiveCSS}</style>`;
 
-  // Live preview full document string for iframe srcDoc
+  // Live preview full document string for iframe srcDoc (always inline assets so it renders in-memory)
   const previewDoc = `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <style>
     body { margin: 0; padding: 24px; background: #0b0d14; display: flex; align-items: center; justify-content: center; min-height: 100vh; overflow: auto; }
-    ${effectiveCSS}
+    ${previewGenerated.css}
   </style>
 </head>
 <body>
-  ${stageHTML}
+  ${previewGenerated.stageHtml}
 </body>
 </html>`;
 
-  const handleDownloadZip = async () => {
-    setIsExportingZip(true);
-    try {
-      const blob = await createProjectZip(project);
-      const safeName = project.name.toLowerCase().replace(/[^a-z0-9_-]/g, '_');
-      triggerDownload(blob, `${safeName}_looply_animation.zip`);
-    } catch (err) {
-      console.error('ZIP generation failed:', err);
-    } finally {
-      setIsExportingZip(false);
-    }
-  };
 
   const handleDownloadJson = () => {
     const blob = new Blob([activeJson], { type: 'application/json;charset=utf-8' });
@@ -141,6 +153,18 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
     a.href = url;
     const safeName = project.name.toLowerCase().replace(/[^a-z0-9_-]/g, '_');
     a.download = `${safeName}_backup.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleDownloadReanimated = () => {
+    const blob = new Blob([reanimatedResult.code], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = reanimatedResult.filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -191,16 +215,20 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
             HTML &amp; CSS Code
           </button>
           <button
-            onClick={() => setActiveTab('zip')}
+            onClick={() => setActiveTab('reanimated')}
             className={`flex items-center gap-2 py-3 px-3 text-xs font-semibold border-b-2 transition-colors shrink-0 ${
-              activeTab === 'zip'
-                ? 'border-emerald-500 text-white'
+              activeTab === 'reanimated'
+                ? 'border-cyan-500 text-white'
                 : 'border-transparent text-studio-muted hover:text-white'
             }`}
           >
-            <Archive className="w-4 h-4 text-emerald-400" />
-            ZIP Package
+            <Smartphone className="w-4 h-4 text-cyan-400" />
+            React Native Reanimated
+            <span className="text-[10px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded border border-cyan-500/30">
+              v3.x
+            </span>
           </button>
+
           <button
             onClick={() => setActiveTab('json')}
             className={`flex items-center gap-2 py-3 px-3 text-xs font-semibold border-b-2 transition-colors shrink-0 ${
@@ -284,7 +312,7 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
                           ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40'
                           : 'text-studio-muted hover:text-white'
                       }`}
-                      title="Reference local assets/ folder (ideal for ZIP or production websites)"
+                      title="Reference local assets/ folder (for production websites or external hosting)"
                     >
                       assets/ Relative
                     </button>
@@ -313,15 +341,6 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
                       className="accent-indigo-500 rounded"
                     />
                     <span>Reduced Motion</span>
-                  </label>
-                  <label className="flex items-center gap-1.5 cursor-pointer text-[11px]" title="Add role='img' and aria-label attributes">
-                    <input
-                      type="checkbox"
-                      checked={includeAriaLabels}
-                      onChange={(e) => setIncludeAriaLabels(e.target.checked)}
-                      className="accent-indigo-500 rounded"
-                    />
-                    <span>ARIA</span>
                   </label>
                 </div>
               </div>
@@ -419,99 +438,261 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
             </div>
           )}
 
-          {/* TAB 2: ZIP Package */}
-          {activeTab === 'zip' && (
-            <div className="space-y-5">
-              <div className="space-y-3">
+          {/* TAB: React Native Reanimated Export */}
+          {activeTab === 'reanimated' && (
+            <div className="space-y-4">
+              {/* Top Controls Bar */}
+              <div className="flex flex-col gap-3 bg-studio-panel/60 p-3 rounded-xl border border-studio-border">
+                {/* Target & Mode Selectors */}
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  {/* Export Target Switcher */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-studio-muted text-xs font-medium">Export:</span>
+                    <div className="flex items-center bg-studio-surface p-1 rounded-lg border border-studio-border text-xs">
+                      <button
+                        onClick={() => setRnExportTarget('component')}
+                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
+                          rnExportTarget === 'component'
+                            ? 'bg-cyan-600 text-white shadow-xs'
+                            : 'text-studio-muted hover:text-white'
+                        }`}
+                        title="Complete drop-in React Native Component (<LooplyAnimation />) with stage and assets"
+                      >
+                        Component ({rnLanguage === 'typescript' ? '.tsx' : '.jsx'})
+                      </button>
+                      <button
+                        onClick={() => setRnExportTarget('hook')}
+                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
+                          rnExportTarget === 'hook'
+                            ? 'bg-cyan-600 text-white shadow-xs'
+                            : 'text-studio-muted hover:text-white'
+                        }`}
+                        title="Encapsulated Custom Hook (useLooplyAnimation())"
+                      >
+                        Custom Hook
+                      </button>
+                      <button
+                        onClick={() => setRnExportTarget('logic')}
+                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
+                          rnExportTarget === 'logic'
+                            ? 'bg-cyan-600 text-white shadow-xs'
+                            : 'text-studio-muted hover:text-white'
+                        }`}
+                        title="Raw hook declarations and trigger statements for existing components"
+                      >
+                        Logic Only
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Language Switcher */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-studio-muted text-xs font-medium">Lang:</span>
+                    <div className="flex items-center bg-studio-surface p-1 rounded-lg border border-studio-border text-xs">
+                      <button
+                        onClick={() => setRnLanguage('typescript')}
+                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
+                          rnLanguage === 'typescript'
+                            ? 'bg-cyan-600 text-white shadow-xs'
+                            : 'text-studio-muted hover:text-white'
+                        }`}
+                      >
+                        TypeScript
+                      </button>
+                      <button
+                        onClick={() => setRnLanguage('javascript')}
+                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
+                          rnLanguage === 'javascript'
+                            ? 'bg-cyan-600 text-white shadow-xs'
+                            : 'text-studio-muted hover:text-white'
+                        }`}
+                      >
+                        JavaScript
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Engine Mode & Options Row */}
+                <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-studio-border/50">
+                  <div className="flex items-center gap-2">
+                    <span className="text-studio-muted text-xs font-medium">Mode:</span>
+                    <div className="flex items-center bg-studio-surface p-1 rounded-lg border border-studio-border text-xs">
+                      <button
+                        onClick={() => setRnOutputMode('interpolation')}
+                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
+                          rnOutputMode === 'interpolation'
+                            ? 'bg-cyan-600 text-white shadow-xs'
+                            : 'text-studio-muted hover:text-white'
+                        }`}
+                        title="Single master timeline progress driver (Recommended: 100% CSS Parity)"
+                      >
+                        Master Timeline (Interpolation)
+                      </button>
+                      <button
+                        onClick={() => setRnOutputMode('sequence')}
+                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
+                          rnOutputMode === 'sequence'
+                            ? 'bg-cyan-600 text-white shadow-xs'
+                            : 'text-studio-muted hover:text-white'
+                        }`}
+                        title="Sequential withSequence chains per track synchronized to master checkpoints"
+                      >
+                        Sequential Tracks
+                      </button>
+                      <button
+                        onClick={() => setRnOutputMode('expressions')}
+                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
+                          rnOutputMode === 'expressions'
+                            ? 'bg-cyan-600 text-white shadow-xs'
+                            : 'text-studio-muted hover:text-white'
+                        }`}
+                        title="Direct animation trigger expressions"
+                      >
+                        Expressions
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Integration Guide Checkbox */}
+                  <div className="flex items-center gap-3 text-xs text-slate-300">
+                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px]" title="Include screen/component integration comments">
+                      <input
+                        type="checkbox"
+                        checked={rnIncludeGuide}
+                        onChange={(e) => setRnIncludeGuide(e.target.checked)}
+                        className="accent-cyan-500 rounded"
+                      />
+                      <span>Integration Guide</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Compatibility & Parity Banner */}
+              <div className={`p-3.5 rounded-xl border text-xs flex flex-col gap-2 ${
+                reanimatedResult.report.overallStatus === 'ready'
+                  ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200'
+                  : 'border-amber-500/30 bg-amber-500/10 text-amber-200'
+              }`}>
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-semibold uppercase tracking-wider text-white">
-                    Primary Deliverables (HTML &amp; CSS)
-                  </h4>
-                  <span className="text-[10px] text-emerald-400 font-medium">Ready to deploy</span>
+                  <div className="flex items-center gap-2 font-medium">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <span>
+                      Master Timeline Parity: 100% Synchronized with HTML/CSS Keyframes (No Timing Drift)
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setRnShowDiagnostics((p) => !p)}
+                    className="text-[11px] underline hover:text-white flex items-center gap-1"
+                  >
+                    {rnShowDiagnostics ? 'Hide Report' : 'Inspect Report'}
+                    {rnShowDiagnostics ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                  </button>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {/* CSS File Card */}
-                  <div className="p-3.5 rounded-xl border border-indigo-500/30 bg-indigo-500/10 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <FileCode className="w-4 h-4 text-indigo-400" />
-                        <span className="text-xs font-mono font-semibold text-white">animation.css</span>
+                {/* Collapsible Diagnostics list */}
+                {rnShowDiagnostics && (
+                  <div className="space-y-2 pt-2 border-t border-white/10 mt-1">
+                    {reanimatedResult.report.approximate.map((diag, i) => (
+                      <div key={i} className="p-2.5 rounded-lg bg-black/40 border border-amber-500/20 text-[11px] space-y-1">
+                        <div className="font-semibold text-amber-300 flex items-center gap-1.5">
+                          <AlertTriangle className="w-3.5 h-3.5" />
+                          {diag.title}
+                        </div>
+                        <p className="text-slate-300">{diag.message}</p>
+                        {diag.suggestion && (
+                          <p className="text-amber-200/90 font-mono text-[10px]">
+                            💡 Tip: {diag.suggestion}
+                          </p>
+                        )}
                       </div>
-                      <span className="text-[10px] text-studio-muted font-mono">
-                        {(new Blob([effectiveCSS]).size / 1024).toFixed(1)} KB
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-slate-300 leading-relaxed">
-                      GPU-accelerated <code className="text-indigo-300">@keyframes</code>, synchronized timeline, and layer transforms.
-                    </p>
-                    <div className="flex items-center justify-between pt-1 border-t border-indigo-500/20 text-[11px]">
-                      <span className="text-studio-muted">{project.layers.length} layers in sync</span>
-                      <button
-                        onClick={() => handleCopy(effectiveCSS, 'zip-css')}
-                        className="text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1"
-                      >
-                        {copiedType === 'zip-css' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                        {copiedType === 'zip-css' ? 'Copied' : 'Copy CSS'}
-                      </button>
+                    ))}
+
+                    {reanimatedResult.report.supported.map((diag, i) => (
+                      <div key={i} className="p-2 rounded-lg bg-black/20 text-[11px] flex items-center gap-2 text-slate-300">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                        <span>{diag.title}: {diag.message}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Required Shared Values & Styles Integration Strip */}
+              <div className="bg-studio-panel/50 border border-studio-border rounded-xl p-3 text-xs space-y-2">
+                <div className="flex items-center justify-between text-slate-200 font-medium">
+                  <span className="flex items-center gap-1.5 text-cyan-400">
+                    <SlidersHorizontal className="w-3.5 h-3.5" />
+                    Integration Contracts (Animation Logic Only)
+                  </span>
+                  <span className="text-[10px] text-studio-muted">Zero component lock-in</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px]">
+                  <div className="p-2 rounded bg-studio-surface border border-studio-border">
+                    <span className="text-studio-muted block text-[10px] uppercase font-semibold">Required Shared Values:</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {reanimatedResult.sharedValues.length > 0 ? (
+                        reanimatedResult.sharedValues.map((sv) => (
+                          <span key={sv.name} className="px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-mono text-[10px]">
+                            {sv.name}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-studio-muted">None (all layers static)</span>
+                      )}
                     </div>
                   </div>
-
-                  {/* HTML File Card */}
-                  <div className="p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Layers className="w-4 h-4 text-amber-400" />
-                        <span className="text-xs font-mono font-semibold text-white">index.html</span>
-                      </div>
-                      <span className="text-[10px] text-studio-muted font-mono">
-                        {(new Blob([generated.html]).size / 1024).toFixed(1)} KB
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-slate-300 leading-relaxed">
-                      Semantic stage markup linking to <code className="text-amber-300">animation.css</code> and bundled graphic assets.
-                    </p>
-                    <div className="flex items-center justify-between pt-1 border-t border-amber-500/20 text-[11px]">
-                      <span className="text-studio-muted">Accessible &amp; responsive</span>
-                      <button
-                        onClick={() => handleCopy(stageHTML, 'zip-html')}
-                        className="text-amber-400 hover:text-amber-300 font-medium flex items-center gap-1"
-                      >
-                        {copiedType === 'zip-html' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                        {copiedType === 'zip-html' ? 'Copied' : 'Copy HTML'}
-                      </button>
+                  <div className="p-2 rounded bg-studio-surface border border-studio-border">
+                    <span className="text-studio-muted block text-[10px] uppercase font-semibold">Animated Style Hooks:</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {reanimatedResult.animatedStyles.map((st) => (
+                        <span key={st.name} className="px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-mono text-[10px]">
+                          {st.name}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Complete ZIP Bundle Card */}
-              <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4 flex items-start gap-3">
-                <Archive className="w-5 h-5 text-emerald-400 mt-0.5 shrink-0" />
-                <div className="text-xs text-slate-300 space-y-1">
-                  <p className="font-semibold text-white">Complete Standalone Package</p>
-                  <p className="text-studio-muted leading-relaxed">
-                    Bundles <code className="text-emerald-400">animation.css</code>, <code className="text-emerald-400">index.html</code>, all {Object.keys(project.assets).length} graphic assets inside <code className="text-emerald-400">assets/</code>, and portable backup JSON.
-                  </p>
-                </div>
-              </div>
+              {/* Code Block with Header Actions */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between bg-studio-panel/60 p-2.5 rounded-xl border border-studio-border text-xs">
+                  <div className="flex items-center gap-2">
+                    <Smartphone className="w-4 h-4 text-cyan-400" />
+                    <span className="font-mono text-white text-[11px] font-semibold">{reanimatedResult.filename}</span>
+                    <span className="text-[10px] text-studio-muted font-mono">
+                      {(new Blob([reanimatedResult.code]).size / 1024).toFixed(1)} KB
+                    </span>
+                  </div>
 
-              <div className="flex items-center justify-between pt-2">
-                <div className="text-xs text-studio-muted">
-                  Project: <span className="text-white font-medium">{project.name}</span> ({project.settings.duration}s duration, {project.layers.length} layers)
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => handleCopy(reanimatedResult.code, 'reanimated')}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-cyan-300 hover:text-white bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 transition-colors"
+                    >
+                      {copiedType === 'reanimated' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                      {copiedType === 'reanimated' ? 'Copied Code!' : 'Copy Code'}
+                    </button>
+
+                    <button
+                      onClick={handleDownloadReanimated}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-white bg-cyan-600 hover:bg-cyan-500 transition-colors shadow-xs"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                      Download {reanimatedResult.filename}
+                    </button>
+                  </div>
                 </div>
 
-                <button
-                  onClick={handleDownloadZip}
-                  disabled={isExportingZip}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm shadow-lg shadow-emerald-600/30 transition-all hover:shadow-emerald-600/40 disabled:opacity-50"
-                >
-                  <Download className="w-4 h-4" />
-                  {isExportingZip ? 'Packaging ZIP...' : 'Download Complete ZIP Package'}
-                </button>
+                <pre className="p-3.5 rounded-xl bg-[#090b10] border border-studio-border text-cyan-200/90 font-mono text-[11px] overflow-x-auto max-h-80 leading-relaxed selection:bg-cyan-600/30">
+                  <code>{reanimatedResult.code}</code>
+                </pre>
               </div>
             </div>
           )}
+
 
           {/* TAB 3: JSON Backup Option (Full fidelity project backup) */}
           {activeTab === 'json' && (
@@ -661,7 +842,7 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
               {generated.report.sampledPhysics.length > 0 && (
                 <div className="space-y-2">
                   <h4 className="text-xs font-semibold text-amber-400 uppercase tracking-wider">
-                    Physical Spring Sampling
+                    Physical Spring Sampling (CSS)
                   </h4>
                   <div className="space-y-1">
                     {generated.report.sampledPhysics.map((phys, i) => (
@@ -675,6 +856,53 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
                   </div>
                 </div>
               )}
+
+              {/* React Native Reanimated Compatibility Report */}
+              <div className="space-y-3 pt-3 border-t border-studio-border">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-semibold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <Smartphone className="w-4 h-4" />
+                    React Native Reanimated 3.x Parity
+                  </h4>
+                  <span className={`text-[10px] px-2 py-0.5 rounded font-mono font-medium ${
+                    reanimatedResult.report.overallStatus === 'ready'
+                      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                      : 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
+                  }`}>
+                    {reanimatedResult.report.overallStatus === 'ready' ? '100% Native Parity' : 'Approximations Present'}
+                  </span>
+                </div>
+
+                <div className="space-y-2">
+                  {reanimatedResult.report.approximate.map((diag, i) => (
+                    <div
+                      key={i}
+                      className="p-3 rounded-lg border border-amber-500/30 bg-amber-500/10 text-xs space-y-1"
+                    >
+                      <div className="font-semibold text-amber-300 flex items-center gap-1.5">
+                        <AlertTriangle className="w-4 h-4" />
+                        {diag.title}
+                      </div>
+                      <p className="text-slate-300">{diag.message}</p>
+                      {diag.suggestion && (
+                        <p className="text-amber-200/90 font-mono text-[11px] pt-1 border-t border-amber-500/20">
+                          Suggestion: {diag.suggestion}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+
+                  {reanimatedResult.report.supported.slice(0, 4).map((diag, i) => (
+                    <div
+                      key={i}
+                      className="p-2.5 rounded-lg border border-studio-border bg-studio-panel flex items-center gap-2 text-xs text-slate-300"
+                    >
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>{diag.title}: {diag.message}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
         </div>

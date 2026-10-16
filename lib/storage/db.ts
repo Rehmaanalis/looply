@@ -41,14 +41,17 @@ export const db = typeof window !== 'undefined' ? new LooplyDatabase() : null;
 export function createDefaultSampleProject(): ProjectData {
   const now = new Date().toISOString();
   
-  // Official Looply App Icon SVG
-  const appIconSvg = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 140" fill="none"><defs><linearGradient id="appGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%236366f1"/><stop offset="50%" stop-color="%238b5cf6"/><stop offset="100%" stop-color="%2310b981"/></linearGradient><linearGradient id="rayGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%23a5b4fc"/><stop offset="100%" stop-color="%236ee7b7"/></linearGradient></defs><rect x="8" y="8" width="124" height="124" rx="34" fill="url(%23appGrad)"/><rect x="12" y="12" width="116" height="116" rx="30" fill="%230c0e18" stroke="%23818cf8" stroke-opacity="0.35" stroke-width="2"/><circle cx="70" cy="70" r="34" fill="%236366f1" fill-opacity="0.15"/><path d="M70 22v16M70 102v16M36 36l11.3 11.3M92.7 92.7l11.3 11.3M22 70h16M102 70h16M36 104l11.3-11.3M92.7 47.3l11.3-11.3" stroke="url(%23rayGrad)" stroke-width="7" stroke-linecap="round"/><circle cx="70" cy="70" r="14" fill="%236366f1"/><circle cx="70" cy="70" r="6" fill="%23ffffff"/></svg>`;
-  
+  // Official Looply App Icon SVG (Base64-encoded to prevent broken HTML attributes)
+  const appIconSvg =
+    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNDAgMTQwIiBmaWxsPSJub25lIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImFwcEdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM2MzY2ZjEiLz48c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzhiNWNmNiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzEwYjk4MSIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJyYXlHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjYTViNGZjIi8+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNmVlN2I3Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iOCIgeT0iOCIgd2lkdGg9IjEyNCIgaGVpZ2h0PSIxMjQiIHJ4PSIzNCIgZmlsbD0idXJsKCNhcHBHcmFkKSIvPjxyZWN0IHg9IjEyIiB5PSIxMiIgd2lkdGg9IjExNiIgaGVpZ2h0PSIxMTYiIHJ4PSIzMCIgZmlsbD0iIzBjMGUxOCIgc3Ryb2tlPSIjODE4Y2Y4IiBzdHJva2Utb3BhY2l0eT0iMC4zNSIgc3Ryb2tlLXdpZHRoPSIyIi8+PGNpcmNsZSBjeD0iNzAiIGN5PSI3MCIgcj0iMzQiIGZpbGw9IiM2MzY2ZjEiIGZpbGwtb3BhY2l0eT0iMC4xNSIvPjxwYXRoIGQ9Ik03MCAyMnYxNk03MCAxMDJ2MTZNMzYgMzZsMTEuMyAxMS4zTTkyLjcgOTIuN2wxMS4zIDExLjNNMjIgNzBoMTZNMTAyIDcwaDE2TTM2IDEwNGwxMS4zLTExLjNNOTIuNyA0Ny4zbDExLjMtMTEuMyIgc3Ryb2tlPSJ1cmwoI3JheUdyYWQpIiBzdHJva2Utd2lkdGg9IjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxjaXJjbGUgY3g9IjcwIiBjeT0iNzAiIHI9IjE0IiBmaWxsPSIjNjM2NmYxIi8+PGNpcmNsZSBjeD0iNzAiIGN5PSI3MCIgcj0iNiIgZmlsbD0iI2ZmZmZmZiIvPjwvc3ZnPg==';
+
   // Sparkle Star SVG
-  const starSvg = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 64,36 98,36 70,57 81,91 50,70 19,91 30,57 2,36 36,36" fill="%23f59e0b"/></svg>`;
-  
+  const starSvg =
+    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cG9seWdvbiBwb2ludHM9IjUwLDUgNjQsMzYgOTgsMzYgNzAsNTcgODEsOTEgNTAsNzAgMTksOTEgMzAsNTcgMiwzNiAzNiwzNiIgZmlsbD0iI2Y1OWUwYiIvPjwvc3ZnPg==';
+
   // Looply Studio Badge SVG
-  const badgeSvg = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 44" fill="none"><rect x="2" y="2" width="156" height="40" rx="20" fill="%23131625" stroke="%236366f1" stroke-width="2"/><circle cx="24" cy="22" r="5" fill="%2310b981"/><text x="38" y="27" fill="%23ffffff" font-family="system-ui,-apple-system,sans-serif" font-weight="700" font-size="12" letter-spacing="1.5">LOOPLY STUDIO</text></svg>`;
+  const badgeSvg =
+    'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNjAgNDQiIGZpbGw9Im5vbmUiPjxyZWN0IHg9IjIiIHk9IjIiIHdpZHRoPSIxNTYiIGhlaWdodD0iNDAiIHJ4PSIyMCIgZmlsbD0iIzEzMTYyNSIgc3Ryb2tlPSIjNjM2NmYxIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIyNCIgY3k9IjIyIiByPSI1IiBmaWxsPSIjMTBiOTgxIi8+PHRleHQgeD0iMzgiIHk9IjI3IiBmaWxsPSIjZmZmZmZmIiBmb250LWZhbWlseT0ic3lzdGVtLXVpLC1hcHBsZS1zeXN0ZW0sc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjcwMCIgZm9udC1zaXplPSIxMiIgbGV0dGVyLXNwYWNpbmc9IjEuNSI+TE9PUExZIFNUVURJTzwvdGV4dD48L3N2Zz4=';
 
   return {
     schemaVersion: 1,

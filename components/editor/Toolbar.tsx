@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import {
   Play,
   Pause,
@@ -57,6 +56,7 @@ interface ToolbarProps {
   isRightPanelOpen?: boolean;
   onToggleLeftPanel?: () => void;
   onToggleRightPanel?: () => void;
+  onLeaveApp?: () => void;
 }
 
 export default function Toolbar({
@@ -87,21 +87,22 @@ export default function Toolbar({
   isRightPanelOpen,
   onToggleLeftPanel,
   onToggleRightPanel,
+  onLeaveApp,
 }: ToolbarProps) {
   return (
     <header className="h-14 bg-studio-surface border-b border-studio-border px-4 flex items-center justify-between select-none">
       {/* Left: Brand + Project Info */}
       <div className="flex items-center gap-3">
-        <Link
-          href="/"
+        <button
+          onClick={onLeaveApp}
           className="flex items-center gap-1.5 text-studio-muted hover:text-white transition-colors p-1.5 rounded-lg hover:bg-studio-panel"
-          title="Back to Homepage"
+          title="Leave Studio & Return to Home"
         >
           <ChevronLeft className="w-5 h-5" />
           <div className="w-6 h-6 rounded bg-indigo-600 flex items-center justify-center font-bold text-xs text-white">
             L
           </div>
-        </Link>
+        </button>
 
         <div className="h-4 w-px bg-studio-border" />
 
@@ -321,7 +322,7 @@ export default function Toolbar({
         <button
           onClick={onOpenExport}
           className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs font-semibold text-white shadow-md shadow-emerald-600/20 transition-all hover:shadow-emerald-600/30"
-          title="Export production-ready CSS and ZIP bundle"
+          title="Export production-ready CSS and animation code"
         >
           <Download className="w-3.5 h-3.5" />
           <span>Export CSS</span>

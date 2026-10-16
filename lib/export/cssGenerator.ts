@@ -25,6 +25,31 @@ export function sanitizeCssIdentifier(str: string): string {
 }
 
 /**
+ * Ensures data URLs are safely encoded for HTML attributes and CSS embedding.
+ * Converts raw XML SVG data URLs to safe base64 to prevent broken HTML attributes.
+ */
+export function ensureSafeDataUrl(url: string | undefined): string {
+  if (!url) return '';
+  if (url.startsWith('data:image/svg+xml') && !url.includes(';base64,')) {
+    const commaIndex = url.indexOf(',');
+    if (commaIndex !== -1) {
+      const rawContent = url.slice(commaIndex + 1);
+      try {
+        const decoded = rawContent.startsWith('%') ? decodeURIComponent(rawContent) : rawContent;
+        if (typeof window !== 'undefined' && typeof window.btoa === 'function') {
+          return `data:image/svg+xml;base64,${window.btoa(unescape(encodeURIComponent(decoded)))}`;
+        } else if (typeof Buffer !== 'undefined') {
+          return `data:image/svg+xml;base64,${Buffer.from(decoded, 'utf-8').toString('base64')}`;
+        }
+      } catch (e) {
+        return url.replace(/"/g, '&quot;');
+      }
+    }
+  }
+  return url;
+}
+
+/**
  * Returns a consistent, unique, deterministic filename for an asset to prevent
  * name collisions in ZIP exports and HTML/CSS references.
  */
@@ -102,7 +127,7 @@ export function generateAnimationCSS(project: ProjectData, options: CSSExportOpt
     // Determine asset src based on options
     let assetSrc = '';
     if (options.mode === 'inline') {
-      assetSrc = asset?.dataUrl || '';
+      assetSrc = ensureSafeDataUrl(asset?.dataUrl) || '';
     } else {
       const prefix = options.mode === 'zip' ? 'assets/' : (options.assetPathPrefix || 'assets/');
       const assetIndex = assetKeys.indexOf(layer.assetId);
