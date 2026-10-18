@@ -1,5 +1,4 @@
-import { ProjectData, LayerRecord, KeyframeRecord, AssetRecord } from '@/types/animation';
-import { sampleSpringToKeyframes, evaluateSpring } from '@/lib/animation/spring';
+import { ProjectData, AssetRecord } from '@/types/animation';
 
 export interface CSSExportOptions {
   mode: 'zip' | 'inline' | 'external';
@@ -41,7 +40,7 @@ export function ensureSafeDataUrl(url: string | undefined): string {
         } else if (typeof Buffer !== 'undefined') {
           return `data:image/svg+xml;base64,${Buffer.from(decoded, 'utf-8').toString('base64')}`;
         }
-      } catch (e) {
+      } catch {
         return url.replace(/"/g, '&quot;');
       }
     }

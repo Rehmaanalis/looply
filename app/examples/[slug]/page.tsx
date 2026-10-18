@@ -4,8 +4,10 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import Header from '@/components/marketing/Header';
 import Footer from '@/components/marketing/Footer';
-import { EXAMPLES } from '@/lib/content/data';
-import { ChevronLeft, Calendar, User, Clock, Tag, Play } from 'lucide-react';
+import AdSlot from '@/components/ads/AdSlot';
+import { getExamples, getExample } from '@/lib/content/contentService';
+import { getAdsConfig } from '@/lib/ads/config';
+import { ChevronLeft, Calendar, User, Clock } from 'lucide-react';
 
 interface Props {
   params: {
@@ -14,27 +16,68 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return EXAMPLES.map((item) => ({
+  const examples = await getExamples();
+  return examples.map((item) => ({
     slug: item.slug,
   }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const item = EXAMPLES.find((e) => e.slug === params.slug);
-  if (!item) return { title: 'Not Found' };
+  const item = await getExample(params.slug);
+  if (!item) return { title: 'Example Not Found — Looply' };
 
   return {
     title: `${item.title} — Looply Animation Example`,
     description: item.description,
+    openGraph: {
+      title: `${item.title} — Looply Animation Example`,
+      description: item.description,
+      type: 'article',
+      url: `https://rehmaanalis.github.io/looply/examples/${item.slug}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${item.title} — Looply Animation Example`,
+      description: item.description,
+    },
   };
 }
 
-export default function ExampleDetailPage({ params }: Props) {
-  const item = EXAMPLES.find((e) => e.slug === params.slug);
+export default async function ExampleDetailPage({ params }: Props) {
+  const item = await getExample(params.slug);
   if (!item) notFound();
+
+  const adsConfig = await getAdsConfig();
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: item.title,
+    description: item.description,
+    datePublished: item.datePublished,
+    dateModified: item.dateModified || item.datePublished,
+    author: {
+      '@type': 'Organization',
+      name: item.author,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Looply Studio',
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://rehmaanalis.github.io/looply/examples/${item.slug}`,
+    },
+    keywords: item.tags.join(', '),
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-studio-bg selection:bg-indigo-500 selection:text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+
       <Header />
 
       <main className="flex-1 py-12 sm:py-20">
@@ -75,36 +118,38 @@ export default function ExampleDetailPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Content Sections */}
-          <div className="space-y-8 text-sm text-slate-300 leading-relaxed border-t border-studio-border pt-8">
-            {item.sections.map((sec, idx) => (
-              <div key={idx} className="space-y-3">
-                <h2 className="text-xl font-bold text-white tracking-tight">
-                  {sec.heading}
-                </h2>
-                <p>{sec.content}</p>
+          {/* HTML Content delivered directly from data/content/examples/{slug}.html */}
+          <div
+            className="prose prose-invert max-w-none text-sm sm:text-base text-slate-300 leading-relaxed border-t border-studio-border pt-8"
+            dangerouslySetInnerHTML={{ __html: item.htmlContent }}
+          />
 
-                {sec.codeSnippet && (
-                  <pre className="p-4 rounded-xl bg-[#090b10] border border-studio-border font-mono text-xs text-emerald-300 overflow-x-auto my-4">
-                    {sec.codeSnippet}
-                  </pre>
-                )}
-              </div>
+          {/* Tags */}
+          <div className="mt-8 pt-4 border-t border-studio-border flex flex-wrap gap-2">
+            {item.tags.map((tag) => (
+              <span
+                key={tag}
+                className="text-[11px] font-mono px-2 py-0.5 rounded bg-studio-panel text-slate-400 border border-studio-border"
+              >
+                #{tag}
+              </span>
             ))}
           </div>
 
-          {/* Action CTA */}
-          <div className="mt-14 p-6 rounded-2xl bg-studio-surface border border-studio-border flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* Seamless AdSense / Partner Slot */}
+          <AdSlot placement="blogBottom" config={adsConfig} className="mt-8" />
+
+          {/* CTA Box */}
+          <div className="mt-10 p-6 rounded-2xl bg-studio-surface border border-studio-border flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-              <h3 className="text-sm font-semibold text-white">Want to customize this effect?</h3>
-              <p className="text-xs text-studio-muted">Open the visual studio to modify timing, coordinates, and layer assets.</p>
+              <h3 className="text-sm font-semibold text-white">Create this animation in Looply</h3>
+              <p className="text-xs text-studio-muted">Launch the free visual keyframe editor and customize this pattern.</p>
             </div>
             <Link
               href="/app"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs shadow-md transition-colors shrink-0"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition-colors shrink-0"
             >
-              <Play className="w-3.5 h-3.5 fill-white" />
-              Open in Studio
+              Open Studio →
             </Link>
           </div>
         </div>

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import Header from '@/components/marketing/Header';
 import Footer from '@/components/marketing/Footer';
-import { Code2, Play, CheckCircle2, ArrowRight, Zap, Cpu } from 'lucide-react';
+import { Play } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Free CSS Animation Generator — Looply',

@@ -3,23 +3,56 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import Header from '@/components/marketing/Header';
 import Footer from '@/components/marketing/Footer';
-import { EXAMPLES } from '@/lib/content/data';
-import { Sparkles, ArrowRight, Play } from 'lucide-react';
+import AdSlot from '@/components/ads/AdSlot';
+import { getExamples } from '@/lib/content/contentService';
+import { getAdsConfig } from '@/lib/ads/config';
+
 
 export const metadata: Metadata = {
   title: 'Animation Examples — Looply Studio',
   description:
     'Explore production-ready CSS keyframe animation examples built with Looply. Inspect live codes, layered structures, and implementation notes.',
+  openGraph: {
+    title: 'Animation Examples — Looply Studio',
+    description:
+      'Explore production-ready CSS keyframe animation examples built with Looply. Inspect live codes, layered structures, and implementation notes.',
+    type: 'website',
+    url: 'https://rehmaanalis.github.io/looply/examples',
+  },
 };
 
-export default function ExamplesIndexPage() {
+export default async function ExamplesIndexPage() {
+  const examples = await getExamples();
+  const adsConfig = await getAdsConfig();
+
+  const examplesJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Looply CSS Animation Examples',
+    description:
+      'Explore production-ready CSS keyframe animation examples built with Looply.',
+    url: 'https://rehmaanalis.github.io/looply/examples',
+    hasPart: examples.map((item) => ({
+      '@type': 'TechArticle',
+      headline: item.title,
+      description: item.description,
+      url: `https://rehmaanalis.github.io/looply/examples/${item.slug}`,
+      datePublished: item.datePublished,
+    })),
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-studio-bg selection:bg-indigo-500 selection:text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(examplesJsonLd) }}
+      />
+
       <Header />
 
       <main className="flex-1 py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-12">
             <span className="text-xs font-semibold uppercase tracking-wider text-indigo-400 mb-2 block">
               Showcase &amp; Patterns
             </span>
@@ -27,12 +60,15 @@ export default function ExamplesIndexPage() {
               CSS Animation Examples
             </h1>
             <p className="mt-4 text-base text-studio-muted leading-relaxed">
-              Real-world animation patterns for landing pages, SaaS interfaces, and micro-interactions.
+              Real-world animation patterns for landing pages, SaaS interfaces, and micro-interactions delivered via data files.
             </p>
           </div>
 
+          {/* Configurable Seamless AdSense / Partner Slot */}
+          <AdSlot placement="examplesFeed" config={adsConfig} className="mb-10 max-w-5xl mx-auto" />
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {EXAMPLES.map((item) => (
+            {examples.map((item) => (
               <Link
                 key={item.slug}
                 href={`/examples/${item.slug}`}
@@ -61,16 +97,6 @@ export default function ExamplesIndexPage() {
                 </div>
               </Link>
             ))}
-          </div>
-
-          <div className="mt-16 text-center">
-            <Link
-              href="/app"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm shadow-xl shadow-indigo-600/30 transition-all hover:scale-105"
-            >
-              <Play className="w-4 h-4 fill-white" />
-              Build Your Own Animation
-            </Link>
           </div>
         </div>
       </main>

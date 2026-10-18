@@ -5,18 +5,16 @@
  * 100% parity with CSS @keyframes without drift or phase mismatch.
  */
 
-import { ProjectData, LayerRecord, KeyframeRecord, KeyframeProperties, InterpolatedLayerState } from '@/types/animation';
+import { ProjectData, LayerRecord, KeyframeProperties } from '@/types/animation';
 import { interpolateLayer } from '@/lib/animation/interpolator';
 import {
   ReanimatedOutputMode,
-  ReanimatedLanguage,
   ReanimatedExportOptions,
   SharedValueRequirement,
   AnimatedStyleRequirement,
 } from './types';
 import {
   getAnimatedPropertyKeys,
-  getLayerBasePropertyValue,
   generateLayerVarPrefix,
   REANIMATED_PROPERTY_SPECS,
 } from './propertyMapper';
@@ -65,11 +63,13 @@ export function getLayerUnifiedCheckpoints(project: ProjectData, layer: LayerRec
 
   // Layer in-point clipping if trimmed
   if (startSec > 0.02 && startSec < durationSec) {
+    times.add(Math.max(0, startSec - 0.002));
     times.add(startSec);
   }
   // Layer out-point clipping if trimmed
   if (endSec < durationSec - 0.02 && endSec > 0) {
     times.add(endSec);
+    times.add(Math.min(durationSec, endSec + 0.002));
   }
 
   // All keyframe timestamps across all properties on this layer
@@ -80,18 +80,18 @@ export function getLayerUnifiedCheckpoints(project: ProjectData, layer: LayerRec
     });
   }
 
-  // Sort ascending and deduplicate within 5ms tolerance
+  // Sort ascending and deduplicate within 1ms tolerance
   const sorted = Array.from(times).sort((a, b) => a - b);
   const deduped: number[] = [];
   for (const t of sorted) {
-    if (deduped.length === 0 || t - deduped[deduped.length - 1] > 0.005) {
+    if (deduped.length === 0 || t - deduped[deduped.length - 1] > 0.001) {
       deduped.push(Math.round(t * 1000) / 1000);
     }
   }
 
   // Lock endpoints
   deduped[0] = 0;
-  if (Math.abs(deduped[deduped.length - 1] - durationSec) > 0.005) {
+  if (Math.abs(deduped[deduped.length - 1] - durationSec) > 0.001) {
     deduped.push(durationSec);
   } else {
     deduped[deduped.length - 1] = durationSec;
@@ -120,7 +120,7 @@ function compilePropertyTrack(
   const isReverse = project.settings.direction === 'alternate';
 
   // Compute exact value at each checkpoint using master interpolator (matching canvas and CSS)
-  const timelinePoints: { time: number; value: number; easing?: string; springConfig?: any }[] = [];
+  const timelinePoints: { time: number; value: number; easing?: string; springConfig?: { mass: number; stiffness: number; damping: number; initialVelocity: number } }[] = [];
 
   unifiedCheckpoints.forEach((t) => {
     const state = interpolateLayer(layer, t);
@@ -239,16 +239,63 @@ function compilePropertyTrack(
  */
 export function compileProjectToReanimated(
   project: ProjectData,
-  optionsOrMode: ReanimatedExportOptions | ReanimatedOutputMode
+  optionsOrMode?: ReanimatedExportOptions | ReanimatedOutputMode
 ): CompiledLayerResult[] {
   const mode: ReanimatedOutputMode =
-    typeof optionsOrMode === 'string' ? optionsOrMode : optionsOrMode.outputMode;
+    typeof optionsOrMode === 'string'
+      ? optionsOrMode
+      : optionsOrMode?.outputMode || 'sequence';
 
+  const durationSec = Math.max(0.1, project.settings.duration || 3);
+
+  // Group layers by assetId to detect when multiple layers use the same asset
+  const assetLayerCounts: Record<string, number> = {};
+  project.layers.forEach((l) => {
+    if (l.assetId) {
+      assetLayerCounts[l.assetId] = (assetLayerCounts[l.assetId] || 0) + 1;
+    }
+  });
+
+  const assetLayerIndices: Record<string, number> = {};
+  const usedPrefixes = new Set<string>();
   const results: CompiledLayerResult[] = [];
 
   project.layers.forEach((layer, layerIdx) => {
-    const varPrefix = generateLayerVarPrefix(layer, layerIdx);
-    const animatedProps = getAnimatedPropertyKeys(layer);
+    const isMultiAsset = (assetLayerCounts[layer.assetId] || 0) > 1;
+    const sameAssetIndex = (assetLayerIndices[layer.assetId] || 0) + 1;
+    if (layer.assetId) {
+      assetLayerIndices[layer.assetId] = sameAssetIndex;
+    }
+
+    // If multiple layers use the same asset, add a small unique identifier to layer name and animation
+    let layerDisplayName = layer.name;
+    let uniqueIdSuffix: string | number = '';
+
+    if (isMultiAsset) {
+      uniqueIdSuffix = sameAssetIndex;
+      // If layer name doesn't already end with this number, append it
+      if (!new RegExp(`\\b${sameAssetIndex}$`).test(layerDisplayName)) {
+        layerDisplayName = `${layerDisplayName} ${sameAssetIndex}`;
+      }
+    }
+
+    let varPrefix = generateLayerVarPrefix(
+      { ...layer, name: layerDisplayName },
+      layerIdx,
+      uniqueIdSuffix
+    );
+
+    // Guaranteed collision prevention across any layer variable prefixes
+    if (usedPrefixes.has(varPrefix)) {
+      let counter = 2;
+      while (usedPrefixes.has(`${varPrefix}${counter}`)) {
+        counter++;
+      }
+      varPrefix = `${varPrefix}${counter}`;
+    }
+    usedPrefixes.add(varPrefix);
+
+    const animatedProps = getAnimatedPropertyKeys(layer, durationSec);
     const unifiedCheckpoints = getLayerUnifiedCheckpoints(project, layer);
 
     const tracks: CompiledTrack[] = [];
@@ -256,85 +303,199 @@ export function compileProjectToReanimated(
 
     // Compile each animated property using the unified timeline checkpoints
     animatedProps.forEach((prop) => {
-      const track = compilePropertyTrack(project, layer, prop, varPrefix, mode, unifiedCheckpoints);
+      const track = compilePropertyTrack(
+        project,
+        { ...layer, name: layerDisplayName },
+        prop,
+        varPrefix,
+        mode,
+        unifiedCheckpoints
+      );
       tracks.push(track);
 
       sharedValueRequirements.push({
         name: track.sharedVarName,
         type: typeof track.initialValue,
         initialValue: track.initialValue,
-        layerName: layer.name,
+        layerName: layerDisplayName,
         property: prop,
-        description: `Tracks ${track.reanimatedPropKey} for layer "${layer.name}"`,
+        description: `Tracks ${track.reanimatedPropKey} for layer "${layerDisplayName}"`,
       });
     });
 
     // Build style requirement for layer
     const styleProps: AnimatedStyleRequirement['properties'] = [];
 
-    // Transforms
-    const transformTracks = tracks.filter((t) => t.isTransform);
-    if (transformTracks.length > 0) {
-      transformTracks.forEach((t) => {
-        let valExpr = '';
-        if (mode === 'interpolation' && t.interpolationExpression) {
-          valExpr = t.reanimatedPropKey === 'rotate'
-            ? `\`\${${t.interpolationExpression}}deg\``
-            : t.interpolationExpression;
-        } else {
-          valExpr = t.reanimatedPropKey === 'rotate'
-            ? `\`\${${t.sharedVarName}.value}deg\``
-            : `${t.sharedVarName}.value`;
-        }
-
-        styleProps.push({
-          key: 'transform',
-          valueExpression: `{ ${t.transformKey}: ${valExpr} }`,
-          isTransform: true,
-          transformKey: t.transformKey,
-        });
+    // 1. translateX (Always present so layer stays consistently at intended position)
+    const xTrack = tracks.find((t) => t.property === 'x');
+    if (xTrack) {
+      const valExpr =
+        mode === 'interpolation' && xTrack.interpolationExpression
+          ? xTrack.interpolationExpression
+          : `${xTrack.sharedVarName}.value`;
+      styleProps.push({
+        key: 'transform',
+        valueExpression: `{ translateX: ${valExpr} }`,
+        isTransform: true,
+        transformKey: 'translateX',
       });
     } else {
-      // Static transform fallback
-      const staticParts: string[] = [];
-      if (layer.x !== 0) staticParts.push(`{ translateX: ${layer.x} }`);
-      if (layer.y !== 0) staticParts.push(`{ translateY: ${layer.y} }`);
-      if (layer.rotation !== 0) staticParts.push(`{ rotate: '${layer.rotation}deg' }`);
-      if (layer.scaleX !== 1 || layer.scaleY !== 1) {
-        if (layer.scaleX === layer.scaleY) {
-          staticParts.push(`{ scale: ${layer.scaleX} }`);
-        } else {
-          staticParts.push(`{ scaleX: ${layer.scaleX} }`);
-          staticParts.push(`{ scaleY: ${layer.scaleY} }`);
-        }
-      }
-      if (staticParts.length > 0) {
+      styleProps.push({
+        key: 'transform',
+        valueExpression: `{ translateX: ${layer.x ?? 0} }`,
+        isTransform: true,
+        transformKey: 'translateX',
+      });
+    }
+
+    // 2. translateY (Always present so layer stays consistently at intended position)
+    const yTrack = tracks.find((t) => t.property === 'y');
+    if (yTrack) {
+      const valExpr =
+        mode === 'interpolation' && yTrack.interpolationExpression
+          ? yTrack.interpolationExpression
+          : `${yTrack.sharedVarName}.value`;
+      styleProps.push({
+        key: 'transform',
+        valueExpression: `{ translateY: ${valExpr} }`,
+        isTransform: true,
+        transformKey: 'translateY',
+      });
+    } else {
+      styleProps.push({
+        key: 'transform',
+        valueExpression: `{ translateY: ${layer.y ?? 0} }`,
+        isTransform: true,
+        transformKey: 'translateY',
+      });
+    }
+
+    // 3. rotate (Applied before scale to match standard CSS translate3d -> rotate -> scale matrix order)
+    const rotTrack = tracks.find((t) => t.property === 'rotation');
+    if (rotTrack) {
+      const valExpr =
+        mode === 'interpolation' && rotTrack.interpolationExpression
+          ? `\`\${${rotTrack.interpolationExpression}}deg\``
+          : `\`\${${rotTrack.sharedVarName}.value}deg\``;
+      styleProps.push({
+        key: 'transform',
+        valueExpression: `{ rotate: ${valExpr} }`,
+        isTransform: true,
+        transformKey: 'rotate',
+      });
+    } else if ((layer.rotation ?? 0) !== 0) {
+      styleProps.push({
+        key: 'transform',
+        valueExpression: `{ rotate: '${layer.rotation}deg' }`,
+        isTransform: true,
+        transformKey: 'rotate',
+      });
+    }
+
+    // 4. scaleX / scaleY / scale
+    const scaleXTrack = tracks.find((t) => t.property === 'scaleX');
+    const scaleYTrack = tracks.find((t) => t.property === 'scaleY');
+
+    if (scaleXTrack && scaleYTrack) {
+      const xExpr =
+        mode === 'interpolation' && scaleXTrack.interpolationExpression
+          ? scaleXTrack.interpolationExpression
+          : `${scaleXTrack.sharedVarName}.value`;
+      const yExpr =
+        mode === 'interpolation' && scaleYTrack.interpolationExpression
+          ? scaleYTrack.interpolationExpression
+          : `${scaleYTrack.sharedVarName}.value`;
+      styleProps.push({
+        key: 'transform',
+        valueExpression: `{ scaleX: ${xExpr} }`,
+        isTransform: true,
+        transformKey: 'scaleX',
+      });
+      styleProps.push({
+        key: 'transform',
+        valueExpression: `{ scaleY: ${yExpr} }`,
+        isTransform: true,
+        transformKey: 'scaleY',
+      });
+    } else if (scaleXTrack) {
+      const xExpr =
+        mode === 'interpolation' && scaleXTrack.interpolationExpression
+          ? scaleXTrack.interpolationExpression
+          : `${scaleXTrack.sharedVarName}.value`;
+      styleProps.push({
+        key: 'transform',
+        valueExpression: `{ scaleX: ${xExpr} }`,
+        isTransform: true,
+        transformKey: 'scaleX',
+      });
+      if ((layer.scaleY ?? 1) !== 1) {
         styleProps.push({
           key: 'transform',
-          valueExpression: `[ ${staticParts.join(', ')} ]`,
+          valueExpression: `{ scaleY: ${layer.scaleY} }`,
           isTransform: true,
+          transformKey: 'scaleY',
         });
+      }
+    } else if (scaleYTrack) {
+      if ((layer.scaleX ?? 1) !== 1) {
+        styleProps.push({
+          key: 'transform',
+          valueExpression: `{ scaleX: ${layer.scaleX} }`,
+          isTransform: true,
+          transformKey: 'scaleX',
+        });
+      }
+      const yExpr =
+        mode === 'interpolation' && scaleYTrack.interpolationExpression
+          ? scaleYTrack.interpolationExpression
+          : `${scaleYTrack.sharedVarName}.value`;
+      styleProps.push({
+        key: 'transform',
+        valueExpression: `{ scaleY: ${yExpr} }`,
+        isTransform: true,
+        transformKey: 'scaleY',
+      });
+    } else {
+      const sx = layer.scaleX ?? 1;
+      const sy = layer.scaleY ?? 1;
+      if (sx !== 1 || sy !== 1) {
+        if (sx === sy) {
+          styleProps.push({
+            key: 'transform',
+            valueExpression: `{ scale: ${sx} }`,
+            isTransform: true,
+            transformKey: 'scale',
+          });
+        } else {
+          styleProps.push({
+            key: 'transform',
+            valueExpression: `{ scaleX: ${sx} }`,
+            isTransform: true,
+            transformKey: 'scaleX',
+          });
+          styleProps.push({
+            key: 'transform',
+            valueExpression: `{ scaleY: ${sy} }`,
+            isTransform: true,
+            transformKey: 'scaleY',
+          });
+        }
       }
     }
 
-    // Non-transform styles (opacity, width, height)
-    const nonTransformTracks = tracks.filter((t) => !t.isTransform);
-    nonTransformTracks.forEach((t) => {
-      let valExpr = '';
-      if (mode === 'interpolation' && t.interpolationExpression) {
-        valExpr = t.interpolationExpression;
-      } else {
-        valExpr = `${t.sharedVarName}.value`;
-      }
+    // 5. opacity
+    const opacityTrack = tracks.find((t) => t.property === 'opacity');
+    if (opacityTrack) {
+      const valExpr =
+        mode === 'interpolation' && opacityTrack.interpolationExpression
+          ? opacityTrack.interpolationExpression
+          : `${opacityTrack.sharedVarName}.value`;
       styleProps.push({
-        key: t.reanimatedPropKey,
+        key: 'opacity',
         valueExpression: valExpr,
         isTransform: false,
       });
-    });
-
-    // Static opacity if not animated and not 1
-    if (!tracks.some((t) => t.reanimatedPropKey === 'opacity') && layer.opacity !== 1) {
+    } else if ((layer.opacity ?? 1) !== 1) {
       styleProps.push({
         key: 'opacity',
         valueExpression: `${layer.opacity}`,
@@ -342,14 +503,40 @@ export function compileProjectToReanimated(
       });
     }
 
+    // 6. width and height if animated
+    const wTrack = tracks.find((t) => t.property === 'width');
+    if (wTrack) {
+      const valExpr =
+        mode === 'interpolation' && wTrack.interpolationExpression
+          ? wTrack.interpolationExpression
+          : `${wTrack.sharedVarName}.value`;
+      styleProps.push({
+        key: 'width',
+        valueExpression: valExpr,
+        isTransform: false,
+      });
+    }
+    const hTrack = tracks.find((t) => t.property === 'height');
+    if (hTrack) {
+      const valExpr =
+        mode === 'interpolation' && hTrack.interpolationExpression
+          ? hTrack.interpolationExpression
+          : `${hTrack.sharedVarName}.value`;
+      styleProps.push({
+        key: 'height',
+        valueExpression: valExpr,
+        isTransform: false,
+      });
+    }
+
     const styleRequirement: AnimatedStyleRequirement = {
       name: `${varPrefix}AnimatedStyle`,
-      layerName: layer.name,
+      layerName: layerDisplayName,
       properties: styleProps,
     };
 
     results.push({
-      layer,
+      layer: { ...layer, name: layerDisplayName },
       varPrefix,
       tracks,
       styleRequirement,

@@ -1,0 +1,31 @@
+<div class="blog-content space-y-8">
+  <section class="space-y-4">
+    <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">The Browser Rendering Pipeline Demystified</h2>
+    <p class="text-slate-300 leading-relaxed text-base">
+      Every frame rendered by modern web browsers passes through three core phases: <strong>Layout (Reflow)</strong>, <strong>Paint</strong>, and <strong>Composite</strong>. Animating non-composite properties such as <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">top</code>, <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">left</code>, <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">width</code>, or <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">margin</code> forces the browser engine to recalculate geometry across the entire DOM tree on every frame.
+    </p>
+    <p class="text-slate-300 leading-relaxed text-base">
+      Looply strictly generates transforms utilizing <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">translate3d(x, y, 0)</code>, <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">rotate</code>, <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">scale</code>, and <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">opacity</code>. These properties promote the target layer to an independent compositor layer in Chromium and WebKit, allowing direct GPU execution with zero reflows.
+    </p>
+  </section>
+
+  <section class="space-y-4">
+    <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Eliminating Main-Thread Frame Drops</h2>
+    <p class="text-slate-300 leading-relaxed text-base">
+      JavaScript animation engines (like GSAP or Framer Motion) run <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">requestAnimationFrame</code> on the main thread. When your React app re-renders, parses large JSON, or executes third-party scripts, animations drop frames and feel sluggish.
+    </p>
+    <div class="p-4 rounded-xl bg-[#090b10] border border-studio-border font-mono text-xs text-emerald-300 overflow-x-auto my-4">
+      <pre><code>/* Pure Compositor Execution - Runs even if Main JS Thread is 100% Locked */
+.looply-layer-card {
+  will-change: transform, opacity;
+  animation: looply-anim-float 3s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+}
+
+@keyframes looply-anim-float {
+  0%   { transform: translate3d(120px, 40px, 0) scale(1); opacity: 1; }
+  50%  { transform: translate3d(120px, 20px, 0) scale(1.05); opacity: 0.9; }
+  100% { transform: translate3d(120px, 40px, 0) scale(1); opacity: 1; }
+}</code></pre>
+    </div>
+  </section>
+</div>

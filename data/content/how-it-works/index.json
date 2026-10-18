@@ -1,0 +1,37 @@
+{
+  "title": "How Looply Works: From Vector Images to 60 FPS Production CSS & Reanimated Animations",
+  "description": "Learn how Looply transforms imported images into production animations through timeline keyframing, real-time stage inspection, and clean zero-runtime code generation.",
+  "datePublished": "2025-01-10T08:00:00Z",
+  "dateModified": "2025-03-15T08:00:00Z",
+  "overviewHtml": "overview.html",
+  "steps": [
+    {
+      "num": "01",
+      "slug": "step-01-import-graphics",
+      "title": "Import Graphic Assets",
+      "desc": "Drag and drop PNG, JPEG, WebP, or SVG graphics directly into your workspace. Assets are loaded locally into browser storage and instantly ready for canvas staging.",
+      "htmlFile": "step-01-import-graphics.html"
+    },
+    {
+      "num": "02",
+      "slug": "step-02-stage-composition",
+      "title": "Compose Layers on the Stage Canvas",
+      "desc": "Add assets to the canvas stage as independent layers. Configure stage resolution, background color, layer z-index stacking, initial position, width/height, and transform origin.",
+      "htmlFile": "step-02-stage-composition.html"
+    },
+    {
+      "num": "03",
+      "slug": "step-03-keyframe-interpolation",
+      "title": "Animate with Timeline Keyframes & Easing",
+      "desc": "Move the playhead across the time ruler and insert keyframes. Looply linearly interpolates properties between keyframes and applies your choice of easing or spring physics.",
+      "htmlFile": "step-03-keyframe-interpolation.html"
+    },
+    {
+      "num": "04",
+      "slug": "step-04-css-and-reanimated-export",
+      "title": "Export Production CSS & Reanimated v4",
+      "desc": "Export mathematically precise CSS keyframe rules alongside an index.html demo file or drop-in React Native Reanimated v4 (Latest) component with zero runtime overhead.",
+      "htmlFile": "step-04-css-and-reanimated-export.html"
+    }
+  ]
+}

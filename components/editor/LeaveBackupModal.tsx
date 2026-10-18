@@ -9,10 +9,6 @@ import {
   AlertTriangle,
   HardDrive,
   LogOut,
-  Layers,
-  Clock,
-  Database,
-  ArrowRight,
 } from 'lucide-react';
 import { ProjectData } from '@/types/animation';
 

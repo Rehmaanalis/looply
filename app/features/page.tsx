@@ -7,13 +7,9 @@ import {
   Layers,
   Sliders,
   Download,
-  ShieldCheck,
   Zap,
   Sparkles,
-  Repeat,
-  Code2,
   HardDrive,
-  Eye,
   CheckCircle2,
   Play,
 } from 'lucide-react';

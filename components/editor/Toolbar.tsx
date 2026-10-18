@@ -8,23 +8,17 @@ import {
   Repeat,
   Download,
   FolderOpen,
-  Sparkles,
   Undo2,
   Redo2,
-  CheckCircle2,
-  Clock,
-  Layers,
-  Sliders,
   ChevronLeft,
   Activity,
   ArrowDownUp,
-  Eye,
-  EyeOff,
   Check,
   AlertTriangle,
   RefreshCw,
   PanelLeft,
   PanelRight,
+  Sparkles,
 } from 'lucide-react';
 import { ProjectData } from '@/types/animation';
 
@@ -51,7 +45,7 @@ interface ToolbarProps {
   onOpenStagger: () => void;
   onOpenExport: () => void;
   onUpdateProjectName: (name: string) => void;
-  onUpdateStageSettings: (settings: Partial<ProjectData['settings']>) => void;
+  onUpdateStageSettings?: (settings: Partial<ProjectData['settings']>) => void;
   isLeftPanelOpen?: boolean;
   isRightPanelOpen?: boolean;
   onToggleLeftPanel?: () => void;
@@ -82,7 +76,6 @@ export default function Toolbar({
   onOpenStagger,
   onOpenExport,
   onUpdateProjectName,
-  onUpdateStageSettings,
   isLeftPanelOpen,
   isRightPanelOpen,
   onToggleLeftPanel,

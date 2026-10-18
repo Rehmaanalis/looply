@@ -30,6 +30,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run test
+        run: npm run test
+
       - name: Build Next.js Static Export
         env:
           NEXT_PUBLIC_BASE_PATH: '/${{ github.event.repository.name }}'

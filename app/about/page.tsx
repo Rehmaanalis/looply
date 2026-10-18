@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import Header from '@/components/marketing/Header';
 import Footer from '@/components/marketing/Footer';
-import { Heart, ShieldCheck, Sparkles, Code2, Play } from 'lucide-react';
+import { Play } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'About Looply — Local-First Animation Studio',

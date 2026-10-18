@@ -58,7 +58,7 @@ export function analyzeReanimatedCompatibility(project: ProjectData): Reanimated
         title: 'Non-Center Transform Origin',
         message: `Layer "${layer.name}" uses transform-origin (${originX}%, ${originY}%). React Native transform arrays default to center pivot (50% 50%).`,
         suggestion:
-          'In React Native 0.73+ and Reanimated 3.5+, you can pass `transformOrigin: ["' +
+          'In Reanimated 4.x / 3.5+ (React Native 0.73+), you can pass `transformOrigin: ["' +
           originX +
           '%", "' +
           originY +

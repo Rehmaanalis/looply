@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "floating-app-badge",
+    "title": "Floating SaaS Feature Badge with Ambient Halo",
+    "description": "Learn how to construct a floating 3D-feel badge with pulsating ambient glow rings using keyframes and transform origin.",
+    "date": "2025-01-15",
+    "datePublished": "2025-01-15T09:00:00Z",
+    "dateModified": "2025-01-15T09:00:00Z",
+    "author": "Looply Team",
+    "tags": ["CSS Keyframes", "SaaS Design", "Badge", "Micro-interactions"],
+    "readTime": "4 min read",
+    "category": "Micro-interactions",
+    "summary": "A multi-layer animation combining scale oscillation, subtle vertical translation, and opacity waves.",
+    "htmlFile": "floating-app-badge.html"
+  },
+  {
+    "slug": "hero-product-reveal",
+    "title": "Staggered Hero Product Showcase Reveal",
+    "description": "Sequential entrance animation for landing page heroes featuring 3 layered interface mockups gliding into view.",
+    "date": "2025-02-01",
+    "datePublished": "2025-02-01T10:00:00Z",
+    "dateModified": "2025-02-01T10:00:00Z",
+    "author": "Looply Team",
+    "tags": ["Landing Page", "Hero Animation", "Staggered Delay"],
+    "readTime": "6 min read",
+    "category": "Landing Page",
+    "summary": "Create impactful first impressions with smoothly coordinated staggered entrance delays.",
+    "htmlFile": "hero-product-reveal.html"
+  },
+  {
+    "slug": "pulsing-cta-button-glow",
+    "title": "Attention-Grabbing Pulsing CTA Glow Effect",
+    "description": "High-conversion call-to-action button animation with expanding neon ripples and scale feedback.",
+    "date": "2025-02-18",
+    "datePublished": "2025-02-18T11:00:00Z",
+    "dateModified": "2025-02-18T11:00:00Z",
+    "author": "Looply Team",
+    "tags": ["CTA", "Conversion Rate", "Button Animation"],
+    "readTime": "5 min read",
+    "category": "Conversion",
+    "summary": "Direct visitor focus towards primary conversion points with subtle cyclical CSS animations.",
+    "htmlFile": "pulsing-cta-button-glow.html"
+  }
+]

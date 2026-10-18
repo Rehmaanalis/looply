@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import Header from '@/components/marketing/Header';
 import Footer from '@/components/marketing/Footer';
-import { Sparkles, Layers, Play, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Play, CheckCircle2 } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Use Cases — Looply Animation Studio',

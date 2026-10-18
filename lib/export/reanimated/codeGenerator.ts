@@ -23,12 +23,12 @@ import {
 import { secondsToMs } from './timingMapper';
 
 export const DEFAULT_REANIMATED_OPTIONS: ReanimatedExportOptions = {
-  outputMode: 'interpolation',
+  outputMode: 'sequence',
   language: 'typescript',
   exportTarget: 'component',
   includeComments: true,
-  includeIntegrationGuide: true,
-  targetReanimatedVersion: '3.x',
+  includeIntegrationGuide: false,
+  targetReanimatedVersion: '4.x',
   masterTimelineSync: true,
 };
 
@@ -245,10 +245,14 @@ export function generateReanimatedExport(
     lines.push(`${indent(1)}}, []);`);
     lines.push('');
 
-    // Render JSX Stage & Animated Layers
+    // Render JSX Stage & Animated Layers (Sorted by zIndex to preserve exact visual stacking order)
+    const sortedLayers = [...compiledLayers].sort(
+      (a, b) => (a.layer.zIndex || 0) - (b.layer.zIndex || 0)
+    );
+
     lines.push(`${indent(1)}return (`);
     lines.push(`${indent(2)}<View style={styles.stage}>`);
-    compiledLayers.forEach((layer) => {
+    sortedLayers.forEach((layer) => {
       const asset = project.assets[layer.layer.assetId];
       const isSvg = asset?.type?.includes('svg') || asset?.dataUrl?.includes('data:image/svg+xml');
       lines.push(`${indent(3)}{/* Layer: ${layer.layer.name} ${isSvg ? '(SVG Artwork)' : ''} */}`);
@@ -278,6 +282,8 @@ export function generateReanimatedExport(
     lines.push('  },');
     lines.push('  layer: {');
     lines.push("    position: 'absolute',");
+    lines.push('    top: 0,');
+    lines.push('    left: 0,');
     lines.push('  },');
     lines.push('  image: {');
     lines.push("    width: '100%',");

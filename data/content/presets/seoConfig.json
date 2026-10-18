@@ -1,0 +1,53 @@
+{
+  "title": "Single-Icon Animation Presets — 85+ Free CSS & Reanimated Motion Effects | Looply",
+  "description": "Explore 85+ production-ready single-icon animation presets for web and mobile apps. Export instant CSS keyframes, Reanimated v4 code, or customize live in Looply Studio.",
+  "keywords": [
+    "icon animation presets",
+    "css icon animations",
+    "micro-interaction presets",
+    "react native icon animations",
+    "reanimated v4 icon motion",
+    "single icon animations",
+    "svg icon keyframes",
+    "free css animation library",
+    "ui animation presets",
+    "looply studio presets"
+  ],
+  "canonicalUrl": "https://rehmaanalis.github.io/looply/presets/",
+  "ogTitle": "85+ Single-Icon Animation Presets for Web & Mobile | Looply Studio",
+  "ogDescription": "Free, curated CSS and React Native Reanimated v4 single-icon motion presets. Copy code in 1 click or customize in Looply visual keyframe studio.",
+  "categories": [
+    { "id": "all", "label": "All Presets", "description": "Browse the complete library of single-icon animations." },
+    { "id": "attention", "label": "Attention & Pulse", "description": "Draw user eyes with pulsing, bouncing, and heartbeat rhythms." },
+    { "id": "feedback", "label": "Feedback & Status", "description": "Confirm actions with success pops, error shakes, and draws." },
+    { "id": "interactions", "label": "Micro-Interactions", "description": "Interactive bells, nudges, chevrons, and ping alerts." },
+    { "id": "physics", "label": "Physics & Movement", "description": "Organic squash & stretch, floating levitation, and swings." },
+    { "id": "rotations", "label": "Rotations & Flips", "description": "3D card flips, spinning tokens, gears, and compass twists." },
+    { "id": "entrances", "label": "Entrances & Exits", "description": "Spring-loaded pop-ins, smooth zoom reveals, and glide exits." },
+    { "id": "actions", "label": "Actions & Utilities", "description": "Flying paper planes, rocket launches, download arrows, and locks." },
+    { "id": "loaders", "label": "Loaders & System", "description": "Smooth spinners, typing indicators, and battery charges." },
+    { "id": "delight", "label": "Delight & Gamification", "description": "Sparkles, magic wands, trophies, crowns, and celebration effects." }
+  ],
+  "faqs": [
+    {
+      "question": "How do I use these single-icon animation presets in my web app?",
+      "answer": "Every preset includes copy-ready CSS @keyframes and a corresponding utility class. Click 'Quick Export', copy the CSS snippet into your stylesheet, and apply the animation class directly to your SVG or icon element."
+    },
+    {
+      "question": "Can I use these animations in React Native?",
+      "answer": "Yes! All presets offer instant React Native Reanimated v4 code snippets targeting the New Architecture. Simply copy the Reanimated hook and style to run 60/120 FPS animations directly on the UI thread."
+    },
+    {
+      "question": "How do I customize an animation or change keyframes?",
+      "answer": "Click 'Open in App Studio' on any preset card. Looply Studio will immediately open with the icon on the canvas, complete keyframe tracks on the timeline, and editable easing curves for full customization."
+    },
+    {
+      "question": "Are these icon animations free to use commercially?",
+      "answer": "Yes, all presets in this library are 100% free and open-source under the MIT License for personal and commercial projects."
+    },
+    {
+      "question": "Do these animations require external JavaScript libraries?",
+      "answer": "For web applications, the CSS export requires zero external libraries—just standard CSS3 hardware-accelerated transforms (translate, rotate, scale, opacity). For React Native, it exports clean Reanimated v4 worklet hooks."
+    }
+  ]
+}

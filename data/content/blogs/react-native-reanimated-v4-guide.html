@@ -1,0 +1,49 @@
+<div class="blog-content space-y-8">
+  <section class="space-y-4">
+    <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">The Evolution to React Native Reanimated v4 (Latest)</h2>
+    <p class="text-slate-300 leading-relaxed text-base">
+      Software Mansion's release of <strong>React Native Reanimated v4 (Latest)</strong> represents a fundamental milestone in mobile performance. Designed specifically for React Native's New Architecture (Fabric), Reanimated v4 leverages worklet concurrency and direct native synchronous dispatch to guarantee smooth 120 FPS animations without ever touching the legacy bridge.
+    </p>
+    <div class="p-4 rounded-xl bg-cyan-950/30 border border-cyan-500/30 text-xs text-cyan-200">
+      <p class="font-semibold mb-1">Official Installation Reference:</p>
+      <code class="font-mono text-cyan-300">npm install react-native-reanimated react-native-worklets</code>
+      <span class="text-slate-400 block mt-1">Or via Expo: <code class="font-mono text-cyan-300">npx expo install react-native-reanimated</code></span>
+    </div>
+  </section>
+
+  <section class="space-y-4">
+    <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Worklets and UI Thread Synchronous Execution</h2>
+    <p class="text-slate-300 leading-relaxed text-base">
+      In Reanimated v4, worklets are compiled small JavaScript snippets running directly inside the JavaScript runtime hosted on the native UI thread. This decouples visual motion entirely from React re-renders, user data fetching, and business logic executing on the main React thread.
+    </p>
+    <div class="p-4 rounded-xl bg-[#090b10] border border-studio-border font-mono text-xs text-emerald-300 overflow-x-auto my-4">
+      <pre><code>import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSequence,
+  withTiming,
+  Easing,
+} from 'react-native-reanimated';
+
+export function MotionCard() {
+  const cardTranslateY = useSharedValue(0);
+
+  const cardAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: cardTranslateY.value }],
+  }));
+
+  // Runs on the UI thread worklet context with 0 dropped frames
+}</code></pre>
+    </div>
+  </section>
+
+  <section class="space-y-4">
+    <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Looply’s Parity Engine for Reanimated v4</h2>
+    <p class="text-slate-300 leading-relaxed text-base">
+      When you design keyframes in Looply, our exporter analyzes every translation, rotation, scale factor, and opacity boundary. The code generator converts your timeline into Reanimated's sequence chaining (<code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">withSequence</code> and <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">withTiming</code>) with exact Bézier interpolation curves.
+    </p>
+    <p class="text-slate-300 leading-relaxed text-base">
+      With modern React Native 0.73+ and Reanimated v4, non-center <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">transformOrigin</code> is natively supported, allowing rotating gears, swinging pendulums, and scale bursts to render with 100% native fidelity.
+    </p>
+  </section>
+</div>

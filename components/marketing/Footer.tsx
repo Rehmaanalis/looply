@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Cpu, Code2, Heart } from 'lucide-react';
+import { Heart } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -31,6 +31,11 @@ export default function Footer() {
               <li>
                 <Link href="/app" className="hover:text-white transition-colors text-indigo-400 font-medium">
                   Launch Studio →
+                </Link>
+              </li>
+              <li>
+                <Link href="/presets" className="hover:text-white transition-colors">
+                  Single-Icon Presets
                 </Link>
               </li>
               <li>

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import Image from 'next/image';
 import {
   X,
   Sparkles,
@@ -9,9 +10,7 @@ import {
   Layers,
   Plus,
   RefreshCw,
-  Play,
   RotateCcw,
-  Check,
 } from 'lucide-react';
 import { LayerRecord, KeyframeRecord, AssetRecord } from '@/types/animation';
 import { ANIMATION_PRESETS, PresetCategory, PresetDefinition, combinePresetWithLayer } from '@/lib/animation/presets';
@@ -322,10 +321,13 @@ export default function PresetsModal({
                       }}
                     >
                       {selectedAsset?.dataUrl ? (
-                        <img
+                        <Image
                           src={selectedAsset.dataUrl}
                           alt={selectedLayer.name}
+                          width={56}
+                          height={56}
                           className="max-w-full max-h-full object-contain filter drop-shadow(0 4px 6px rgba(0,0,0,0.5))"
+                          unoptimized
                         />
                       ) : (
                         <div className="w-12 h-12 rounded-lg bg-indigo-600 flex items-center justify-center text-white text-[10px] font-bold shadow-md">

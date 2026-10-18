@@ -23,8 +23,18 @@ export function sanitizeIdentifier(str: string): string {
   return valid || 'anim';
 }
 
-export function generateLayerVarPrefix(layer: LayerRecord, fallbackIndex: number): string {
-  const baseName = sanitizeIdentifier(layer.name) || `layer${fallbackIndex + 1}`;
+export function generateLayerVarPrefix(
+  layer: LayerRecord,
+  fallbackIndex: number,
+  uniqueSuffix?: string | number
+): string {
+  let baseName = sanitizeIdentifier(layer.name) || `layer${fallbackIndex + 1}`;
+  if (uniqueSuffix !== undefined && uniqueSuffix !== '') {
+    const suffixStr = String(uniqueSuffix);
+    if (!baseName.endsWith(suffixStr)) {
+      baseName = `${baseName}${suffixStr}`;
+    }
+  }
   return baseName;
 }
 
@@ -97,7 +107,18 @@ export const REANIMATED_PROPERTY_SPECS: Record<string, ReanimatedValueFormat> = 
 /**
  * Checks if a property actually varies across keyframes or differs from base.
  */
-export function isPropertyActuallyAnimated(layer: LayerRecord, prop: keyof KeyframeProperties): boolean {
+export function isPropertyActuallyAnimated(
+  layer: LayerRecord,
+  prop: keyof KeyframeProperties,
+  durationSec: number = 3
+): boolean {
+  if (prop === 'opacity') {
+    const startSec = Math.max(0, layer.startTime ?? 0);
+    const endSec = Math.min(durationSec, layer.endTime !== undefined ? layer.endTime : durationSec);
+    if (startSec > 0.02 || endSec < durationSec - 0.02) {
+      return true;
+    }
+  }
   if (!layer.keyframes || layer.keyframes.length === 0) return false;
   const baseVal = getLayerBasePropertyValue(layer, prop);
   for (const kf of layer.keyframes) {
@@ -114,9 +135,10 @@ export function isPropertyActuallyAnimated(layer: LayerRecord, prop: keyof Keyfr
  * Extracts animated property keys from a layer's keyframes,
  * filtering out properties that remain completely static across the timeline.
  */
-export function getAnimatedPropertyKeys(layer: LayerRecord): (keyof KeyframeProperties)[] {
-  if (!layer.keyframes || layer.keyframes.length === 0) return [];
-
+export function getAnimatedPropertyKeys(
+  layer: LayerRecord,
+  durationSec: number = 3
+): (keyof KeyframeProperties)[] {
   // Consistent ordering
   const orderedProps: (keyof KeyframeProperties)[] = [
     'x',
@@ -129,7 +151,7 @@ export function getAnimatedPropertyKeys(layer: LayerRecord): (keyof KeyframeProp
     'height',
   ];
 
-  return orderedProps.filter((p) => isPropertyActuallyAnimated(layer, p));
+  return orderedProps.filter((p) => isPropertyActuallyAnimated(layer, p, durationSec));
 }
 
 /**

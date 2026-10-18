@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X, Check, Sparkles, Play } from 'lucide-react';
+import { X, Check, Sparkles } from 'lucide-react';
 import {
   BezierPoints,
   BEZIER_PRESETS,
@@ -43,7 +43,7 @@ export default function CubicBezierModal({
   useEffect(() => {
     if (!isOpen) return;
     let animId: number;
-    let start = performance.now();
+    const start = performance.now();
     const duration = 1500; // 1.5s preview loop
 
     const tick = (now: number) => {

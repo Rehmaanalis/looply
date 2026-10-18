@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
+import Image from 'next/image';
 import {
   ZoomIn,
   ZoomOut,
@@ -150,7 +151,7 @@ export default function CanvasWorkspace({
 
     try {
       (e.target as HTMLElement).setPointerCapture(e.pointerId);
-    } catch (err) {
+    } catch {
       // ignore
     }
   };
@@ -174,7 +175,7 @@ export default function CanvasWorkspace({
 
     try {
       (e.target as HTMLElement).setPointerCapture(e.pointerId);
-    } catch (err) {
+    } catch {
       // ignore
     }
   };
@@ -252,7 +253,7 @@ export default function CanvasWorkspace({
     dragStartRef.current = null;
     try {
       (e.target as HTMLElement).releasePointerCapture(e.pointerId);
-    } catch (err) {
+    } catch {
       // ignore
     }
   };
@@ -290,7 +291,7 @@ export default function CanvasWorkspace({
           onAddAssetToStage(asset, { x: dropStageX, y: dropStageY });
           return;
         }
-      } catch (err) {
+      } catch {
         // ignore
       }
     }
@@ -509,11 +510,14 @@ export default function CanvasWorkspace({
                 >
                   {/* Layer Image Asset */}
                   {asset ? (
-                    <img
+                    <Image
                       src={asset.dataUrl}
                       alt={layer.name}
+                      width={layer.width}
+                      height={layer.height}
                       draggable={false}
                       className="w-full h-full object-contain pointer-events-none select-none"
+                      unoptimized
                     />
                   ) : (
                     <div className="w-full h-full bg-indigo-500/50 flex items-center justify-center text-xs text-white">

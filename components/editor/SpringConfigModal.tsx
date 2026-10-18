@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, Activity, Zap, Check, Play, Sliders } from 'lucide-react';
+import { X, Activity, Check } from 'lucide-react';
 import { SpringConfig, LayerRecord } from '@/types/animation';
 import { SPRING_PRESETS, evaluateSpring, estimateSpringDuration } from '@/lib/animation/spring';
 

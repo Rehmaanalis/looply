@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Header from '@/components/marketing/Header';
 import Footer from '@/components/marketing/Footer';
-import { Home, Play, ArrowLeft } from 'lucide-react';
+import { Home, Play } from 'lucide-react';
 
 export default function NotFound() {
   return (

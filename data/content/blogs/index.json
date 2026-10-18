@@ -1,0 +1,72 @@
+[
+  {
+    "slug": "introducing-looply-phase-2-spring-physics-and-dual-modes",
+    "title": "Introducing Looply Phase 2: Simple vs Advanced Modes & Spring Physics",
+    "description": "Explore the major enhancements in Looply Phase 2: a guided beginner-friendly workflow, Reanimated-inspired spring physics, cubic-bezier curves, and multi-layer staggering.",
+    "date": "March 1, 2025",
+    "datePublished": "2025-03-01T08:00:00Z",
+    "dateModified": "2025-03-01T08:00:00Z",
+    "author": "Rehmaan Ali",
+    "tags": ["Phase 2", "Spring Physics", "Reanimated", "CSS Animations"],
+    "readTime": "8 min read",
+    "category": "Release Notes",
+    "summary": "Looply Phase 2 bridges the gap between quick guided motion presets and deep physical animation control with zero runtime overhead.",
+    "htmlFile": "introducing-looply-phase-2-spring-physics-and-dual-modes.html"
+  },
+  {
+    "slug": "react-native-reanimated-v4-guide",
+    "title": "React Native Reanimated v4 (Latest): Architecture, Worklets & Zero-Jank Native Motion",
+    "description": "A comprehensive engineering guide to React Native Reanimated v4 on the New Architecture (Fabric), worklet concurrency, and exporting browser animations to iOS and Android.",
+    "date": "March 15, 2025",
+    "datePublished": "2025-03-15T09:00:00Z",
+    "dateModified": "2025-03-15T09:00:00Z",
+    "author": "Looply Engineering",
+    "tags": ["React Native", "Reanimated v4", "Fabric", "Mobile Motion"],
+    "readTime": "9 min read",
+    "category": "Mobile Architecture",
+    "summary": "How Reanimated v4 leverages React Native's New Architecture with react-native-worklets for 120 FPS native gesture-driven animations.",
+    "htmlFile": "react-native-reanimated-v4-guide.html"
+  },
+  {
+    "slug": "why-local-first-animation-tools-matter",
+    "title": "Why Local-First Creative Tools Are the Future of Web Design",
+    "description": "Explore the architectural advantages of IndexedDB, zero-backend processing, and client-side CSS compilation for privacy and speed.",
+    "date": "January 20, 2025",
+    "datePublished": "2025-01-20T10:00:00Z",
+    "dateModified": "2025-01-20T10:00:00Z",
+    "author": "Rehmaan Ali",
+    "tags": ["Local-First", "Privacy", "IndexedDB", "Web Architecture"],
+    "readTime": "7 min read",
+    "category": "Architecture",
+    "summary": "Creative workflows demand instant feedback and zero latency. Local-first architectures eliminate cloud bottlenecks while protecting sensitive brand assets.",
+    "htmlFile": "why-local-first-animation-tools-matter.html"
+  },
+  {
+    "slug": "css-transforms-vs-javascript-animations",
+    "title": "CSS Keyframes vs JavaScript Animations: Performance In-Depth",
+    "description": "Understanding browser compositor threads, layout shifts, paint cycles, and why pure CSS keyframes dominate web performance.",
+    "date": "February 10, 2025",
+    "datePublished": "2025-02-10T08:30:00Z",
+    "dateModified": "2025-02-10T08:30:00Z",
+    "author": "Rehmaan Ali",
+    "tags": ["Performance", "CSS", "GPU Acceleration", "Web Vitals"],
+    "readTime": "8 min read",
+    "category": "Performance",
+    "summary": "A deep dive into why CSS transforms and opacity avoid CPU bottlenecks and ensure smooth 60fps animations.",
+    "htmlFile": "css-transforms-vs-javascript-animations.html"
+  },
+  {
+    "slug": "mastering-cubic-bezier-curves",
+    "title": "Mastering Cubic-Bézier Curves for Natural UI Motion",
+    "description": "The mathematics and intuition behind physics-inspired easing curves that make digital interfaces feel tactile.",
+    "date": "February 25, 2025",
+    "datePublished": "2025-02-25T11:00:00Z",
+    "dateModified": "2025-02-25T11:00:00Z",
+    "author": "Looply Team",
+    "tags": ["Easing", "Cubic-Bézier", "Motion Design"],
+    "readTime": "6 min read",
+    "category": "Motion Design",
+    "summary": "Move beyond linear and default ease. Learn to craft custom acceleration curves that reflect physical inertia.",
+    "htmlFile": "mastering-cubic-bezier-curves.html"
+  }
+]
