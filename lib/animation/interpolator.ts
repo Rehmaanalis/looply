@@ -178,8 +178,8 @@ export function interpolateLayer(layer: LayerRecord, currentTime: number): Inter
   const easedProgress = evaluateEasing(easingCurve, rawProgress, k1);
 
   const getProp = (prop: keyof InterpolatedLayerState, fallback: number): number => {
-    const val1 = (k1.properties[prop] as number) ?? (layer[prop] as number) ?? fallback;
-    const val2 = (k2.properties[prop] as number) ?? (layer[prop] as number) ?? fallback;
+    const val1 = (prop in k1.properties ? (k1.properties as Record<string, unknown>)[prop] as number : undefined) ?? (layer[prop] as number) ?? fallback;
+    const val2 = (prop in k2.properties ? (k2.properties as Record<string, unknown>)[prop] as number : undefined) ?? (layer[prop] as number) ?? fallback;
     return lerp(val1, val2, easedProgress);
   };
 

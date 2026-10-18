@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect } from 'react';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import {
   ZoomIn,
   ZoomOut,
@@ -510,7 +510,7 @@ export default function CanvasWorkspace({
                 >
                   {/* Layer Image Asset */}
                   {asset ? (
-                    <Image
+                    <NextImage
                       src={asset.dataUrl}
                       alt={layer.name}
                       width={layer.width}

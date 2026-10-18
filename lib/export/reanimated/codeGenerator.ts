@@ -109,9 +109,7 @@ export function generateReanimatedExport(
     generateHeaderBanner(
       name,
       durationSec,
-      project.layers.length,
-      options.outputMode,
-      options.language
+      project.layers.length
     )
   );
   lines.push('');
