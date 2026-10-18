@@ -3,23 +3,47 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import Header from '@/components/marketing/Header';
 import Footer from '@/components/marketing/Footer';
-import { BLOG_POSTS } from '@/lib/content/data';
-import { BookOpen, Calendar, Clock, ArrowRight } from 'lucide-react';
+import AdSlot from '@/components/ads/AdSlot';
+import { getBlogPosts, generateBlogSchema } from '@/lib/content/contentService';
+import { getAdsConfig } from '@/lib/ads/config';
 
 export const metadata: Metadata = {
   title: 'Engineering Blog — Looply Studio',
   description:
     'Deep dives into local-first architecture, CSS keyframe optimization, browser compositor threads, and modern web motion performance.',
+  openGraph: {
+    title: 'Engineering Blog — Looply Studio',
+    description:
+      'Deep dives into local-first architecture, CSS keyframe optimization, browser compositor threads, and modern web motion performance.',
+    type: 'website',
+    url: 'https://rehmaanalis.github.io/looply/blog',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Engineering Blog — Looply Studio',
+    description:
+      'Deep dives into local-first architecture, CSS keyframe optimization, browser compositor threads, and modern web motion performance.',
+  },
 };
 
-export default function BlogIndexPage() {
+export default async function BlogIndexPage() {
+  const posts = await getBlogPosts();
+  const adsConfig = await getAdsConfig();
+  const blogJsonLd = generateBlogSchema(posts);
+
   return (
     <div className="flex flex-col min-h-screen bg-studio-bg selection:bg-indigo-500 selection:text-white">
+      {/* Schema.org Blog Structured Data (https://schema.org/Blog) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }}
+      />
+
       <Header />
 
       <main className="flex-1 py-16 sm:py-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="text-center max-w-3xl mx-auto mb-12">
             <span className="text-xs font-semibold uppercase tracking-wider text-indigo-400 mb-2 block">
               Engineering &amp; Insights
             </span>
@@ -31,8 +55,11 @@ export default function BlogIndexPage() {
             </p>
           </div>
 
+          {/* Configurable Seamless AdSense / Partner Slot */}
+          <AdSlot placement="blogTop" config={adsConfig} className="mb-10" />
+
           <div className="space-y-8">
-            {BLOG_POSTS.map((post) => (
+            {posts.map((post) => (
               <article
                 key={post.slug}
                 className="bg-studio-surface border border-studio-border hover:border-indigo-500/50 rounded-2xl p-6 sm:p-8 transition-all group"
@@ -77,6 +104,9 @@ export default function BlogIndexPage() {
               </article>
             ))}
           </div>
+
+          {/* Bottom AdSense / Partner Placement */}
+          <AdSlot placement="blogBottom" config={adsConfig} className="mt-12" />
         </div>
       </main>
 

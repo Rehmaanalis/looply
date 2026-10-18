@@ -1,0 +1,1518 @@
+[
+  {
+    "id": "bounce",
+    "name": "Bounce",
+    "category": "physics",
+    "description": "Dynamic vertical bounce landing with gravity acceleration and decaying rebound heights.",
+    "icon": "ArrowDownCircle",
+    "duration": 1.2,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateY(0)" },
+      { "pct": 20, "transform": "translateY(0)" },
+      { "pct": 40, "transform": "translateY(-24px)" },
+      { "pct": 50, "transform": "translateY(0)" },
+      { "pct": 60, "transform": "translateY(-12px)" },
+      { "pct": 80, "transform": "translateY(0)" },
+      { "pct": 100, "transform": "translateY(0)" }
+    ],
+    "tags": ["bounce", "gravity", "physics", "ball", "alert"],
+    "useCase": "Attention badges, scroll down prompts, success indicators"
+  },
+  {
+    "id": "pulse",
+    "name": "Pulse",
+    "category": "attention",
+    "description": "Rhythmic scale expansion and contraction simulating a breathing pulse.",
+    "icon": "Radio",
+    "duration": 1.5,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1)" },
+      { "pct": 50, "transform": "scale(1.18)" },
+      { "pct": 100, "transform": "scale(1)" }
+    ],
+    "tags": ["pulse", "scale", "breathing", "radar", "beacon"],
+    "useCase": "Live beacons, active recording states, call-to-action buttons"
+  },
+  {
+    "id": "heart-pop",
+    "name": "Heart Pop",
+    "category": "attention",
+    "description": "Sudden joyful elastic pop-in overshoot ideal for like button interactions.",
+    "icon": "Heart",
+    "duration": 0.8,
+    "easing": "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1)" },
+      { "pct": 25, "transform": "scale(0.85)" },
+      { "pct": 50, "transform": "scale(1.35)" },
+      { "pct": 75, "transform": "scale(0.95)" },
+      { "pct": 100, "transform": "scale(1)" }
+    ],
+    "tags": ["heart", "like", "favorite", "love", "pop"],
+    "useCase": "Social like buttons, wishlist items, bookmark reactions"
+  },
+  {
+    "id": "heartbeat",
+    "name": "Heartbeat",
+    "category": "attention",
+    "description": "Double-beat lub-dub rhythm mimicking human cardiac pulse.",
+    "icon": "Activity",
+    "duration": 1.3,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1)" },
+      { "pct": 14, "transform": "scale(1.22)" },
+      { "pct": 28, "transform": "scale(1)" },
+      { "pct": 42, "transform": "scale(1.22)" },
+      { "pct": 70, "transform": "scale(1)" },
+      { "pct": 100, "transform": "scale(1)" }
+    ],
+    "tags": ["heartbeat", "cardio", "health", "urgent", "vital"],
+    "useCase": "Health metric dashboards, urgent alerts, fitness apps"
+  },
+  {
+    "id": "wiggle",
+    "name": "Wiggle",
+    "category": "attention",
+    "description": "Playful rapid alternating rotation around center axis.",
+    "icon": "Bell",
+    "duration": 0.9,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg)" },
+      { "pct": 20, "transform": "rotate(-14deg)" },
+      { "pct": 40, "transform": "rotate(12deg)" },
+      { "pct": 60, "transform": "rotate(-8deg)" },
+      { "pct": 80, "transform": "rotate(4deg)" },
+      { "pct": 100, "transform": "rotate(0deg)" }
+    ],
+    "tags": ["wiggle", "bell", "alert", "shake", "playful"],
+    "useCase": "Notification badges, edit mode indicators, warning icons"
+  },
+  {
+    "id": "shake",
+    "name": "Shake",
+    "category": "attention",
+    "description": "Horizontal high-frequency shake indicating tension or denial.",
+    "icon": "Smartphone",
+    "duration": 0.6,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateX(0)" },
+      { "pct": 20, "transform": "translateX(-8px)" },
+      { "pct": 40, "transform": "translateX(8px)" },
+      { "pct": 60, "transform": "translateX(-6px)" },
+      { "pct": 80, "transform": "translateX(6px)" },
+      { "pct": 100, "transform": "translateX(0)" }
+    ],
+    "tags": ["shake", "horizontal", "vibrate", "denied"],
+    "useCase": "Form validation errors, invalid inputs, access denied"
+  },
+  {
+    "id": "swing",
+    "name": "Swing",
+    "category": "physics",
+    "description": "Top-anchored pendulum swing with realistic angular momentum.",
+    "icon": "BellRing",
+    "duration": 1.2,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg)", "transformOrigin": "top center" },
+      { "pct": 20, "transform": "rotate(20deg)", "transformOrigin": "top center" },
+      { "pct": 40, "transform": "rotate(-16deg)", "transformOrigin": "top center" },
+      { "pct": 60, "transform": "rotate(10deg)", "transformOrigin": "top center" },
+      { "pct": 80, "transform": "rotate(-5deg)", "transformOrigin": "top center" },
+      { "pct": 100, "transform": "rotate(0deg)", "transformOrigin": "top center" }
+    ],
+    "tags": ["swing", "pendulum", "bell", "gravity", "sway"],
+    "useCase": "Church bell icons, suspended signs, alert notifications"
+  },
+  {
+    "id": "spin",
+    "name": "Spin",
+    "category": "rotations",
+    "description": "Continuous 360-degree rotation running at a constant angular velocity.",
+    "icon": "Loader2",
+    "duration": 1.2,
+    "easing": "linear",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg)" },
+      { "pct": 100, "transform": "rotate(360deg)" }
+    ],
+    "tags": ["spin", "rotate", "loader", "cog", "continuous"],
+    "useCase": "Loading states, progress spinners, syncing indicators"
+  },
+  {
+    "id": "flip",
+    "name": "Flip",
+    "category": "rotations",
+    "description": "3D perspective card flip around the vertical axis.",
+    "icon": "Layers",
+    "duration": 1.0,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "perspective(400px) rotateY(0deg)" },
+      { "pct": 50, "transform": "perspective(400px) rotateY(180deg)" },
+      { "pct": 100, "transform": "perspective(400px) rotateY(360deg)" }
+    ],
+    "tags": ["flip", "3d", "card", "turn", "perspective"],
+    "useCase": "Card reveals, coin flips, flashcard transitions"
+  },
+  {
+    "id": "flip-x",
+    "name": "Flip X",
+    "category": "rotations",
+    "description": "3D perspective flip along the horizontal X-axis.",
+    "icon": "Maximize2",
+    "duration": 1.0,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "perspective(400px) rotateX(0deg)" },
+      { "pct": 50, "transform": "perspective(400px) rotateX(180deg)" },
+      { "pct": 100, "transform": "perspective(400px) rotateX(360deg)" }
+    ],
+    "tags": ["flip", "horizontal", "3d", "rotateX"],
+    "useCase": "Scoreboards, departure boards, digital clocks"
+  },
+  {
+    "id": "flip-y",
+    "name": "Flip Y",
+    "category": "rotations",
+    "description": "Clean half-turn flip mirroring the icon across its vertical axis.",
+    "icon": "Repeat",
+    "duration": 0.8,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "perspective(400px) rotateY(0deg)" },
+      { "pct": 100, "transform": "perspective(400px) rotateY(180deg)" }
+    ],
+    "tags": ["mirror", "flip", "reverse", "switch"],
+    "useCase": "Direction toggles, undo/redo switches, mode flips"
+  },
+  {
+    "id": "rubber-band",
+    "name": "Rubber Band",
+    "category": "physics",
+    "description": "Elastic elongation on X-axis combined with vertical squash.",
+    "icon": "Maximize",
+    "duration": 1.0,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "scale3d(1, 1, 1)" },
+      { "pct": 30, "transform": "scale3d(1.25, 0.75, 1)" },
+      { "pct": 40, "transform": "scale3d(0.75, 1.25, 1)" },
+      { "pct": 50, "transform": "scale3d(1.15, 0.85, 1)" },
+      { "pct": 65, "transform": "scale3d(0.95, 1.05, 1)" },
+      { "pct": 75, "transform": "scale3d(1.05, 0.95, 1)" },
+      { "pct": 100, "transform": "scale3d(1, 1, 1)" }
+    ],
+    "tags": ["rubber", "elastic", "squash", "stretch", "bouncy"],
+    "useCase": "Button clicks, achievement unlocks, playful interactions"
+  },
+  {
+    "id": "jello",
+    "name": "Jello",
+    "category": "physics",
+    "description": "Gelatinous skew oscillations delivering a wiggly jelly feel.",
+    "icon": "Sparkle",
+    "duration": 1.0,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1)" },
+      { "pct": 30, "transform": "skewX(-12.5deg) skewY(-12.5deg)" },
+      { "pct": 40, "transform": "skewX(6.25deg) skewY(6.25deg)" },
+      { "pct": 50, "transform": "skewX(-3.125deg) skewY(-3.125deg)" },
+      { "pct": 65, "transform": "skewX(1.56deg) skewY(1.56deg)" },
+      { "pct": 100, "transform": "scale(1)" }
+    ],
+    "tags": ["jello", "jelly", "skew", "wobbly", "physics"],
+    "useCase": "Gamified buttons, snack apps, reward badges"
+  },
+  {
+    "id": "tada",
+    "name": "Tada",
+    "category": "delight",
+    "description": "Celebratory scale pop and rotational wiggle to highlight achievements.",
+    "icon": "PartyPopper",
+    "duration": 1.0,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "scale3d(1, 1, 1)" },
+      { "pct": 10, "transform": "scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg)" },
+      { "pct": 20, "transform": "scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg)" },
+      { "pct": 30, "transform": "scale3d(1.15, 1.15, 1.15) rotate3d(0, 0, 1, 3deg)" },
+      { "pct": 50, "transform": "scale3d(1.15, 1.15, 1.15) rotate3d(0, 0, 1, -3deg)" },
+      { "pct": 70, "transform": "scale3d(1.15, 1.15, 1.15) rotate3d(0, 0, 1, 3deg)" },
+      { "pct": 90, "transform": "scale3d(1.15, 1.15, 1.15) rotate3d(0, 0, 1, -3deg)" },
+      { "pct": 100, "transform": "scale3d(1, 1, 1)" }
+    ],
+    "tags": ["tada", "celebration", "party", "yay", "reward"],
+    "useCase": "Trophy reveals, level up dialogs, onboarding completion"
+  },
+  {
+    "id": "wobble",
+    "name": "Wobble",
+    "category": "physics",
+    "description": "Synchronized lateral translation and tilt tilt for heavy shaking items.",
+    "icon": "Sliders",
+    "duration": 1.0,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateX(0%)" },
+      { "pct": 15, "transform": "translateX(-20%) rotate(-5deg)" },
+      { "pct": 30, "transform": "translateX(15%) rotate(3deg)" },
+      { "pct": 45, "transform": "translateX(-12%) rotate(-3deg)" },
+      { "pct": 60, "transform": "translateX(8%) rotate(2deg)" },
+      { "pct": 75, "transform": "translateX(-4%) rotate(-1deg)" },
+      { "pct": 100, "transform": "translateX(0%)" }
+    ],
+    "tags": ["wobble", "tilt", "stumble", "balance"],
+    "useCase": "Trash can full, unread message alerts, cart nudges"
+  },
+  {
+    "id": "swing-and-bounce",
+    "name": "Swing & Bounce",
+    "category": "physics",
+    "description": "Compound physics movement combining top swing with vertical landing bounce.",
+    "icon": "Compass",
+    "duration": 1.4,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg) translateY(0)" },
+      { "pct": 25, "transform": "rotate(15deg) translateY(-8px)" },
+      { "pct": 50, "transform": "rotate(-10deg) translateY(4px)" },
+      { "pct": 75, "transform": "rotate(5deg) translateY(-2px)" },
+      { "pct": 100, "transform": "rotate(0deg) translateY(0)" }
+    ],
+    "tags": ["swing", "bounce", "compound", "physics"],
+    "useCase": "Hanging badges, dangling price tags, badge rewards"
+  },
+  {
+    "id": "pop-in",
+    "name": "Pop In",
+    "category": "entrances",
+    "description": "Spring-loaded entrance scaling up from 0 to 1.15 with a crisp settling snap.",
+    "icon": "PlusCircle",
+    "duration": 0.6,
+    "easing": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(0)", "opacity": "0" },
+      { "pct": 70, "transform": "scale(1.15)", "opacity": "1" },
+      { "pct": 100, "transform": "scale(1)", "opacity": "1" }
+    ],
+    "tags": ["pop", "entrance", "spring", "scale", "appear"],
+    "useCase": "Modal dialog openings, tooltip appearances, checkmark unlocks"
+  },
+  {
+    "id": "pop-out",
+    "name": "Pop Out",
+    "category": "entrances",
+    "description": "Quick scale anticipation followed by a rapid collapse to zero.",
+    "icon": "MinusCircle",
+    "duration": 0.5,
+    "easing": "cubic-bezier(0.36, 0, 0.66, -0.56)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1)", "opacity": "1" },
+      { "pct": 30, "transform": "scale(1.12)", "opacity": "1" },
+      { "pct": 100, "transform": "scale(0)", "opacity": "0" }
+    ],
+    "tags": ["popout", "exit", "disappear", "collapse"],
+    "useCase": "Item deletion, toast dismissal, closed alerts"
+  },
+  {
+    "id": "zoom-in",
+    "name": "Zoom In",
+    "category": "entrances",
+    "description": "Smooth scale expansion paired with a graceful opacity fade.",
+    "icon": "ZoomIn",
+    "duration": 0.7,
+    "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(0.3)", "opacity": "0" },
+      { "pct": 100, "transform": "scale(1)", "opacity": "1" }
+    ],
+    "tags": ["zoom", "in", "focus", "magnify"],
+    "useCase": "Image lightbox entrance, search result reveals"
+  },
+  {
+    "id": "zoom-out",
+    "name": "Zoom Out",
+    "category": "entrances",
+    "description": "Smooth scale recession into the distance with opacity fade.",
+    "icon": "ZoomOut",
+    "duration": 0.6,
+    "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1)", "opacity": "1" },
+      { "pct": 100, "transform": "scale(0.3)", "opacity": "0" }
+    ],
+    "tags": ["zoom", "out", "recede", "exit"],
+    "useCase": "Search exit, card minimization, background layers"
+  },
+  {
+    "id": "squash-and-stretch",
+    "name": "Squash & Stretch",
+    "category": "physics",
+    "description": "The fundamental animation principle: compression on impact, elongation on launch.",
+    "icon": "Flame",
+    "duration": 1.1,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1, 1) translateY(0)" },
+      { "pct": 30, "transform": "scale(0.8, 1.25) translateY(-20px)" },
+      { "pct": 50, "transform": "scale(1.25, 0.75) translateY(0)" },
+      { "pct": 70, "transform": "scale(0.9, 1.1) translateY(-6px)" },
+      { "pct": 100, "transform": "scale(1, 1) translateY(0)" }
+    ],
+    "tags": ["squash", "stretch", "disney", "classic", "organic"],
+    "useCase": "Game character jumps, playful micro-interactions, ball bounces"
+  },
+  {
+    "id": "rotate-and-scale",
+    "name": "Rotate & Scale",
+    "category": "rotations",
+    "description": "Simultaneous twist rotation and scale breathing for captivating motion.",
+    "icon": "Compass",
+    "duration": 1.2,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg) scale(1)" },
+      { "pct": 50, "transform": "rotate(180deg) scale(1.2)" },
+      { "pct": 100, "transform": "rotate(360deg) scale(1)" }
+    ],
+    "tags": ["rotate", "scale", "twirl", "pulse"],
+    "useCase": "Feature announcements, premium badges, loading icons"
+  },
+  {
+    "id": "floating",
+    "name": "Floating",
+    "category": "physics",
+    "description": "Weightless zero-gravity vertical drift simulating levitation.",
+    "icon": "Ghost",
+    "duration": 2.4,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateY(0)" },
+      { "pct": 50, "transform": "translateY(-14px)" },
+      { "pct": 100, "transform": "translateY(0)" }
+    ],
+    "tags": ["floating", "levitate", "hover", "zero-g", "calm"],
+    "useCase": "Hero graphics, cloud icons, space/fantasy elements"
+  },
+  {
+    "id": "hover",
+    "name": "Hover Lift",
+    "category": "interactions",
+    "description": "Crisp elevation lift mimicking interactive mouse hover states.",
+    "icon": "MoveUp",
+    "duration": 0.4,
+    "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "translateY(0)" },
+      { "pct": 100, "transform": "translateY(-8px)" }
+    ],
+    "tags": ["hover", "lift", "elevation", "cursor"],
+    "useCase": "Interactive card hover, actionable links, focus states"
+  },
+  {
+    "id": "tilt",
+    "name": "Tilt",
+    "category": "interactions",
+    "description": "Subtle 2D planar tilt giving depth and responsive tactile feedback.",
+    "icon": "MousePointer",
+    "duration": 0.8,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg)" },
+      { "pct": 25, "transform": "rotate(10deg)" },
+      { "pct": 75, "transform": "rotate(-10deg)" },
+      { "pct": 100, "transform": "rotate(0deg)" }
+    ],
+    "tags": ["tilt", "lean", "cursor", "tactile"],
+    "useCase": "Compass bearings, pointer interactions, device orient prompts"
+  },
+  {
+    "id": "tilt-3d",
+    "name": "3D Tilt",
+    "category": "rotations",
+    "description": "Multi-axis 3D perspective rotation creating tangible parallax depth.",
+    "icon": "Box",
+    "duration": 1.6,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "perspective(500px) rotateX(0deg) rotateY(0deg)" },
+      { "pct": 25, "transform": "perspective(500px) rotateX(15deg) rotateY(15deg)" },
+      { "pct": 50, "transform": "perspective(500px) rotateX(-10deg) rotateY(-10deg)" },
+      { "pct": 75, "transform": "perspective(500px) rotateX(10deg) rotateY(-15deg)" },
+      { "pct": 100, "transform": "perspective(500px) rotateX(0deg) rotateY(0deg)" }
+    ],
+    "tags": ["3d", "tilt", "perspective", "spatial", "gyro"],
+    "useCase": "3D product badges, holographic cards, spatial interfaces"
+  },
+  {
+    "id": "fade-in",
+    "name": "Fade In",
+    "category": "entrances",
+    "description": "Pure linear or smoothed opacity transition from invisible to solid.",
+    "icon": "Eye",
+    "duration": 0.6,
+    "easing": "ease-out",
+    "keyframes": [
+      { "pct": 0, "opacity": "0" },
+      { "pct": 100, "opacity": "1" }
+    ],
+    "tags": ["fade", "opacity", "entrance", "reveal"],
+    "useCase": "Page load elements, lazy images, subtitle reveals"
+  },
+  {
+    "id": "fade-out",
+    "name": "Fade Out",
+    "category": "entrances",
+    "description": "Clean opacity dissipation to complete transparency.",
+    "icon": "EyeOff",
+    "duration": 0.5,
+    "easing": "ease-in",
+    "keyframes": [
+      { "pct": 0, "opacity": "1" },
+      { "pct": 100, "opacity": "0" }
+    ],
+    "tags": ["fade", "exit", "disappear", "ghost"],
+    "useCase": "Dismissed alerts, completed timers, removed items"
+  },
+  {
+    "id": "flash",
+    "name": "Flash",
+    "category": "attention",
+    "description": "Strobe-style rapid illumination flash to catch peripheral vision.",
+    "icon": "Zap",
+    "duration": 0.8,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "opacity": "1" },
+      { "pct": 25, "opacity": "0.1" },
+      { "pct": 50, "opacity": "1" },
+      { "pct": 75, "opacity": "0.1" },
+      { "pct": 100, "opacity": "1" }
+    ],
+    "tags": ["flash", "strobe", "blink", "urgent"],
+    "useCase": "Camera flash, battery critical, emergency broadcast"
+  },
+  {
+    "id": "flicker",
+    "name": "Flicker",
+    "category": "delight",
+    "description": "Organic non-linear brightness variation reminiscent of flame or neon.",
+    "icon": "Flame",
+    "duration": 1.2,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "opacity": "1" },
+      { "pct": 15, "opacity": "0.4" },
+      { "pct": 30, "opacity": "0.85" },
+      { "pct": 45, "opacity": "0.2" },
+      { "pct": 60, "opacity": "1" },
+      { "pct": 80, "opacity": "0.7" },
+      { "pct": 100, "opacity": "1" }
+    ],
+    "tags": ["flicker", "flame", "candle", "neon", "organic"],
+    "useCase": "Fireplace elements, cyberpunk themes, retro neon signs"
+  },
+  {
+    "id": "glow",
+    "name": "Glow",
+    "category": "delight",
+    "description": "Pulsing radiant drop-shadow and brightness aura.",
+    "icon": "Sun",
+    "duration": 1.8,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "filter": "drop-shadow(0 0 2px rgba(99,102,241,0.3))" },
+      { "pct": 50, "filter": "drop-shadow(0 0 16px rgba(99,102,241,0.95))" },
+      { "pct": 100, "filter": "drop-shadow(0 0 2px rgba(99,102,241,0.3))" }
+    ],
+    "tags": ["glow", "radiate", "aura", "neon", "light"],
+    "useCase": "Active power icons, magic spells, premium status rings"
+  },
+  {
+    "id": "ripple",
+    "name": "Ripple",
+    "category": "attention",
+    "description": "Expanding concentric wave originating from center and fading outward.",
+    "icon": "Disc",
+    "duration": 1.4,
+    "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(0.8)", "opacity": "1" },
+      { "pct": 100, "transform": "scale(1.6)", "opacity": "0" }
+    ],
+    "tags": ["ripple", "wave", "water", "expand", "sonar"],
+    "useCase": "Audio playing waves, sonar pings, water drop ripples"
+  },
+  {
+    "id": "ping",
+    "name": "Ping",
+    "category": "attention",
+    "description": "Radar beacon ping with scale expansion and simultaneous opacity decay.",
+    "icon": "Radio",
+    "duration": 1.2,
+    "easing": "cubic-bezier(0, 0, 0.2, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1)", "opacity": "1" },
+      { "pct": 75, "transform": "scale(1.8)", "opacity": "0" },
+      { "pct": 100, "transform": "scale(1)", "opacity": "0" }
+    ],
+    "tags": ["ping", "radar", "beacon", "locator"],
+    "useCase": "Live GPS coordinates, new notification dots, broadcast beacons"
+  },
+  {
+    "id": "ring",
+    "name": "Ring",
+    "category": "interactions",
+    "description": "Acoustic high-frequency vibration mimicking a ringing alarm.",
+    "icon": "BellRing",
+    "duration": 0.8,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0)" },
+      { "pct": 10, "transform": "rotate(16deg)" },
+      { "pct": 20, "transform": "rotate(-16deg)" },
+      { "pct": 30, "transform": "rotate(14deg)" },
+      { "pct": 40, "transform": "rotate(-14deg)" },
+      { "pct": 60, "transform": "rotate(8deg)" },
+      { "pct": 80, "transform": "rotate(-4deg)" },
+      { "pct": 100, "transform": "rotate(0)" }
+    ],
+    "tags": ["ring", "alarm", "bell", "phone", "alert"],
+    "useCase": "Incoming call icons, alarm clock triggers, timer completions"
+  },
+  {
+    "id": "elastic-pop",
+    "name": "Elastic Pop",
+    "category": "physics",
+    "description": "High-dampening spring overshoot pop with snappy settling.",
+    "icon": "Zap",
+    "duration": 0.8,
+    "easing": "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(0.2)" },
+      { "pct": 60, "transform": "scale(1.3)" },
+      { "pct": 80, "transform": "scale(0.92)" },
+      { "pct": 100, "transform": "scale(1)" }
+    ],
+    "tags": ["elastic", "spring", "pop", "snap", "bounce"],
+    "useCase": "Badge unlock dialogs, game powerup icons, quick reactions"
+  },
+  {
+    "id": "drop-in",
+    "name": "Drop In",
+    "category": "entrances",
+    "description": "Heavy gravity fall from above the viewport with ground contact bump.",
+    "icon": "ArrowDown",
+    "duration": 0.7,
+    "easing": "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+    "keyframes": [
+      { "pct": 0, "transform": "translateY(-120px)", "opacity": "0" },
+      { "pct": 65, "transform": "translateY(0)", "opacity": "1" },
+      { "pct": 80, "transform": "translateY(-12px)" },
+      { "pct": 100, "transform": "translateY(0)" }
+    ],
+    "tags": ["drop", "gravity", "fall", "impact"],
+    "useCase": "Downward notifications, falling tokens, drop pins"
+  },
+  {
+    "id": "rise-up",
+    "name": "Rise Up",
+    "category": "entrances",
+    "description": "Smooth upward reveal glide with gentle deceleration.",
+    "icon": "ArrowUp",
+    "duration": 0.7,
+    "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "translateY(40px)", "opacity": "0" },
+      { "pct": 100, "transform": "translateY(0)", "opacity": "1" }
+    ],
+    "tags": ["rise", "upward", "ascend", "entrance"],
+    "useCase": "Bottom sheet reveal, upward metric cards, toast entrances"
+  },
+  {
+    "id": "slide-in",
+    "name": "Slide In",
+    "category": "entrances",
+    "description": "Lateral entrance glide from the left margin with deceleration curve.",
+    "icon": "ArrowRight",
+    "duration": 0.6,
+    "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "translateX(-50px)", "opacity": "0" },
+      { "pct": 100, "transform": "translateX(0)", "opacity": "1" }
+    ],
+    "tags": ["slide", "lateral", "horizontal", "entrance"],
+    "useCase": "Drawer menus, sidebar navigation icons, next slide elements"
+  },
+  {
+    "id": "slide-out",
+    "name": "Slide Out",
+    "category": "entrances",
+    "description": "Lateral exit sweep gliding off-stage to the right margin.",
+    "icon": "ArrowLeft",
+    "duration": 0.5,
+    "easing": "cubic-bezier(0.32, 0, 0.67, 0)",
+    "keyframes": [
+      { "pct": 0, "transform": "translateX(0)", "opacity": "1" },
+      { "pct": 100, "transform": "translateX(50px)", "opacity": "0" }
+    ],
+    "tags": ["slide", "exit", "sweep", "dismiss"],
+    "useCase": "Completed tasks, dismissed items, previous slide navigation"
+  },
+  {
+    "id": "swipe",
+    "name": "Swipe",
+    "category": "interactions",
+    "description": "Snappy swipe flick motion imitating touchscreen gestural swipes.",
+    "icon": "ChevronsRight",
+    "duration": 0.8,
+    "easing": "cubic-bezier(0.25, 1, 0.5, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "translateX(0)" },
+      { "pct": 40, "transform": "translateX(18px)" },
+      { "pct": 60, "transform": "translateX(-4px)" },
+      { "pct": 100, "transform": "translateX(0)" }
+    ],
+    "tags": ["swipe", "gesture", "flick", "touch"],
+    "useCase": "Swipe tutorials, carousel navigators, slider thumbs"
+  },
+  {
+    "id": "drift",
+    "name": "Drift",
+    "category": "physics",
+    "description": "Slow, cinematic lateral breeze drift simulating wind passage.",
+    "icon": "Wind",
+    "duration": 2.2,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateX(0) translateY(0)" },
+      { "pct": 50, "transform": "translateX(14px) translateY(-4px)" },
+      { "pct": 100, "transform": "translateX(0) translateY(0)" }
+    ],
+    "tags": ["drift", "wind", "breeze", "cloud", "calm"],
+    "useCase": "Weather widgets, sail icons, serene background assets"
+  },
+  {
+    "id": "pendulum",
+    "name": "Pendulum",
+    "category": "physics",
+    "description": "Gravity-weighted harmonic pendulum swing around top pivot point.",
+    "icon": "Clock",
+    "duration": 1.6,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(-25deg)", "transformOrigin": "top center" },
+      { "pct": 50, "transform": "rotate(25deg)", "transformOrigin": "top center" },
+      { "pct": 100, "transform": "rotate(-25deg)", "transformOrigin": "top center" }
+    ],
+    "tags": ["pendulum", "clock", "swing", "time", "gravity"],
+    "useCase": "Grandfather clocks, timer widgets, hypnotize effects"
+  },
+  {
+    "id": "attention-seeker",
+    "name": "Attention Seeker",
+    "category": "attention",
+    "description": "Sequence of jump hop and double tilt to immediately draw user gaze.",
+    "icon": "AlertCircle",
+    "duration": 1.1,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1)" },
+      { "pct": 20, "transform": "translateY(-14px) scale(1.08)" },
+      { "pct": 40, "transform": "translateY(0) scale(0.95)" },
+      { "pct": 60, "transform": "rotate(10deg)" },
+      { "pct": 80, "transform": "rotate(-10deg)" },
+      { "pct": 100, "transform": "translateY(0) rotate(0) scale(1)" }
+    ],
+    "tags": ["attention", "alert", "look", "important"],
+    "useCase": "Limited time offers, onboarding tips, required fields"
+  },
+  {
+    "id": "bell-ring",
+    "name": "Bell Ring",
+    "category": "interactions",
+    "description": "Natural bell clapper swing swinging from top hanging ring.",
+    "icon": "Bell",
+    "duration": 1.0,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0)", "transformOrigin": "top center" },
+      { "pct": 15, "transform": "rotate(22deg)", "transformOrigin": "top center" },
+      { "pct": 30, "transform": "rotate(-18deg)", "transformOrigin": "top center" },
+      { "pct": 45, "transform": "rotate(12deg)", "transformOrigin": "top center" },
+      { "pct": 60, "transform": "rotate(-6deg)", "transformOrigin": "top center" },
+      { "pct": 75, "transform": "rotate(2deg)", "transformOrigin": "top center" },
+      { "pct": 100, "transform": "rotate(0)", "transformOrigin": "top center" }
+    ],
+    "tags": ["bell", "notification", "chime", "swing"],
+    "useCase": "App notification headers, message inbox alarms"
+  },
+  {
+    "id": "notification-shake",
+    "name": "Notification Shake",
+    "category": "interactions",
+    "description": "Urgent high-intensity buzzer vibration signaling new mail or message.",
+    "icon": "Mail",
+    "duration": 0.5,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0)" },
+      { "pct": 20, "transform": "rotate(-15deg)" },
+      { "pct": 40, "transform": "rotate(15deg)" },
+      { "pct": 60, "transform": "rotate(-10deg)" },
+      { "pct": 80, "transform": "rotate(10deg)" },
+      { "pct": 100, "transform": "rotate(0)" }
+    ],
+    "tags": ["mail", "notification", "vibrate", "message"],
+    "useCase": "Unread message badges, inbox alerts, sync reminders"
+  },
+  {
+    "id": "error-shake",
+    "name": "Error Shake",
+    "category": "feedback",
+    "description": "Distinctive left-right denial vibration for password and validation failures.",
+    "icon": "AlertTriangle",
+    "duration": 0.45,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateX(0)" },
+      { "pct": 15, "transform": "translateX(-12px)" },
+      { "pct": 30, "transform": "translateX(10px)" },
+      { "pct": 50, "transform": "translateX(-8px)" },
+      { "pct": 70, "transform": "translateX(6px)" },
+      { "pct": 85, "transform": "translateX(-3px)" },
+      { "pct": 100, "transform": "translateX(0)" }
+    ],
+    "tags": ["error", "shake", "denied", "invalid", "fail"],
+    "useCase": "Incorrect passcode, form input validation, credit card errors"
+  },
+  {
+    "id": "success-pop",
+    "name": "Success Pop",
+    "category": "feedback",
+    "description": "Joyful green celebration pop confirming task success or payment.",
+    "icon": "CheckCircle2",
+    "duration": 0.7,
+    "easing": "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(0.3) rotate(-30deg)", "opacity": "0" },
+      { "pct": 70, "transform": "scale(1.25) rotate(5deg)", "opacity": "1" },
+      { "pct": 100, "transform": "scale(1) rotate(0deg)", "opacity": "1" }
+    ],
+    "tags": ["success", "check", "pop", "complete", "verified"],
+    "useCase": "Payment confirmed, file saved, account verified"
+  },
+  {
+    "id": "checkmark-draw",
+    "name": "Checkmark Draw",
+    "category": "feedback",
+    "description": "Snappy scale and stroke reveal confirming item completion.",
+    "icon": "Check",
+    "duration": 0.6,
+    "easing": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(0.1)", "opacity": "0" },
+      { "pct": 60, "transform": "scale(1.3)", "opacity": "1" },
+      { "pct": 100, "transform": "scale(1)", "opacity": "1" }
+    ],
+    "tags": ["checkmark", "todo", "done", "check", "draw"],
+    "useCase": "To-do lists, task completion, checklist checkboxes"
+  },
+  {
+    "id": "cross-mark-draw",
+    "name": "Cross Mark Draw",
+    "category": "feedback",
+    "description": "Sharp reject cross pop indicating cancellation or removal.",
+    "icon": "X",
+    "duration": 0.5,
+    "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(0) rotate(45deg)", "opacity": "0" },
+      { "pct": 70, "transform": "scale(1.2) rotate(-5deg)", "opacity": "1" },
+      { "pct": 100, "transform": "scale(1) rotate(0deg)", "opacity": "1" }
+    ],
+    "tags": ["cross", "cancel", "delete", "reject"],
+    "useCase": "Cancel buttons, removal feedback, failed operations"
+  },
+  {
+    "id": "plus-to-close-morph",
+    "name": "Plus-to-Close Morph",
+    "category": "interactions",
+    "description": "Smooth 45-degree rotation transforming a plus icon into a close icon.",
+    "icon": "Plus",
+    "duration": 0.4,
+    "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg)" },
+      { "pct": 100, "transform": "rotate(45deg)" }
+    ],
+    "tags": ["plus", "close", "morph", "accordion", "expand"],
+    "useCase": "Expandable accordions, floating action buttons (FAB), modals"
+  },
+  {
+    "id": "arrow-nudge",
+    "name": "Arrow Nudge",
+    "category": "interactions",
+    "description": "Gentle horizontal nudge pointing user attention down the funnel.",
+    "icon": "ArrowRightCircle",
+    "duration": 1.0,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateX(0)" },
+      { "pct": 50, "transform": "translateX(8px)" },
+      { "pct": 100, "transform": "translateX(0)" }
+    ],
+    "tags": ["arrow", "nudge", "cta", "next", "guide"],
+    "useCase": "Next step buttons, walkthrough prompts, read more links"
+  },
+  {
+    "id": "chevron-pulse",
+    "name": "Chevron Pulse",
+    "category": "interactions",
+    "description": "Downward rhythmic nudge inviting users to scroll below the fold.",
+    "icon": "ChevronDown",
+    "duration": 1.2,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateY(0)" },
+      { "pct": 50, "transform": "translateY(6px)" },
+      { "pct": 100, "transform": "translateY(0)" }
+    ],
+    "tags": ["chevron", "scroll", "down", "indicator"],
+    "useCase": "Hero scroll hints, dropdown affordances, accordion indicators"
+  },
+  {
+    "id": "eye-blink",
+    "name": "Eye Blink",
+    "category": "interactions",
+    "description": "Vertical squish mimicking human eyelid closure and reopening.",
+    "icon": "Eye",
+    "duration": 1.5,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "scaleY(1)" },
+      { "pct": 45, "transform": "scaleY(1)" },
+      { "pct": 50, "transform": "scaleY(0.08)" },
+      { "pct": 55, "transform": "scaleY(1)" },
+      { "pct": 100, "transform": "scaleY(1)" }
+    ],
+    "tags": ["eye", "blink", "vision", "password", "look"],
+    "useCase": "Password visibility toggle, look here indicators, character avatars"
+  },
+  {
+    "id": "search-pulse",
+    "name": "Search Pulse",
+    "category": "interactions",
+    "description": "Magnifying glass slight zoom and scan rotation indicating active querying.",
+    "icon": "Search",
+    "duration": 1.2,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1) rotate(0deg)" },
+      { "pct": 50, "transform": "scale(1.15) rotate(12deg)" },
+      { "pct": 100, "transform": "scale(1) rotate(0deg)" }
+    ],
+    "tags": ["search", "find", "magnifier", "query"],
+    "useCase": "Search bars during autocomplete, query loading, explorer tabs"
+  },
+  {
+    "id": "location-ping",
+    "name": "Location Ping",
+    "category": "interactions",
+    "description": "Map pin downward drop followed by a radar ping pulse.",
+    "icon": "MapPin",
+    "duration": 1.3,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateY(-14px)" },
+      { "pct": 30, "transform": "translateY(0)" },
+      { "pct": 50, "transform": "scale(1.2)" },
+      { "pct": 70, "transform": "scale(0.95)" },
+      { "pct": 100, "transform": "translateY(0) scale(1)" }
+    ],
+    "tags": ["location", "pin", "map", "gps", "beacon"],
+    "useCase": "Map marker drops, delivery tracking, store finders"
+  },
+  {
+    "id": "wifi-signal-pulse",
+    "name": "Wi-Fi Signal Pulse",
+    "category": "interactions",
+    "description": "Network signal scale emission indicating active transmission.",
+    "icon": "Wifi",
+    "duration": 1.4,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "opacity": "0.4", "transform": "scale(0.85)" },
+      { "pct": 50, "opacity": "1", "transform": "scale(1.12)" },
+      { "pct": 100, "opacity": "0.4", "transform": "scale(0.85)" }
+    ],
+    "tags": ["wifi", "network", "signal", "wireless", "connect"],
+    "useCase": "Connection status, IoT pairing screens, Wi-Fi toggles"
+  },
+  {
+    "id": "loading-spinner",
+    "name": "Loading Spinner",
+    "category": "loaders",
+    "description": "Smooth continuous 360-degree rotation for standard UI loading.",
+    "icon": "Loader",
+    "duration": 1.0,
+    "easing": "linear",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg)" },
+      { "pct": 100, "transform": "rotate(360deg)" }
+    ],
+    "tags": ["loader", "spinner", "wait", "buffering", "progress"],
+    "useCase": "Button loading state, page spinners, data fetching"
+  },
+  {
+    "id": "loading-dots",
+    "name": "Loading Dots",
+    "category": "loaders",
+    "description": "Wave bounce progression across three horizontal dots.",
+    "icon": "MoreHorizontal",
+    "duration": 1.2,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateY(0)" },
+      { "pct": 50, "transform": "translateY(-6px)" },
+      { "pct": 100, "transform": "translateY(0)" }
+    ],
+    "tags": ["dots", "typing", "chat", "loading"],
+    "useCase": "Chat bubbles, AI thinking states, loading placeholders"
+  },
+  {
+    "id": "refresh-spin",
+    "name": "Refresh Spin",
+    "category": "loaders",
+    "description": "Single-revolution snap spin with natural acceleration and braking.",
+    "icon": "RefreshCw",
+    "duration": 0.8,
+    "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg)" },
+      { "pct": 100, "transform": "rotate(360deg)" }
+    ],
+    "tags": ["refresh", "reload", "sync", "update"],
+    "useCase": "Pull-to-refresh headers, reload buttons, table sync"
+  },
+  {
+    "id": "download-bounce",
+    "name": "Download Bounce",
+    "category": "actions",
+    "description": "Downward plunging arrow with rebounding catch into the bottom tray.",
+    "icon": "Download",
+    "duration": 1.1,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateY(0)" },
+      { "pct": 40, "transform": "translateY(8px)" },
+      { "pct": 60, "transform": "translateY(-4px)" },
+      { "pct": 100, "transform": "translateY(0)" }
+    ],
+    "tags": ["download", "save", "arrow", "tray", "fetch"],
+    "useCase": "Export triggers, file download progress, install prompts"
+  },
+  {
+    "id": "upload-lift",
+    "name": "Upload Lift",
+    "category": "actions",
+    "description": "Ascending upward arrow trajectory delivering an asset to the cloud.",
+    "icon": "Upload",
+    "duration": 1.1,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateY(0)" },
+      { "pct": 40, "transform": "translateY(-10px)" },
+      { "pct": 60, "transform": "translateY(3px)" },
+      { "pct": 100, "transform": "translateY(0)" }
+    ],
+    "tags": ["upload", "cloud", "push", "deliver"],
+    "useCase": "File upload dropzones, image import buttons, cloud backup"
+  },
+  {
+    "id": "send-fly",
+    "name": "Send Fly",
+    "category": "actions",
+    "description": "Diagonal launch take-off simulating a message leaving outbox.",
+    "icon": "Send",
+    "duration": 0.9,
+    "easing": "cubic-bezier(0.25, 1, 0.5, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "translate(0, 0) rotate(0deg)" },
+      { "pct": 30, "transform": "translate(-4px, 4px) rotate(-10deg)" },
+      { "pct": 60, "transform": "translate(12px, -12px) rotate(15deg)" },
+      { "pct": 100, "transform": "translate(0, 0) rotate(0deg)" }
+    ],
+    "tags": ["send", "plane", "paperplane", "dispatch"],
+    "useCase": "Message submit buttons, email send triggers, dispatch alerts"
+  },
+  {
+    "id": "paper-plane-fly",
+    "name": "Paper Plane Fly",
+    "category": "actions",
+    "description": "Curved aerodynamic glide with wing banking and soaring trajectory.",
+    "icon": "Send",
+    "duration": 1.3,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translate(0, 0) rotate(0deg)" },
+      { "pct": 35, "transform": "translate(8px, -6px) rotate(8deg)" },
+      { "pct": 70, "transform": "translate(-4px, -10px) rotate(-4deg)" },
+      { "pct": 100, "transform": "translate(0, 0) rotate(0deg)" }
+    ],
+    "tags": ["fly", "plane", "message", "soar"],
+    "useCase": "Contact form submissions, newsletter subscriptions"
+  },
+  {
+    "id": "rocket-launch",
+    "name": "Rocket Launch",
+    "category": "actions",
+    "description": "Thruster rumble vibration followed by an explosive upward streak.",
+    "icon": "Rocket",
+    "duration": 1.2,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translate(0, 0)" },
+      { "pct": 15, "transform": "translate(-2px, 2px)" },
+      { "pct": 30, "transform": "translate(2px, -2px)" },
+      { "pct": 50, "transform": "translate(-3px, 1px)" },
+      { "pct": 70, "transform": "translate(0, -22px) scale(1.1)" },
+      { "pct": 100, "transform": "translate(0, 0) scale(1)" }
+    ],
+    "tags": ["rocket", "launch", "boost", "startup", "blastoff"],
+    "useCase": "Product launch buttons, speed boosts, deploy triggers"
+  },
+  {
+    "id": "trash-shake",
+    "name": "Trash Shake",
+    "category": "actions",
+    "description": "Bin lid tilt and container rattle upon receiving deleted objects.",
+    "icon": "Trash2",
+    "duration": 0.7,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0)" },
+      { "pct": 25, "transform": "rotate(-12deg)" },
+      { "pct": 50, "transform": "rotate(12deg)" },
+      { "pct": 75, "transform": "rotate(-6deg)" },
+      { "pct": 100, "transform": "rotate(0)" }
+    ],
+    "tags": ["trash", "delete", "remove", "bin"],
+    "useCase": "Delete item confirmation, recycle bin emptying"
+  },
+  {
+    "id": "lock-unlock",
+    "name": "Lock Unlock",
+    "category": "actions",
+    "description": "Spring release shackle pop transitioning secure state to open.",
+    "icon": "Unlock",
+    "duration": 0.6,
+    "easing": "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1) rotate(0deg)" },
+      { "pct": 40, "transform": "scale(1.2) rotate(-8deg)" },
+      { "pct": 100, "transform": "scale(1) rotate(0deg)" }
+    ],
+    "tags": ["lock", "unlock", "security", "permission"],
+    "useCase": "Authentication success, feature unlock, password reveals"
+  },
+  {
+    "id": "bookmark-pop",
+    "name": "Bookmark Pop",
+    "category": "feedback",
+    "description": "Ribbon downward snap confirming item pinned to saved collection.",
+    "icon": "Bookmark",
+    "duration": 0.6,
+    "easing": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1)" },
+      { "pct": 50, "transform": "scale(1.3) translateY(4px)" },
+      { "pct": 100, "transform": "scale(1) translateY(0)" }
+    ],
+    "tags": ["bookmark", "save", "ribbon", "pin"],
+    "useCase": "Article saving, favorite recipes, bookmarking docs"
+  },
+  {
+    "id": "star-sparkle",
+    "name": "Star Sparkle",
+    "category": "delight",
+    "description": "360-degree twirl combined with luminance scale flash.",
+    "icon": "Star",
+    "duration": 1.2,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg) scale(1)", "filter": "brightness(1)" },
+      { "pct": 50, "transform": "rotate(180deg) scale(1.3)", "filter": "brightness(1.5)" },
+      { "pct": 100, "transform": "rotate(360deg) scale(1)", "filter": "brightness(1)" }
+    ],
+    "tags": ["star", "sparkle", "favorite", "magic", "rating"],
+    "useCase": "Review star ratings, premium features, gamified XP points"
+  },
+  {
+    "id": "magic-wand",
+    "name": "Magic Wand",
+    "category": "delight",
+    "description": "Enchanting wand flick with angle rotation casting a sparkling spell.",
+    "icon": "Wand2",
+    "duration": 1.0,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg)", "transformOrigin": "bottom left" },
+      { "pct": 30, "transform": "rotate(-25deg)", "transformOrigin": "bottom left" },
+      { "pct": 60, "transform": "rotate(15deg)", "transformOrigin": "bottom left" },
+      { "pct": 100, "transform": "rotate(0deg)", "transformOrigin": "bottom left" }
+    ],
+    "tags": ["magic", "wand", "ai", "auto", "spell"],
+    "useCase": "AI auto-enhance buttons, magical presets, wizard tools"
+  },
+  {
+    "id": "fire-flicker",
+    "name": "Fire Flicker",
+    "category": "delight",
+    "description": "Energetic vertical tongue-of-flame stretch and luminance oscillation.",
+    "icon": "Flame",
+    "duration": 0.9,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1, 1)" },
+      { "pct": 25, "transform": "scale(1.05, 1.2) translateY(-3px)" },
+      { "pct": 50, "transform": "scale(0.95, 0.9) translateY(2px)" },
+      { "pct": 75, "transform": "scale(1.1, 1.15) translateY(-2px)" },
+      { "pct": 100, "transform": "scale(1, 1)" }
+    ],
+    "tags": ["fire", "streak", "hot", "trending", "streak"],
+    "useCase": "Streak trackers, trending content, hot deals"
+  },
+  {
+    "id": "snowflake-spin",
+    "name": "Snowflake Spin",
+    "category": "delight",
+    "description": "Gentle, crystalline rotational drift reflecting winter calm.",
+    "icon": "Snowflake",
+    "duration": 2.5,
+    "easing": "linear",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg)" },
+      { "pct": 100, "transform": "rotate(360deg)" }
+    ],
+    "tags": ["snowflake", "winter", "cold", "crystal", "spin"],
+    "useCase": "Holiday promotions, freezing operations, weather widgets"
+  },
+  {
+    "id": "sun-rays",
+    "name": "Sun Rays",
+    "category": "delight",
+    "description": "Continuous golden solar corona spin illuminating the interface.",
+    "icon": "SunMedium",
+    "duration": 4.0,
+    "easing": "linear",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg)" },
+      { "pct": 100, "transform": "rotate(360deg)" }
+    ],
+    "tags": ["sun", "rays", "light", "day", "solar"],
+    "useCase": "Light mode toggles, morning alarms, solar energy metrics"
+  },
+  {
+    "id": "moon-float",
+    "name": "Moon Float",
+    "category": "delight",
+    "description": "Serene nighttime lunar levitation float across the night sky.",
+    "icon": "Moon",
+    "duration": 3.0,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateY(0) rotate(0deg)" },
+      { "pct": 50, "transform": "translateY(-10px) rotate(8deg)" },
+      { "pct": 100, "transform": "translateY(0) rotate(0deg)" }
+    ],
+    "tags": ["moon", "night", "darkmode", "sleep", "lunar"],
+    "useCase": "Dark mode toggles, sleep tracker apps, evening journals"
+  },
+  {
+    "id": "music-beat",
+    "name": "Music Beat",
+    "category": "delight",
+    "description": "Equalizer bounce and rhythm hop synchronized with musical tempos.",
+    "icon": "Music",
+    "duration": 0.9,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1) rotate(0deg)" },
+      { "pct": 25, "transform": "scale(1.2) rotate(-8deg)" },
+      { "pct": 50, "transform": "scale(0.95) rotate(0deg)" },
+      { "pct": 75, "transform": "scale(1.25) rotate(8deg)" },
+      { "pct": 100, "transform": "scale(1) rotate(0deg)" }
+    ],
+    "tags": ["music", "beat", "audio", "rhythm", "sound"],
+    "useCase": "Now playing widgets, audio tracks, podcast players"
+  },
+  {
+    "id": "volume-pulse",
+    "name": "Volume Pulse",
+    "category": "interactions",
+    "description": "Speaker cone pump delivering physical acoustic pressure sensation.",
+    "icon": "Volume2",
+    "duration": 0.8,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1)" },
+      { "pct": 50, "transform": "scale(1.25)" },
+      { "pct": 100, "transform": "scale(1)" }
+    ],
+    "tags": ["volume", "speaker", "sound", "loud"],
+    "useCase": "Volume sliders, sound testing, audio player meters"
+  },
+  {
+    "id": "camera-shutter",
+    "name": "Camera Shutter",
+    "category": "actions",
+    "description": "Quick aperture snap contraction and white light flash.",
+    "icon": "Camera",
+    "duration": 0.5,
+    "easing": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1)" },
+      { "pct": 40, "transform": "scale(0.85)" },
+      { "pct": 70, "transform": "scale(1.15)" },
+      { "pct": 100, "transform": "scale(1)" }
+    ],
+    "tags": ["camera", "photo", "shutter", "snap", "capture"],
+    "useCase": "Screenshot capture buttons, avatar upload triggers, photobooth"
+  },
+  {
+    "id": "shopping-cart-bounce",
+    "name": "Shopping Cart Bounce",
+    "category": "delight",
+    "description": "E-commerce cart wheel bounce confirming item safely added to basket.",
+    "icon": "ShoppingCart",
+    "duration": 0.8,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateY(0) rotate(0deg)" },
+      { "pct": 30, "transform": "translateY(-10px) rotate(-6deg)" },
+      { "pct": 60, "transform": "translateY(4px) rotate(4deg)" },
+      { "pct": 100, "transform": "translateY(0) rotate(0deg)" }
+    ],
+    "tags": ["cart", "shopping", "store", "buy", "ecommerce"],
+    "useCase": "Add to cart button feedback, checkout notifications"
+  },
+  {
+    "id": "wallet-flip",
+    "name": "Wallet Flip",
+    "category": "delight",
+    "description": "Card glide from leather fold confirming checkout authorization.",
+    "icon": "Wallet",
+    "duration": 1.0,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0)" },
+      { "pct": 50, "transform": "rotate(-18deg) scale(1.15)" },
+      { "pct": 100, "transform": "rotate(0) scale(1)" }
+    ],
+    "tags": ["wallet", "pay", "money", "card", "finance"],
+    "useCase": "Digital wallet checkout, crypto transactions, payment cards"
+  },
+  {
+    "id": "coin-spin",
+    "name": "Coin Spin",
+    "category": "rotations",
+    "description": "3D metallic coin spin rotating on its vertical diameter axis.",
+    "icon": "Coins",
+    "duration": 1.2,
+    "easing": "linear",
+    "keyframes": [
+      { "pct": 0, "transform": "perspective(400px) rotateY(0deg)" },
+      { "pct": 100, "transform": "perspective(400px) rotateY(360deg)" }
+    ],
+    "tags": ["coin", "spin", "crypto", "currency", "gold"],
+    "useCase": "Gamification tokens, reward balances, crypto balances"
+  },
+  {
+    "id": "trophy-bounce",
+    "name": "Trophy Bounce",
+    "category": "delight",
+    "description": "Glorious golden cup victory leap and triumphant shine.",
+    "icon": "Trophy",
+    "duration": 1.0,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "translateY(0) scale(1)" },
+      { "pct": 40, "transform": "translateY(-16px) scale(1.2)" },
+      { "pct": 70, "transform": "translateY(4px) scale(0.95)" },
+      { "pct": 100, "transform": "translateY(0) scale(1)" }
+    ],
+    "tags": ["trophy", "win", "champion", "award", "gold"],
+    "useCase": "Leaderboard rank 1, achievement unlocked, goal reached"
+  },
+  {
+    "id": "gift-shake",
+    "name": "Gift Shake",
+    "category": "delight",
+    "description": "Mystery present surprise rattle teasing anticipation before opening.",
+    "icon": "Gift",
+    "duration": 0.8,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg)" },
+      { "pct": 20, "transform": "rotate(-14deg)" },
+      { "pct": 40, "transform": "rotate(14deg)" },
+      { "pct": 60, "transform": "rotate(-10deg)" },
+      { "pct": 80, "transform": "rotate(10deg)" },
+      { "pct": 100, "transform": "rotate(0deg)" }
+    ],
+    "tags": ["gift", "present", "reward", "surprise", "box"],
+    "useCase": "Loot box opening, birthday rewards, promotional discounts"
+  },
+  {
+    "id": "crown-pop",
+    "name": "Crown Pop",
+    "category": "delight",
+    "description": "Royal coronation crown bounce landing on top tier status.",
+    "icon": "Crown",
+    "duration": 0.9,
+    "easing": "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+    "keyframes": [
+      { "pct": 0, "transform": "translateY(-20px) scale(0.8)", "opacity": "0" },
+      { "pct": 60, "transform": "translateY(4px) scale(1.2)", "opacity": "1" },
+      { "pct": 100, "transform": "translateY(0) scale(1)", "opacity": "1" }
+    ],
+    "tags": ["crown", "vip", "royal", "king", "tier"],
+    "useCase": "VIP member upgrades, winner declarations, master tier badges"
+  },
+  {
+    "id": "thumbs-up-pop",
+    "name": "Thumbs-Up Pop",
+    "category": "feedback",
+    "description": "Enthusiastic approval gesture jump confirming great work.",
+    "icon": "ThumbsUp",
+    "duration": 0.6,
+    "easing": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(0.8) rotate(-20deg)" },
+      { "pct": 60, "transform": "scale(1.3) rotate(10deg)" },
+      { "pct": 100, "transform": "scale(1) rotate(0deg)" }
+    ],
+    "tags": ["like", "thumbsup", "agree", "vote", "good"],
+    "useCase": "Upvoting comments, endorsing peers, satisfaction surveys"
+  },
+  {
+    "id": "chat-bubble-pop",
+    "name": "Chat Bubble Pop",
+    "category": "interactions",
+    "description": "Incoming dialogue bubble expansion delivering incoming text message.",
+    "icon": "MessageSquare",
+    "duration": 0.6,
+    "easing": "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(0.3)", "transformOrigin": "bottom left" },
+      { "pct": 70, "transform": "scale(1.2)", "transformOrigin": "bottom left" },
+      { "pct": 100, "transform": "scale(1)", "transformOrigin": "bottom left" }
+    ],
+    "tags": ["chat", "message", "bubble", "speak", "comment"],
+    "useCase": "Chat messaging apps, user comments, live support trigger"
+  },
+  {
+    "id": "shield-pulse",
+    "name": "Shield Pulse",
+    "category": "feedback",
+    "description": "Cybersecurity protective shield barrier flash resisting threats.",
+    "icon": "ShieldCheck",
+    "duration": 1.4,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1)" },
+      { "pct": 50, "transform": "scale(1.18)" },
+      { "pct": 100, "transform": "scale(1)" }
+    ],
+    "tags": ["shield", "security", "safe", "protect", "ssl"],
+    "useCase": "Security scan verified, payment encryption safe, antivirus"
+  },
+  {
+    "id": "gear-spin",
+    "name": "Gear Spin",
+    "category": "rotations",
+    "description": "High-precision mechanical cog spin driving background engines.",
+    "icon": "Settings",
+    "duration": 2.0,
+    "easing": "linear",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg)" },
+      { "pct": 100, "transform": "rotate(360deg)" }
+    ],
+    "tags": ["gear", "settings", "cog", "engine", "machine"],
+    "useCase": "Settings panels, system maintenance, configuration wizards"
+  },
+  {
+    "id": "battery-charging",
+    "name": "Battery Charging",
+    "category": "loaders",
+    "description": "Power gauge pulse representing steady incoming electric charge.",
+    "icon": "BatteryCharging",
+    "duration": 1.5,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "opacity": "0.4", "transform": "scale(0.95)" },
+      { "pct": 50, "opacity": "1", "transform": "scale(1.08)" },
+      { "pct": 100, "opacity": "0.4", "transform": "scale(0.95)" }
+    ],
+    "tags": ["battery", "charge", "power", "energy", "electric"],
+    "useCase": "EV car battery meters, device status panels, power monitors"
+  },
+  {
+    "id": "lightbulb-glow",
+    "name": "Lightbulb Glow",
+    "category": "delight",
+    "description": "Eureka moment inspiration flash lighting up filament brilliance.",
+    "icon": "Lightbulb",
+    "duration": 1.0,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1)", "filter": "brightness(1)" },
+      { "pct": 50, "transform": "scale(1.22)", "filter": "brightness(1.8)" },
+      { "pct": 100, "transform": "scale(1)", "filter": "brightness(1)" }
+    ],
+    "tags": ["lightbulb", "idea", "smart", "eureka", "tips"],
+    "useCase": "Tip of the day, AI smart insights, solution discovered"
+  },
+  {
+    "id": "copy-pop",
+    "name": "Copy Pop",
+    "category": "feedback",
+    "description": "Spring snap feedback confirming clipboard text successfully copied.",
+    "icon": "Copy",
+    "duration": 0.5,
+    "easing": "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+    "keyframes": [
+      { "pct": 0, "transform": "scale(1)" },
+      { "pct": 50, "transform": "scale(1.3)" },
+      { "pct": 100, "transform": "scale(1)" }
+    ],
+    "tags": ["copy", "clipboard", "duplicate", "confirm"],
+    "useCase": "Copy code buttons, share link buttons, referral codes"
+  },
+  {
+    "id": "link-swing",
+    "name": "Link Swing",
+    "category": "interactions",
+    "description": "Chain link sway interaction on hover inviting user click-through.",
+    "icon": "Link2",
+    "duration": 0.9,
+    "easing": "ease-in-out",
+    "keyframes": [
+      { "pct": 0, "transform": "rotate(0deg)" },
+      { "pct": 25, "transform": "rotate(15deg)" },
+      { "pct": 75, "transform": "rotate(-15deg)" },
+      { "pct": 100, "transform": "rotate(0deg)" }
+    ],
+    "tags": ["link", "url", "chain", "connect", "anchor"],
+    "useCase": "External hyperlink hover, copy anchor links, integration cards"
+  }
+]

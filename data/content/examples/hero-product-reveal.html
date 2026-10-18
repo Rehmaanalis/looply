@@ -1,0 +1,26 @@
+<div class="example-content space-y-8">
+  <section class="space-y-4">
+    <h2 class="text-2xl font-bold text-white tracking-tight">Orchestrating Staggered Hero Delays</h2>
+    <p class="text-slate-300 leading-relaxed text-base">
+      When displaying multiple product screenshots or UI cards, animating them simultaneously can feel jarring. Adding a 0.2s delay between layer entries guides the viewer's eye naturally across your interface.
+    </p>
+  </section>
+
+  <section class="space-y-4">
+    <h2 class="text-2xl font-bold text-white tracking-tight">Managing Fill Mode and Initial States</h2>
+    <p class="text-slate-300 leading-relaxed text-base">
+      Looply exports CSS with <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">animation-fill-mode: forwards</code> and sets initial 0% keyframe opacities, ensuring that cards do not flicker before their entrance delays complete.
+    </p>
+    <div class="p-4 rounded-xl bg-[#090b10] border border-studio-border font-mono text-xs text-emerald-300 overflow-x-auto my-4">
+      <pre><code>.card-center {
+  animation: looply-hero-slide 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+.card-left {
+  animation: looply-hero-slide 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+.card-right {
+  animation: looply-hero-slide 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+}</code></pre>
+    </div>
+  </section>
+</div>

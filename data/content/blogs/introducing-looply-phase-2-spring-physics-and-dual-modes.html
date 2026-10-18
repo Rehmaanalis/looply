@@ -1,0 +1,46 @@
+<div class="blog-content space-y-8">
+  <section class="space-y-4">
+    <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">The Dual Mode Architecture: Accessible & Uncompromising</h2>
+    <p class="text-slate-300 leading-relaxed text-base">
+      Not every animation requires manual keyframing from scratch. In <strong>Simple Mode</strong>, creators select a layer, pick an entrance or motion preset (like Elastic Bounce, Pulse, or Floating), customize the duration pill, and preview immediately. For motion designers and engineers who demand precision, <strong>Advanced Mode</strong> unlocks individual property tracks, custom cubic-bezier curves, and physical springs.
+    </p>
+    <p class="text-slate-300 leading-relaxed text-base">
+      This bifurcation ensures that product managers or marketers can rapidly construct branded animated illustrations in seconds, while senior frontend engineers can dial in easing curves down to millisecond increments.
+    </p>
+  </section>
+
+  <section class="space-y-4">
+    <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Bringing React Native Reanimated Concepts to the Browser</h2>
+    <p class="text-slate-300 leading-relaxed text-base">
+      Inspired by React Native Reanimated, Looply now features a full damped harmonic oscillator spring solver. Creators can specify mass (<code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">m</code>), stiffness (<code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">k</code>), and damping (<code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">c</code>), and preview the settling curve in real time.
+    </p>
+    <div class="p-4 rounded-xl bg-[#090b10] border border-studio-border font-mono text-xs text-emerald-300 overflow-x-auto my-4">
+      <pre><code>// Physical harmonic oscillator equations evaluated at 24 discrete intervals
+const omega0 = Math.sqrt(stiffness / mass);
+const zeta = damping / (2 * Math.sqrt(stiffness * mass));
+// Yields zero-runtime CSS @keyframes:
+@keyframes looply-spring-bounce {
+  0% { transform: scale(0.4); }
+  28% { transform: scale(1.18); }
+  52% { transform: scale(0.94); }
+  76% { transform: scale(1.02); }
+  100% { transform: scale(1.0); }
+}</code></pre>
+    </div>
+    <p class="text-slate-300 leading-relaxed text-base">
+      Upon export, Looply samples the spring physics at 24 discrete keyframe points, producing mathematically faithful CSS <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">@keyframes</code> with zero JavaScript runtime or dependencies.
+    </p>
+  </section>
+
+  <section class="space-y-4">
+    <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Seamless Multi-Layer Staggering</h2>
+    <p class="text-slate-300 leading-relaxed text-base">
+      Choreographing multiple layers used to require tedious manual delay calculations. The new Stagger tool distributes step delays across all selected layers with a single click, supporting both top-to-bottom and bottom-to-top z-index ordering.
+    </p>
+    <ul class="list-disc pl-6 space-y-2 text-slate-300 text-base">
+      <li><strong>Consistent timing increments:</strong> Apply 50ms, 100ms, or 200ms step offsets across multiple layers simultaneously.</li>
+      <li><strong>Automatic clip window bounds:</strong> Layers respect in-point and out-point clipping without sudden flashes or layout jumps.</li>
+      <li><strong>Dual-target code generation:</strong> Works identically whether exporting standalone CSS or React Native Reanimated components.</li>
+    </ul>
+  </section>
+</div>

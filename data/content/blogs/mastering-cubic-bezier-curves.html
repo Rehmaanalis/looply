@@ -1,0 +1,27 @@
+<div class="blog-content space-y-8">
+  <section class="space-y-4">
+    <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">The Geometry of Cubic-Bézier Curves</h2>
+    <p class="text-slate-300 leading-relaxed text-base">
+      A cubic-bézier curve is defined by four coordinates: <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">P0(0,0)</code>, <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">P1(x1, y1)</code>, <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">P2(x2, y2)</code>, and <code class="text-indigo-300 bg-studio-panel px-1.5 py-0.5 rounded">P3(1,1)</code>. The tangent vector at P0 sets the initial acceleration, while the tangent at P3 dictates how the element settles into its rest position.
+    </p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
+      <div class="p-4 rounded-xl bg-studio-surface border border-studio-border">
+        <h3 class="text-sm font-semibold text-white mb-2">Modern Snappy Entrance</h3>
+        <code class="text-xs font-mono text-indigo-400">cubic-bezier(0.16, 1, 0.3, 1)</code>
+        <p class="text-xs text-slate-400 mt-2">High initial speed with prolonged deceleration. Ideal for modal dialogs and dropdown menus.</p>
+      </div>
+      <div class="p-4 rounded-xl bg-studio-surface border border-studio-border">
+        <h3 class="text-sm font-semibold text-white mb-2">Punchy Dismissal / Exit</h3>
+        <code class="text-xs font-mono text-pink-400">cubic-bezier(0.7, 0, 0.84, 0)</code>
+        <p class="text-xs text-slate-400 mt-2">Zero hesitation at the departure point. Elements quickly leave the screen without lingering.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="space-y-4">
+    <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">Using Looply’s Visual Bézier Editor</h2>
+    <p class="text-slate-300 leading-relaxed text-base">
+      Looply includes an interactive SVG Bézier editor right inside the studio. Simply drag the purple and pink control handles to shape velocity and deceleration in real time, or pick from curated industry presets like Ease In Out Back, Circ, Expo, and Quint.
+    </p>
+  </section>
+</div>

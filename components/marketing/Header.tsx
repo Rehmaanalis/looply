@@ -31,9 +31,12 @@ export default function Header() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-studio-muted">
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-studio-muted">
           <Link href="/features" className="hover:text-white transition-colors">
             Features
+          </Link>
+          <Link href="/presets" className="hover:text-white transition-colors">
+            Presets
           </Link>
           <Link href="/how-it-works" className="hover:text-white transition-colors">
             How It Works
@@ -79,6 +82,13 @@ export default function Header() {
             className="block text-sm font-medium text-slate-300 hover:text-white py-1.5"
           >
             Features
+          </Link>
+          <Link
+            href="/presets"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block text-sm font-medium text-slate-300 hover:text-white py-1.5"
+          >
+            Presets
           </Link>
           <Link
             href="/how-it-works"

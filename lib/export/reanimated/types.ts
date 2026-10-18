@@ -48,13 +48,15 @@ export interface AnimatedStyleRequirement {
   }[];
 }
 
+export type ReanimatedVersion = '4.x';
+
 export interface ReanimatedExportOptions {
   outputMode: ReanimatedOutputMode;
   language: ReanimatedLanguage;
   exportTarget: ReanimatedExportTarget;
   includeComments: boolean;
   includeIntegrationGuide: boolean;
-  targetReanimatedVersion: '3.x';
+  targetReanimatedVersion: '4.x';
   masterTimelineSync?: boolean;
 }
 

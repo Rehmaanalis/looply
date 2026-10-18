@@ -1,0 +1,160 @@
+export interface AdRotationItem {
+  id: string;
+  tag?: string;
+  title: string;
+  desc: string;
+  cta: string;
+  link: string;
+  icon?: string;
+}
+
+export interface AdPlacementConfig {
+  enabled: boolean;
+  slot?: string;
+  format?: string;
+  width?: number;
+  label?: string;
+  sponsorTitle?: string;
+  sponsorDesc?: string;
+  sponsorCta?: string;
+  sponsorLink?: string;
+  refreshIntervalSeconds?: number;
+  rotations?: AdRotationItem[];
+}
+
+export interface AdsConfig {
+  enabled: boolean;
+  client: string;
+  testMode: boolean;
+  autoAds?: boolean;
+  placements: Record<string, AdPlacementConfig>;
+}
+
+export const DEFAULT_ADS_CONFIG: AdsConfig = {
+  enabled: true,
+  client: 'ca-pub-9751605289570000',
+  testMode: true,
+  autoAds: false,
+  placements: {
+    headerBanner: {
+      enabled: true,
+      slot: '1001',
+      format: 'horizontal',
+      label: 'Featured Partner',
+      sponsorTitle: 'Lucide Vector Icons',
+      sponsorDesc: 'Free, beautiful, and customizable SVG icon library with clean code.',
+      sponsorCta: 'Explore Icons',
+      sponsorLink: 'https://lucide.dev',
+    },
+    blogTop: {
+      enabled: true,
+      slot: '2001',
+      format: 'banner',
+      label: 'Sponsored Developer Tool',
+      sponsorTitle: 'Software Mansion — React Native Reanimated v4',
+      sponsorDesc: 'Next-generation animations on the New Architecture with worklet concurrency.',
+      sponsorCta: 'Getting Started Guide',
+      sponsorLink: 'https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/',
+    },
+    blogBottom: {
+      enabled: true,
+      slot: '2002',
+      format: 'rectangle',
+      label: 'Partner',
+      sponsorTitle: 'Compress & Optimize SVGs Locally',
+      sponsorDesc: 'Reduce graphic asset weight by up to 70% before adding to your Looply stage.',
+      sponsorCta: 'Optimize Assets',
+      sponsorLink: 'https://jakearchibald.github.io/svgomg/',
+    },
+    examplesFeed: {
+      enabled: true,
+      slot: '3001',
+      format: 'responsive',
+      label: 'Recommended Partner',
+      sponsorTitle: 'Expo Application Services',
+      sponsorDesc: 'Build, deploy, and update React Native applications seamlessly across iOS and Android.',
+      sponsorCta: 'Get Started with Expo',
+      sponsorLink: 'https://expo.dev',
+    },
+    howItWorksSidebar: {
+      enabled: true,
+      slot: '4001',
+      format: 'rectangle',
+      label: 'Sponsored Resource',
+      sponsorTitle: 'Web.dev Motion & Compositing',
+      sponsorDesc: 'Deep-dive into transform and opacity hardware acceleration in Chromium.',
+      sponsorCta: 'Read Article',
+      sponsorLink: 'https://web.dev/animations-guide/',
+    },
+    exportModalSponsor: {
+      enabled: true,
+      slot: '5001',
+      format: 'compact',
+      label: 'Sponsored Tool',
+      sponsorTitle: 'React Native Worklets & Reanimated v4',
+      sponsorDesc: 'Official getting started guide for production-grade native motion.',
+      sponsorCta: 'View Documentation',
+      sponsorLink: 'https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/',
+    },
+    editorVerticalRail: {
+      enabled: false,
+      slot: '6001',
+      format: 'vertical',
+      refreshIntervalSeconds: 90,
+      label: 'Partner Showcase',
+      sponsorTitle: 'React Native Reanimated v4',
+      sponsorDesc: 'Next-generation animations on the New Architecture with worklet concurrency.',
+      sponsorCta: 'Explore v4 Docs',
+      sponsorLink: 'https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/',
+      rotations: [
+        {
+          id: 'reanimated',
+          tag: 'Mobile Motion',
+          title: 'React Native Reanimated v4',
+          desc: 'Declarative 60/120 FPS animations running directly on the UI thread with zero bridge overhead.',
+          cta: 'Read v4 Docs',
+          link: 'https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/',
+        },
+        {
+          id: 'svgomg',
+          tag: 'Asset Compression',
+          title: 'SVGOMG Optimizer',
+          desc: 'Clean XML paths, prune redundant tags, and boost web stage loading performance by up to 70%.',
+          cta: 'Optimize SVGs',
+          link: 'https://jakearchibald.github.io/svgomg/',
+        },
+        {
+          id: 'expo',
+          tag: 'Developer Platform',
+          title: 'Expo Application Services',
+          desc: 'Build, deploy, and update universal mobile and web applications with incredible ease.',
+          cta: 'Get Started with Expo',
+          link: 'https://expo.dev',
+        },
+        {
+          id: 'lucide',
+          tag: 'Vector Icons',
+          title: 'Lucide Icons Collection',
+          desc: 'Over 1,400+ crisp, customizable, and beautifully balanced SVG icons for modern UI designers.',
+          cta: 'Browse Icons',
+          link: 'https://lucide.dev',
+        },
+        {
+          id: 'webdev',
+          tag: 'Web Performance',
+          title: 'Web.dev Compositor Motion',
+          desc: 'Master hardware-accelerated transform & opacity pipelines to eliminate jank completely.',
+          cta: 'Read Guide',
+          link: 'https://web.dev/animations-guide/',
+        },
+      ],
+    },
+    appExternalSidebar: {
+      enabled: false,
+      slot: '7001',
+      format: 'vertical',
+      width: 300,
+      label: 'Advertisement',
+    },
+  },
+};

@@ -83,7 +83,7 @@ export const REANIMATED_CAPABILITIES: Record<string, CapabilityEntry> = {
     name: 'Transform Origin',
     status: 'approximate',
     description: 'React Native transforms pivot around the center (50% 50%) by default unless transformOrigin is supported.',
-    notes: 'React Native 0.73+ and Reanimated 3.5+ introduced transformOrigin. For older versions, coordinate offsets can be used.',
+    notes: 'Reanimated 4.x (Latest) and 3.5+ (React Native 0.73+) support transformOrigin natively. For older versions, coordinate offsets can be used.',
   },
   springPhysics: {
     id: 'springPhysics',

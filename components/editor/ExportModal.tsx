@@ -15,23 +15,16 @@ import {
   Eye,
   EyeOff,
   Image as ImageIcon,
-  ExternalLink,
   FileJson,
   Database,
   Smartphone,
   AlertTriangle,
-  ChevronDown,
-  ChevronUp,
-  SlidersHorizontal,
 } from 'lucide-react';
 import { ProjectData } from '@/types/animation';
 import { generateAnimationCSS } from '@/lib/export/cssGenerator';
 import { generateReanimatedExport } from '@/lib/export/reanimated';
-import {
-  ReanimatedOutputMode,
-  ReanimatedLanguage,
-  ReanimatedExportTarget,
-} from '@/lib/export/reanimated/types';
+import { ReanimatedLanguage } from '@/lib/export/reanimated/types';
+import AdSlot from '@/components/ads/AdSlot';
 
 interface ExportModalProps {
   project: ProjectData;
@@ -47,12 +40,8 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
   const [showLivePreview, setShowLivePreview] = useState(false);
   const [copiedType, setCopiedType] = useState<string | null>(null);
 
-  // Reanimated Export options
-  const [rnOutputMode, setRnOutputMode] = useState<ReanimatedOutputMode>('interpolation');
-  const [rnExportTarget, setRnExportTarget] = useState<ReanimatedExportTarget>('component');
+  // Reanimated Export options: Component target with language toggle
   const [rnLanguage, setRnLanguage] = useState<ReanimatedLanguage>('typescript');
-  const [rnIncludeGuide, setRnIncludeGuide] = useState(true);
-  const [rnShowDiagnostics, setRnShowDiagnostics] = useState(false);
 
   // Accessibility options
   const [includeReducedMotion, setIncludeReducedMotion] = useState(true);
@@ -111,16 +100,17 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
     return `${(bytes / 1024).toFixed(1)} KB`;
   }, [activeJson]);
 
-  // Reanimated code generation
+  // Reanimated code generation - Always Component with Master Timeline synchronization (Latest v4.x)
   const reanimatedResult = useMemo(() => {
     return generateReanimatedExport(project, {
-      outputMode: rnOutputMode,
-      exportTarget: rnExportTarget,
+      outputMode: 'sequence',
+      exportTarget: 'component',
       language: rnLanguage,
-      includeIntegrationGuide: rnIncludeGuide,
+      targetReanimatedVersion: '4.x',
+      includeIntegrationGuide: false,
       masterTimelineSync: true,
     });
-  }, [project, rnOutputMode, rnExportTarget, rnLanguage, rnIncludeGuide]);
+  }, [project, rnLanguage]);
 
   if (!isOpen) return null;
 
@@ -224,8 +214,8 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
           >
             <Smartphone className="w-4 h-4 text-cyan-400" />
             React Native Reanimated
-            <span className="text-[10px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded border border-cyan-500/30">
-              v3.x
+            <span className="text-[10px] bg-cyan-500/20 text-cyan-300 px-1.5 py-0.5 rounded border border-cyan-500/30 font-medium">
+              v4.x Latest
             </span>
           </button>
 
@@ -441,217 +431,47 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
           {/* TAB: React Native Reanimated Export */}
           {activeTab === 'reanimated' && (
             <div className="space-y-4">
-              {/* Top Controls Bar */}
-              <div className="flex flex-col gap-3 bg-studio-panel/60 p-3 rounded-xl border border-studio-border">
-                {/* Target & Mode Selectors */}
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  {/* Export Target Switcher */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-studio-muted text-xs font-medium">Export:</span>
-                    <div className="flex items-center bg-studio-surface p-1 rounded-lg border border-studio-border text-xs">
-                      <button
-                        onClick={() => setRnExportTarget('component')}
-                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
-                          rnExportTarget === 'component'
-                            ? 'bg-cyan-600 text-white shadow-xs'
-                            : 'text-studio-muted hover:text-white'
-                        }`}
-                        title="Complete drop-in React Native Component (<LooplyAnimation />) with stage and assets"
-                      >
-                        Component ({rnLanguage === 'typescript' ? '.tsx' : '.jsx'})
-                      </button>
-                      <button
-                        onClick={() => setRnExportTarget('hook')}
-                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
-                          rnExportTarget === 'hook'
-                            ? 'bg-cyan-600 text-white shadow-xs'
-                            : 'text-studio-muted hover:text-white'
-                        }`}
-                        title="Encapsulated Custom Hook (useLooplyAnimation())"
-                      >
-                        Custom Hook
-                      </button>
-                      <button
-                        onClick={() => setRnExportTarget('logic')}
-                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
-                          rnExportTarget === 'logic'
-                            ? 'bg-cyan-600 text-white shadow-xs'
-                            : 'text-studio-muted hover:text-white'
-                        }`}
-                        title="Raw hook declarations and trigger statements for existing components"
-                      >
-                        Logic Only
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Language Switcher */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-studio-muted text-xs font-medium">Lang:</span>
-                    <div className="flex items-center bg-studio-surface p-1 rounded-lg border border-studio-border text-xs">
-                      <button
-                        onClick={() => setRnLanguage('typescript')}
-                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
-                          rnLanguage === 'typescript'
-                            ? 'bg-cyan-600 text-white shadow-xs'
-                            : 'text-studio-muted hover:text-white'
-                        }`}
-                      >
-                        TypeScript
-                      </button>
-                      <button
-                        onClick={() => setRnLanguage('javascript')}
-                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
-                          rnLanguage === 'javascript'
-                            ? 'bg-cyan-600 text-white shadow-xs'
-                            : 'text-studio-muted hover:text-white'
-                        }`}
-                      >
-                        JavaScript
-                      </button>
-                    </div>
+              {/* Top Controls Bar - Language Option & Docs */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-studio-panel/60 p-3 rounded-xl border border-studio-border">
+                {/* Language Switcher */}
+                <div className="flex items-center gap-2">
+                  <span className="text-studio-muted text-xs font-medium">Language:</span>
+                  <div className="flex items-center bg-studio-surface p-1 rounded-lg border border-studio-border text-xs">
+                    <button
+                      onClick={() => setRnLanguage('typescript')}
+                      className={`px-3 py-1 rounded font-medium transition-colors ${
+                        rnLanguage === 'typescript'
+                          ? 'bg-cyan-600 text-white shadow-xs'
+                          : 'text-studio-muted hover:text-white'
+                      }`}
+                    >
+                      TypeScript (.tsx)
+                    </button>
+                    <button
+                      onClick={() => setRnLanguage('javascript')}
+                      className={`px-3 py-1 rounded font-medium transition-colors ${
+                        rnLanguage === 'javascript'
+                          ? 'bg-cyan-600 text-white shadow-xs'
+                          : 'text-studio-muted hover:text-white'
+                      }`}
+                    >
+                      JavaScript (.jsx)
+                    </button>
                   </div>
                 </div>
 
-                {/* Engine Mode & Options Row */}
-                <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-studio-border/50">
-                  <div className="flex items-center gap-2">
-                    <span className="text-studio-muted text-xs font-medium">Mode:</span>
-                    <div className="flex items-center bg-studio-surface p-1 rounded-lg border border-studio-border text-xs">
-                      <button
-                        onClick={() => setRnOutputMode('interpolation')}
-                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
-                          rnOutputMode === 'interpolation'
-                            ? 'bg-cyan-600 text-white shadow-xs'
-                            : 'text-studio-muted hover:text-white'
-                        }`}
-                        title="Single master timeline progress driver (Recommended: 100% CSS Parity)"
-                      >
-                        Master Timeline (Interpolation)
-                      </button>
-                      <button
-                        onClick={() => setRnOutputMode('sequence')}
-                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
-                          rnOutputMode === 'sequence'
-                            ? 'bg-cyan-600 text-white shadow-xs'
-                            : 'text-studio-muted hover:text-white'
-                        }`}
-                        title="Sequential withSequence chains per track synchronized to master checkpoints"
-                      >
-                        Sequential Tracks
-                      </button>
-                      <button
-                        onClick={() => setRnOutputMode('expressions')}
-                        className={`px-2.5 py-1 rounded font-medium transition-colors ${
-                          rnOutputMode === 'expressions'
-                            ? 'bg-cyan-600 text-white shadow-xs'
-                            : 'text-studio-muted hover:text-white'
-                        }`}
-                        title="Direct animation trigger expressions"
-                      >
-                        Expressions
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Integration Guide Checkbox */}
-                  <div className="flex items-center gap-3 text-xs text-slate-300">
-                    <label className="flex items-center gap-1.5 cursor-pointer text-[11px]" title="Include screen/component integration comments">
-                      <input
-                        type="checkbox"
-                        checked={rnIncludeGuide}
-                        onChange={(e) => setRnIncludeGuide(e.target.checked)}
-                        className="accent-cyan-500 rounded"
-                      />
-                      <span>Integration Guide</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-
-              {/* Compatibility & Parity Banner */}
-              <div className={`p-3.5 rounded-xl border text-xs flex flex-col gap-2 ${
-                reanimatedResult.report.overallStatus === 'ready'
-                  ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-200'
-                  : 'border-amber-500/30 bg-amber-500/10 text-amber-200'
-              }`}>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 font-medium">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span>
-                      Master Timeline Parity: 100% Synchronized with HTML/CSS Keyframes (No Timing Drift)
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => setRnShowDiagnostics((p) => !p)}
-                    className="text-[11px] underline hover:text-white flex items-center gap-1"
+                <div className="flex items-center gap-2.5">
+                  <a
+                    href="https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[11px] text-cyan-400 hover:text-cyan-300 underline underline-offset-2 transition-colors"
                   >
-                    {rnShowDiagnostics ? 'Hide Report' : 'Inspect Report'}
-                    {rnShowDiagnostics ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                  </button>
-                </div>
-
-                {/* Collapsible Diagnostics list */}
-                {rnShowDiagnostics && (
-                  <div className="space-y-2 pt-2 border-t border-white/10 mt-1">
-                    {reanimatedResult.report.approximate.map((diag, i) => (
-                      <div key={i} className="p-2.5 rounded-lg bg-black/40 border border-amber-500/20 text-[11px] space-y-1">
-                        <div className="font-semibold text-amber-300 flex items-center gap-1.5">
-                          <AlertTriangle className="w-3.5 h-3.5" />
-                          {diag.title}
-                        </div>
-                        <p className="text-slate-300">{diag.message}</p>
-                        {diag.suggestion && (
-                          <p className="text-amber-200/90 font-mono text-[10px]">
-                            💡 Tip: {diag.suggestion}
-                          </p>
-                        )}
-                      </div>
-                    ))}
-
-                    {reanimatedResult.report.supported.map((diag, i) => (
-                      <div key={i} className="p-2 rounded-lg bg-black/20 text-[11px] flex items-center gap-2 text-slate-300">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                        <span>{diag.title}: {diag.message}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Required Shared Values & Styles Integration Strip */}
-              <div className="bg-studio-panel/50 border border-studio-border rounded-xl p-3 text-xs space-y-2">
-                <div className="flex items-center justify-between text-slate-200 font-medium">
-                  <span className="flex items-center gap-1.5 text-cyan-400">
-                    <SlidersHorizontal className="w-3.5 h-3.5" />
-                    Integration Contracts (Animation Logic Only)
-                  </span>
-                  <span className="text-[10px] text-studio-muted">Zero component lock-in</span>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px]">
-                  <div className="p-2 rounded bg-studio-surface border border-studio-border">
-                    <span className="text-studio-muted block text-[10px] uppercase font-semibold">Required Shared Values:</span>
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {reanimatedResult.sharedValues.length > 0 ? (
-                        reanimatedResult.sharedValues.map((sv) => (
-                          <span key={sv.name} className="px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-mono text-[10px]">
-                            {sv.name}
-                          </span>
-                        ))
-                      ) : (
-                        <span className="text-studio-muted">None (all layers static)</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="p-2 rounded bg-studio-surface border border-studio-border">
-                    <span className="text-studio-muted block text-[10px] uppercase font-semibold">Animated Style Hooks:</span>
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {reanimatedResult.animatedStyles.map((st) => (
-                        <span key={st.name} className="px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-mono text-[10px]">
-                          {st.name}
-                        </span>
-                      ))}
-                    </div>
+                    Reanimated Docs ↗
+                  </a>
+                  <div className="text-xs text-cyan-300 bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/20 flex items-center gap-1.5 font-mono text-[11px]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                    <span>Component Export (v4.x)</span>
                   </div>
                 </div>
               </div>
@@ -689,6 +509,9 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
                 <pre className="p-3.5 rounded-xl bg-[#090b10] border border-studio-border text-cyan-200/90 font-mono text-[11px] overflow-x-auto max-h-80 leading-relaxed selection:bg-cyan-600/30">
                   <code>{reanimatedResult.code}</code>
                 </pre>
+
+                {/* Seamless Configurable Partner Placement */}
+                <AdSlot placement="exportModalSponsor" className="mt-3 mb-1" />
               </div>
             </div>
           )}
@@ -862,7 +685,7 @@ export default function ExportModal({ project, isOpen, onClose }: ExportModalPro
                 <div className="flex items-center justify-between">
                   <h4 className="text-xs font-semibold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
                     <Smartphone className="w-4 h-4" />
-                    React Native Reanimated 3.x Parity
+                    React Native Reanimated (Latest v4.x) Parity
                   </h4>
                   <span className={`text-[10px] px-2 py-0.5 rounded font-mono font-medium ${
                     reanimatedResult.report.overallStatus === 'ready'

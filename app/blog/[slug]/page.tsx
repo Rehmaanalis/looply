@@ -4,8 +4,10 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import Header from '@/components/marketing/Header';
 import Footer from '@/components/marketing/Footer';
-import { BLOG_POSTS } from '@/lib/content/data';
-import { ChevronLeft, Calendar, User, Clock, Play } from 'lucide-react';
+import AdSlot from '@/components/ads/AdSlot';
+import { getBlogPosts, getBlogPost, generateBlogPostSchema } from '@/lib/content/contentService';
+import { getAdsConfig } from '@/lib/ads/config';
+import { ChevronLeft, Calendar, User, Clock, ArrowRight } from 'lucide-react';
 
 interface Props {
   params: {
@@ -14,27 +16,52 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return BLOG_POSTS.map((post) => ({
+  const posts = await getBlogPosts();
+  return posts.map((post) => ({
     slug: post.slug,
   }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = BLOG_POSTS.find((p) => p.slug === params.slug);
-  if (!post) return { title: 'Not Found' };
+  const post = await getBlogPost(params.slug);
+  if (!post) return { title: 'Article Not Found — Looply Blog' };
 
   return {
     title: `${post.title} — Looply Blog`,
     description: post.description,
+    openGraph: {
+      title: `${post.title} — Looply Blog`,
+      description: post.description,
+      type: 'article',
+      publishedTime: post.datePublished,
+      modifiedTime: post.dateModified || post.datePublished,
+      authors: [post.author],
+      tags: post.tags,
+      url: `https://rehmaanalis.github.io/looply/blog/${post.slug}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${post.title} — Looply Blog`,
+      description: post.description,
+    },
   };
 }
 
-export default function BlogPostDetailPage({ params }: Props) {
-  const post = BLOG_POSTS.find((p) => p.slug === params.slug);
+export default async function BlogPostDetailPage({ params }: Props) {
+  const post = await getBlogPost(params.slug);
   if (!post) notFound();
+
+  const adsConfig = await getAdsConfig();
+  const blogPostingJsonLd = generateBlogPostSchema(post);
 
   return (
     <div className="flex flex-col min-h-screen bg-studio-bg selection:bg-indigo-500 selection:text-white">
+      {/* Schema.org BlogPosting Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingJsonLd) }}
+      />
+
       <Header />
 
       <main className="flex-1 py-12 sm:py-20">
@@ -74,34 +101,38 @@ export default function BlogPostDetailPage({ params }: Props) {
             </div>
           </header>
 
-          <div className="space-y-8 text-sm sm:text-base text-slate-300 leading-relaxed border-t border-studio-border pt-8">
-            {post.sections.map((sec, idx) => (
-              <section key={idx} className="space-y-3">
-                <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                  {sec.heading}
-                </h2>
-                <p className="text-studio-muted">{sec.content}</p>
+          {/* HTML Content delivered directly from data/content/blogs/{slug}.html */}
+          <div
+            className="prose prose-invert max-w-none text-sm sm:text-base text-slate-300 leading-relaxed border-t border-studio-border pt-8"
+            dangerouslySetInnerHTML={{ __html: post.htmlContent }}
+          />
 
-                {sec.codeSnippet && (
-                  <pre className="p-4 rounded-xl bg-[#090b10] border border-studio-border font-mono text-xs text-emerald-300 overflow-x-auto my-4">
-                    {sec.codeSnippet}
-                  </pre>
-                )}
-              </section>
+          {/* Tags */}
+          <div className="mt-8 pt-4 border-t border-studio-border flex flex-wrap gap-2">
+            {post.tags.map((tag) => (
+              <span
+                key={tag}
+                className="text-[11px] font-mono px-2 py-0.5 rounded bg-studio-panel text-slate-400 border border-studio-border"
+              >
+                #{tag}
+              </span>
             ))}
           </div>
 
-          <div className="mt-14 p-6 rounded-2xl bg-studio-surface border border-studio-border flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* Seamless AdSense / Partner Slot */}
+          <AdSlot placement="blogBottom" config={adsConfig} className="mt-8" />
+
+          {/* CTA Banner */}
+          <div className="mt-10 p-6 rounded-2xl bg-studio-surface border border-studio-border flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
               <h3 className="text-sm font-semibold text-white">Experience high-performance keyframing</h3>
               <p className="text-xs text-studio-muted">Animate graphics locally with zero runtime overhead.</p>
             </div>
             <Link
               href="/app"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs shadow-md transition-colors shrink-0"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition-colors shrink-0"
             >
-              <Play className="w-3.5 h-3.5 fill-white" />
-              Launch Looply
+              Launch Studio →
             </Link>
           </div>
         </article>

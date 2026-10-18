@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import {
   Clock,
   Plus,
@@ -168,12 +168,15 @@ export default function Timeline({
   };
 
   // Convert clientX to timeline time
-  const getTimeFromClientX = (clientX: number): number => {
-    if (!rulerTrackRef.current) return 0;
-    const rect = rulerTrackRef.current.getBoundingClientRect();
-    const offsetX = Math.max(0, Math.min(rect.width, clientX - rect.left));
-    return Math.max(0, Math.min(duration, (offsetX / rect.width) * duration));
-  };
+  const getTimeFromClientX = useCallback(
+    (clientX: number): number => {
+      if (!rulerTrackRef.current) return 0;
+      const rect = rulerTrackRef.current.getBoundingClientRect();
+      const offsetX = Math.max(0, Math.min(rect.width, clientX - rect.left));
+      return Math.max(0, Math.min(duration, (offsetX / rect.width) * duration));
+    },
+    [duration]
+  );
 
   // Pointer dragging handler for keyframes and layer start/end trim handles
   useEffect(() => {
@@ -221,7 +224,7 @@ export default function Timeline({
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('pointerup', handlePointerUp);
     };
-  }, [activeDrag, duration, onMoveKeyframe, onScrubTime, onUpdateLayerTiming, project.layers]);
+  }, [activeDrag, duration, getTimeFromClientX, onMoveKeyframe, onScrubTime, onUpdateLayerTiming, project.layers]);
 
   // Generate tick markers
   const step = duration > 6 ? 1.0 : duration > 3 ? 0.5 : 0.25;

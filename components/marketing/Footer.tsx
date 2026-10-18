@@ -34,6 +34,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/presets" className="hover:text-white transition-colors">
+                  Single-Icon Presets
+                </Link>
+              </li>
+              <li>
                 <Link href="/features" className="hover:text-white transition-colors">
                   Studio Features
                 </Link>

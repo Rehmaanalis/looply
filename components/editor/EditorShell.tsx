@@ -186,6 +186,12 @@ export default function EditorShell() {
   // Debounced Auto-save to IndexedDB
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  useEffect(() => {
+    return () => {
+      if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    };
+  }, []);
+
   const scheduleSave = useCallback((updatedProject: ProjectData) => {
     setSaveStatus('saving');
     if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
@@ -288,6 +294,21 @@ export default function EditorShell() {
   const handleAddAssetToStage = (asset: AssetRecord, coords?: { x: number; y: number }) => {
     if (!project) return;
 
+    // Detect if multiple layers are using the same asset to assign unique identifiers
+    const sameAssetLayers = project.layers.filter((l) => l.assetId === asset.id);
+    let updatedExistingLayers = [...project.layers];
+    let newLayerName = asset.name;
+
+    if (sameAssetLayers.length === 1 && sameAssetLayers[0].name === asset.name) {
+      // First layer didn't have a numbered identifier; add "1" to it now that a sibling is added
+      updatedExistingLayers = updatedExistingLayers.map((l) =>
+        l.id === sameAssetLayers[0].id ? { ...l, name: `${asset.name} 1` } : l
+      );
+      newLayerName = `${asset.name} 2`;
+    } else if (sameAssetLayers.length > 0) {
+      newLayerName = `${asset.name} ${sameAssetLayers.length + 1}`;
+    }
+
     const stageW = project.settings.width;
     const stageH = project.settings.height;
     const initialW = Math.min(asset.width || 150, stageW * 0.4);
@@ -305,11 +326,11 @@ export default function EditorShell() {
 
     const newLayer: LayerRecord = {
       id: `layer-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
-      name: asset.name,
+      name: newLayerName,
       assetId: asset.id,
       visible: true,
       locked: false,
-      zIndex: project.layers.length + 1,
+      zIndex: updatedExistingLayers.length + 1,
       x: initialX,
       y: initialY,
       width: initialW,
@@ -341,7 +362,7 @@ export default function EditorShell() {
 
     updateProject((prev) => ({
       ...prev,
-      layers: [...prev.layers, newLayer],
+      layers: [...updatedExistingLayers, newLayer],
     }));
     setSelectedLayerId(newLayer.id);
   };
@@ -367,11 +388,25 @@ export default function EditorShell() {
     const target = project?.layers.find((l) => l.id === layerId);
     if (!target || !project) return;
 
+    const asset = project.assets[target.assetId];
+    const baseName = asset?.name || target.name.replace(/\s+\d+$/, '').replace(/\s+\(Copy\)$/, '');
+    const sameAssetLayers = project.layers.filter((l) => l.assetId === target.assetId);
+
+    let updatedExistingLayers = [...project.layers];
+    if (sameAssetLayers.length === 1 && sameAssetLayers[0].name === baseName) {
+      updatedExistingLayers = updatedExistingLayers.map((l) =>
+        l.id === sameAssetLayers[0].id ? { ...l, name: `${baseName} 1` } : l
+      );
+    }
+
+    const nextNumber = sameAssetLayers.length + 1;
+    const dupName = `${baseName} ${nextNumber}`;
+
     const dup: LayerRecord = {
       ...target,
-      id: `layer-${Date.now()}`,
-      name: `${target.name} (Copy)`,
-      zIndex: project.layers.length + 1,
+      id: `layer-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      name: dupName,
+      zIndex: updatedExistingLayers.length + 1,
       x: target.x + 20,
       y: target.y + 20,
       keyframes: target.keyframes.map((k) => ({
@@ -387,7 +422,7 @@ export default function EditorShell() {
 
     updateProject((prev) => ({
       ...prev,
-      layers: [...prev.layers, dup],
+      layers: [...updatedExistingLayers, dup],
     }));
     setSelectedLayerId(dup.id);
   };
@@ -616,7 +651,7 @@ export default function EditorShell() {
   const selectedLayer = project.layers.find((l) => l.id === selectedLayerId) || null;
 
   return (
-    <div className="flex flex-col h-screen w-screen bg-studio-bg text-studio-text overflow-hidden select-none">
+    <div className="flex flex-col h-full w-full bg-studio-bg text-studio-text overflow-hidden select-none">
       {/* Top Application Toolbar */}
       <Toolbar
         project={project}

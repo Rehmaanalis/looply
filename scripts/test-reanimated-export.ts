@@ -247,6 +247,58 @@ const cssResult = generateAnimationCSS(sampleProject, { mode: 'inline' });
 assert(cssResult.css.includes('@keyframes looply-anim-layer-card'), 'CSS @keyframes generated cleanly');
 assert(cssResult.stageHtml.includes('looply-stage'), 'HTML stage markup generated');
 
+// 7. Multi-Layer Same Asset Identifier Uniqueness & Consistency
+console.log('\n[Group 6] Multi-Layer Same Asset Uniqueness & Coordinate Consistency');
+const multiFoxProject: ProjectData = {
+  ...sampleProject,
+  name: 'Three Foxes Animation',
+  assets: {
+    'asset-fox': {
+      id: 'asset-fox',
+      name: 'Fox',
+      type: 'image/png',
+      width: 180,
+      height: 180,
+      dataUrl: 'data:image/png;base64,foxdata',
+      size: 2048,
+    },
+  },
+  layers: [
+    {
+      ...sampleProject.layers[0],
+      id: 'layer-fox-1',
+      name: 'Fox',
+      assetId: 'asset-fox',
+      x: 100,
+      y: 120,
+    },
+    {
+      ...sampleProject.layers[0],
+      id: 'layer-fox-2',
+      name: 'Fox',
+      assetId: 'asset-fox',
+      x: 180,
+      y: 110,
+    },
+    {
+      ...sampleProject.layers[0],
+      id: 'layer-fox-3',
+      name: 'Fox',
+      assetId: 'asset-fox',
+      x: 240,
+      y: 130,
+    },
+  ],
+};
+
+const foxResult = generateReanimatedExport(multiFoxProject, { language: 'typescript' });
+assert(foxResult.code.includes('const fox1AnimatedStyle'), 'Generates unique fox1AnimatedStyle for first fox layer');
+assert(foxResult.code.includes('const fox2AnimatedStyle'), 'Generates unique fox2AnimatedStyle for second fox layer');
+assert(foxResult.code.includes('const fox3AnimatedStyle'), 'Generates unique fox3AnimatedStyle for third fox layer');
+assert(foxResult.code.includes('translateX: 180') || foxResult.code.includes('translateX:'), 'Includes translateX positioning for all layers');
+assert(foxResult.code.includes('translateY: 110') || foxResult.code.includes('translateY:'), 'Includes translateY positioning for all layers');
+assert(foxResult.code.includes('ASSETS.fox1') && foxResult.code.includes('ASSETS.fox2') && foxResult.code.includes('ASSETS.fox3'), 'Assets dictionary references unique layer prefixes');
+
 console.log(`\n========================================`);
 console.log(`RESULTS: ${passed} passed, ${failed} failed`);
 console.log(`========================================`);

@@ -70,6 +70,38 @@ export function interpolateLayer(layer: LayerRecord, currentTime: number): Inter
   };
 
   if (!isTimeInRange) {
+    if (currentTime < startTime && layer.keyframes && layer.keyframes.length > 0) {
+      const sorted = [...layer.keyframes].sort((a, b) => a.time - b.time);
+      const first = sorted[0];
+      return {
+        ...baseState,
+        x: first.properties.x ?? baseState.x,
+        y: first.properties.y ?? baseState.y,
+        width: first.properties.width ?? baseState.width,
+        height: first.properties.height ?? baseState.height,
+        rotation: first.properties.rotation ?? baseState.rotation,
+        scaleX: first.properties.scaleX ?? baseState.scaleX,
+        scaleY: first.properties.scaleY ?? baseState.scaleY,
+        opacity: 0,
+        visible: false,
+      };
+    }
+    if (currentTime > endTime && layer.keyframes && layer.keyframes.length > 0) {
+      const sorted = [...layer.keyframes].sort((a, b) => a.time - b.time);
+      const last = sorted[sorted.length - 1];
+      return {
+        ...baseState,
+        x: last.properties.x ?? baseState.x,
+        y: last.properties.y ?? baseState.y,
+        width: last.properties.width ?? baseState.width,
+        height: last.properties.height ?? baseState.height,
+        rotation: last.properties.rotation ?? baseState.rotation,
+        scaleX: last.properties.scaleX ?? baseState.scaleX,
+        scaleY: last.properties.scaleY ?? baseState.scaleY,
+        opacity: 0,
+        visible: false,
+      };
+    }
     return baseState;
   }
 
