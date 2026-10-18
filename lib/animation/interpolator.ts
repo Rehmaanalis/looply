@@ -177,9 +177,9 @@ export function interpolateLayer(layer: LayerRecord, currentTime: number): Inter
   const easingCurve = k1.easing || layer.easing || 'ease';
   const easedProgress = evaluateEasing(easingCurve, rawProgress, k1);
 
-  const getProp = (prop: keyof InterpolatedLayerState, fallback: number) => {
-    const val1 = (k1.properties as any)[prop] ?? (layer as any)[prop] ?? fallback;
-    const val2 = (k2.properties as any)[prop] ?? (layer as any)[prop] ?? fallback;
+  const getProp = (prop: keyof InterpolatedLayerState, fallback: number): number => {
+    const val1 = (k1.properties[prop] as number) ?? (layer[prop] as number) ?? fallback;
+    const val2 = (k2.properties[prop] as number) ?? (layer[prop] as number) ?? fallback;
     return lerp(val1, val2, easedProgress);
   };
 
@@ -209,7 +209,7 @@ function applyValueMappings(state: InterpolatedLayerState, layer: LayerRecord): 
   const result = { ...state };
 
   for (const mapping of layer.valueMappings) {
-    const sourceVal = (result as any)[mapping.sourceProp];
+    const sourceVal = result[mapping.sourceProp as keyof InterpolatedLayerState];
     if (typeof sourceVal !== 'number') continue;
 
     const [inMin, inMax] = mapping.inputRange;

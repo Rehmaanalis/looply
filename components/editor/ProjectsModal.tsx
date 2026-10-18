@@ -9,14 +9,10 @@ import {
   Trash2,
   Upload,
   Download,
-  Clock,
-  Sparkles,
-  HardDrive,
   Database,
-  ShieldCheck,
   AlertTriangle,
-  FileJson,
   Check,
+  ShieldCheck,
 } from 'lucide-react';
 import { ProjectData } from '@/types/animation';
 import {
@@ -24,7 +20,6 @@ import {
   saveProject,
   deleteProject,
   duplicateProject,
-  importProjectJson,
   exportProjectJson,
   exportAllProjectsBundle,
   importProjectsBundle,
@@ -112,8 +107,8 @@ export default function ProjectsModal({
       setActiveProjectId(newProj.id);
       onSwitchProject(newProj);
       onClose();
-    } catch (err: any) {
-      showNotification(err.message || 'Failed to create new project.', 'error');
+    } catch (err) {
+      showNotification(err instanceof Error ? err.message : 'Failed to create new project.', 'error');
     }
   };
 
@@ -124,8 +119,8 @@ export default function ProjectsModal({
         showNotification(`Duplicated as "${dup.name}"`);
         refreshList();
       }
-    } catch (err: any) {
-      showNotification(err.message || 'Failed to duplicate project.', 'error');
+    } catch (err) {
+      showNotification(err instanceof Error ? err.message : 'Failed to duplicate project.', 'error');
     }
   };
 
@@ -140,8 +135,8 @@ export default function ProjectsModal({
       setDeleteConfirmId(null);
       showNotification('Project deleted.');
       await refreshList();
-    } catch (err: any) {
-      showNotification(err.message || 'Failed to delete project.', 'error');
+    } catch (err) {
+      showNotification(err instanceof Error ? err.message : 'Failed to delete project.', 'error');
     }
   };
 
@@ -175,7 +170,7 @@ export default function ProjectsModal({
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
       showNotification(`All ${projects.length} projects backed up successfully!`);
-    } catch (err) {
+    } catch {
       showNotification('Failed to generate full bundle backup.', 'error');
     } finally {
       setBundleExporting(false);
@@ -201,8 +196,8 @@ export default function ProjectsModal({
           } else {
             showNotification(result.errors[0] || 'Invalid Looply backup file.', 'error');
           }
-        } catch (err: any) {
-          showNotification(err.message || 'Failed to read backup file.', 'error');
+        } catch (err) {
+          showNotification(err instanceof Error ? err.message : 'Failed to read backup file.', 'error');
         } finally {
           if (fileInputRef.current) fileInputRef.current.value = '';
         }

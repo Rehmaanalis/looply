@@ -1,5 +1,5 @@
-import { ProjectData, AssetRecord } from '@/types/animation';
-import { db, StoredProject, ProjectSnapshot, createDefaultSampleProject } from './db';
+import { ProjectData } from '@/types/animation';
+import { db, StoredProject, createDefaultSampleProject } from './db';
 
 // In local storage, we ONLY store scalar, one-line values (like the active project ID).
 // Heavy project definitions, layer metadata, and binary assets are kept purely in IndexedDB
@@ -15,7 +15,7 @@ export function cleanupLegacyLocalStorage(): void {
   try {
     localStorage.removeItem('looply_active_project_backup');
     localStorage.removeItem('looply_active_project_meta');
-  } catch (e) {
+  } catch {
     // ignore
   }
 }
@@ -32,7 +32,7 @@ export async function getActiveProjectId(): Promise<string> {
   if (typeof window === 'undefined') return 'demo-sample-project';
   try {
     return localStorage.getItem(LOCAL_STORAGE_ACTIVE_KEY) || 'demo-sample-project';
-  } catch (e) {
+  } catch {
     return 'demo-sample-project';
   }
 }
@@ -45,8 +45,8 @@ export function setActiveProjectId(id: string): void {
   try {
     // Strictly store a one-line string ID, never JSON
     localStorage.setItem(LOCAL_STORAGE_ACTIVE_KEY, id);
-  } catch (e) {
-    console.warn('Could not set active project ID in localStorage:', e);
+  } catch {
+    console.warn('Could not set active project ID in localStorage');
   }
 }
 
@@ -88,13 +88,13 @@ export async function saveProject(project: ProjectData): Promise<void> {
 
       // Maintain up to 5 rolling snapshots in IndexedDB
       await recordSnapshot(updated, sizeBytes);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Dexie IndexedDB save error:', err);
-      if (err.name === 'QuotaExceededError' || err.message?.includes('quota')) {
+      if (err instanceof Error && (err.name === 'QuotaExceededError' || err.message?.includes('quota'))) {
         throw new Error('Browser storage quota exceeded. Please export a JSON backup and delete unused projects.');
       }
-      throw err;
-    }
+    throw err;
+  }
   }
 }
 
@@ -120,7 +120,7 @@ async function recordSnapshot(project: ProjectData, sizeBytes: number): Promise<
       const toDelete = snapshots.slice(0, snapshots.length - 5);
       await Promise.all(toDelete.map((s) => db!.snapshots.delete(s.id)));
     }
-  } catch (err) {
+  } catch {
     // Non-fatal
   }
 }
@@ -166,8 +166,8 @@ export async function listAllProjects(): Promise<StoredProject[]> {
       return [stored];
     }
     return all;
-  } catch (err) {
-    console.warn('Failed to list projects from Dexie:', err);
+  } catch {
+    console.warn('Failed to list projects from Dexie');
     return [];
   }
 }
@@ -179,7 +179,7 @@ export async function deleteProject(id: string): Promise<void> {
   try {
     const snaps = await db.snapshots.where('projectId').equals(id).toArray();
     await Promise.all(snaps.map((s) => db!.snapshots.delete(s.id)));
-  } catch (e) {
+  } catch {
     // ignore
   }
 }
@@ -272,8 +272,8 @@ export async function importProjectsBundle(jsonStr: string): Promise<{ importedC
         const imported = importProjectJson(JSON.stringify(proj));
         await saveProject(imported);
         importedCount++;
-      } catch (err: any) {
-        errors.push(`Failed to import ${proj.name || 'unnamed'}: ${err.message}`);
+      } catch (err) {
+        errors.push(`Failed to import ${proj.name || 'unnamed'}: ${err instanceof Error ? err.message : 'Unknown error'}`);
       }
     }
     return { importedCount, errors };
@@ -284,8 +284,8 @@ export async function importProjectsBundle(jsonStr: string): Promise<{ importedC
     const single = importProjectJson(jsonStr);
     await saveProject(single);
     importedCount = 1;
-  } catch (err: any) {
-    errors.push(err.message || 'Invalid JSON format');
+  } catch (err) {
+    errors.push(err instanceof Error ? err.message : 'Invalid JSON format');
   }
 
   return { importedCount, errors };
@@ -330,7 +330,7 @@ export async function getStorageDiagnostics(): Promise<StorageDiagnostics> {
       if (navigator.storage.persisted) {
         persisted = await navigator.storage.persisted();
       }
-    } catch (e) {
+    } catch {
       // estimate error fallback
     }
   }
@@ -373,7 +373,7 @@ export async function requestPersistentStorage(): Promise<boolean> {
   if (typeof window !== 'undefined' && navigator.storage && navigator.storage.persist) {
     try {
       return await navigator.storage.persist();
-    } catch (e) {
+    } catch {
       return false;
     }
   }

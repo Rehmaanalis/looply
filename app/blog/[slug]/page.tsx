@@ -7,7 +7,7 @@ import Footer from '@/components/marketing/Footer';
 import AdSlot from '@/components/ads/AdSlot';
 import { getBlogPosts, getBlogPost, generateBlogPostSchema } from '@/lib/content/contentService';
 import { getAdsConfig } from '@/lib/ads/config';
-import { ChevronLeft, Calendar, User, Clock, ArrowRight } from 'lucide-react';
+import { ChevronLeft, Calendar, User, Clock } from 'lucide-react';
 
 interface Props {
   params: {

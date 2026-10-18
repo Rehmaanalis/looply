@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Play, Pause, RotateCcw, Download, Sparkles, Layers, Sliders, ArrowRight } from 'lucide-react';
+import { Play, Pause, RotateCcw, Download, Sparkles, Sliders } from 'lucide-react';
 
 export default function LivePreviewHero() {
   const [isPlaying, setIsPlaying] = useState(true);

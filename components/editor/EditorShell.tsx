@@ -18,7 +18,6 @@ import LeaveBackupModal from './LeaveBackupModal';
 import {
   PanelLeftClose,
   PanelLeftOpen,
-  PanelRightClose,
   PanelRightOpen,
   FolderOpen,
   Layers,

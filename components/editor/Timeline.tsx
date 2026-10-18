@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef, useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import {
   Clock,
   Plus,
@@ -8,16 +9,11 @@ import {
   Copy,
   ChevronRight,
   ChevronDown,
-  Layers,
   ZoomIn,
   ZoomOut,
-  Maximize2,
   GripVertical,
-  MoveHorizontal,
-  SlidersHorizontal,
-  Sparkles,
 } from 'lucide-react';
-import { LayerRecord, ProjectData, KeyframeRecord } from '@/types/animation';
+import { ProjectData } from '@/types/animation';
 
 interface TimelineProps {
   project: ProjectData;
@@ -152,7 +148,7 @@ export default function Timeline({
       setIsScrubbing(false);
       try {
         (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-      } catch (err) {
+      } catch {
         // ignore
       }
     }
@@ -447,10 +443,13 @@ export default function Timeline({
                     {/* Small image in the box */}
                     <div className="w-6 h-6 rounded bg-[#090a0f] border border-studio-border flex items-center justify-center shrink-0 overflow-hidden shadow-xs">
                       {asset?.dataUrl ? (
-                        <img
+                        <Image
                           src={asset.dataUrl}
                           alt={layer.name}
+                          width={24}
+                          height={24}
                           className="max-w-full max-h-full object-contain pointer-events-none select-none"
+                          unoptimized
                         />
                       ) : (
                         <div className="w-2.5 h-2.5 rounded-xs bg-indigo-500" />

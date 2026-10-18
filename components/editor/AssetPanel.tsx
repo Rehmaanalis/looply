@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useRef, useState, useMemo } from 'react';
+import Image from 'next/image';
 import {
   Upload,
   Plus,
   Trash2,
-  Image as ImageIcon,
+  ImageIcon,
   AlertCircle,
   Move,
   Search,
@@ -186,10 +187,13 @@ export default function AssetPanel({
               title="Drag onto stage or click 'Add to Stage'"
             >
               <div className="w-12 h-12 bg-[#090a0f] rounded border border-studio-border flex items-center justify-center overflow-hidden shrink-0 pointer-events-none">
-                <img
+                <Image
                   src={asset.dataUrl}
                   alt={asset.name}
+                  width={48}
+                  height={48}
                   className="max-w-full max-h-full object-contain pointer-events-none select-none"
+                  unoptimized
                 />
               </div>
 

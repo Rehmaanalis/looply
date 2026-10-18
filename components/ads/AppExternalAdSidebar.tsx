@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { ExternalLink, Info, X, Play, Volume2, Shield } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { Info, X, Play, Volume2 } from 'lucide-react';
 import { DEFAULT_ADS_CONFIG, AdPlacementConfig } from '@/lib/ads/types';
 
 interface AppExternalAdSidebarProps {
@@ -24,7 +23,7 @@ export default function AppExternalAdSidebar({
   const placementData =
     activeConfig.placements?.[placement] || DEFAULT_ADS_CONFIG.placements[placement];
 
-  const [videoPlaying, setVideoPlaying] = useState(true);
+
 
   // Trigger Google AdSense script push on mount if live
   useEffect(() => {

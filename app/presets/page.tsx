@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Play, Sparkles, Layers, Download, Code2, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Play, ArrowRight } from 'lucide-react';
 import Header from '@/components/marketing/Header';
 import Footer from '@/components/marketing/Footer';
 import PresetsExplorer from '@/components/presets/PresetsExplorer';

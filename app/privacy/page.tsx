@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import Header from '@/components/marketing/Header';
 import Footer from '@/components/marketing/Footer';
-import { ShieldCheck, HardDrive, AlertTriangle, CheckCircle2, Play } from 'lucide-react';
+import { ShieldCheck, HardDrive, AlertTriangle, Play } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy & Local Storage Notice — Looply',

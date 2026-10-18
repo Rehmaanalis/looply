@@ -6,7 +6,7 @@ import Footer from '@/components/marketing/Footer';
 import AdSlot from '@/components/ads/AdSlot';
 import { getHowItWorks } from '@/lib/content/contentService';
 import { getAdsConfig } from '@/lib/ads/config';
-import { Upload, Layers, Sliders, Download, Check, ArrowRight } from 'lucide-react';
+import { Upload, Layers, Sliders, Download } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'How It Works — Looply Visual CSS & Reanimated Animation Workflow',

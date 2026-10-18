@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import Image from 'next/image';
 import {
   Layers,
   Eye,
@@ -122,7 +123,7 @@ export default function LayerPanel({
                 {/* Thumbnail */}
                 <div className="w-8 h-8 rounded bg-[#090a0f] border border-studio-border flex items-center justify-center shrink-0 overflow-hidden">
                   {asset ? (
-                    <img src={asset.dataUrl} alt={layer.name} className="max-w-full max-h-full object-contain pointer-events-none select-none" />
+                    <Image src={asset.dataUrl} alt={layer.name} width={32} height={32} className="max-w-full max-h-full object-contain pointer-events-none select-none" unoptimized />
                   ) : (
                     <div className="w-3 h-3 bg-indigo-500 rounded-sm" />
                   )}

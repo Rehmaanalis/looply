@@ -3,8 +3,6 @@
  * Formats generated animation code, comments, imports, and integration references.
  */
 
-import { ReanimatedLanguage } from './types';
-
 export function formatCodeBlock(lines: (string | null | undefined)[]): string {
   return lines.filter((l) => l !== null && l !== undefined).join('\n');
 }
@@ -12,9 +10,7 @@ export function formatCodeBlock(lines: (string | null | undefined)[]): string {
 export function generateHeaderBanner(
   projectName: string,
   durationSec: number,
-  layerCount: number,
-  outputMode: string,
-  language: ReanimatedLanguage
+  layerCount: number
 ): string {
   return [
     `// ============================================================================`,

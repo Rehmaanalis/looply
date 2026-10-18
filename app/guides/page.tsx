@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import Header from '@/components/marketing/Header';
 import Footer from '@/components/marketing/Footer';
 import { GUIDES } from '@/lib/content/data';
-import { BookOpen, Calendar, Clock, ArrowRight, Play } from 'lucide-react';
+import { Play } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Guides & Documentation — Looply Studio',

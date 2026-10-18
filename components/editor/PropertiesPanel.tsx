@@ -1,32 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Sliders,
-  Maximize2,
   Clock,
-  Sparkles,
   BookmarkPlus,
   Palette,
-  Layers,
   Activity,
   ArrowDownUp,
-  SlidersHorizontal,
   Move,
   ArrowUp,
   ArrowDown,
   ArrowLeft,
   ArrowRight,
-  AlignCenter,
-  AlignJustify,
   Trash2,
   Copy,
   Plus,
-  Play,
-  RotateCcw,
   PanelRightClose,
+  Sparkles,
 } from 'lucide-react';
-import { LayerRecord, ProjectSettings, KeyframeRecord } from '@/types/animation';
+import { LayerRecord, ProjectSettings } from '@/types/animation';
 
 interface PropertiesPanelProps {
   selectedLayer: LayerRecord | null;
@@ -111,8 +104,7 @@ export default function PropertiesPanel({
     handleNudge(dx, dy);
   };
 
-  // Selected keyframe if any
-  const currentKeyframe = selectedLayer?.keyframes?.find((k) => k.id === selectedKeyframeId) || null;
+
 
   if (!selectedLayer) {
     // Show Stage Settings when no layer is selected
@@ -427,7 +419,7 @@ export default function PropertiesPanel({
                 No keyframes yet. Click &quot;+ Keyframe&quot; or choose a Preset to animate this asset.
               </div>
             ) : (
-              selectedLayer.keyframes.map((kf, i) => {
+              selectedLayer.keyframes.map((kf) => {
                 const isSelected = selectedKeyframeId === kf.id;
                 return (
                   <div
@@ -704,7 +696,7 @@ export default function PropertiesPanel({
                 <span className="text-[10px] text-studio-muted">Fill Mode</span>
                 <select
                   value={selectedLayer.fillMode}
-                  onChange={(e) => onUpdateLayer(selectedLayer.id, { fillMode: e.target.value as any })}
+                  onChange={(e) => onUpdateLayer(selectedLayer.id, { fillMode: e.target.value as 'forwards' | 'backwards' | 'both' | 'none' })}
                   className="w-full bg-studio-panel border border-studio-border rounded px-2 py-1 text-white"
                 >
                   <option value="forwards">Forwards</option>

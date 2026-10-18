@@ -11,7 +11,6 @@ import {
   Code2,
   Smartphone,
   FileCode,
-  Sparkles,
   Layers,
 } from 'lucide-react';
 import {

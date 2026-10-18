@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X, Layers, Clock, Check, ArrowDownUp } from 'lucide-react';
+import { X, Check, ArrowDownUp } from 'lucide-react';
 import { LayerRecord } from '@/types/animation';
-import { applyStaggerToLayers, StaggerOptions } from '@/lib/animation/stagger';
+import { applyStaggerToLayers } from '@/lib/animation/stagger';
 
 interface StaggerModalProps {
   isOpen: boolean;
@@ -77,7 +77,7 @@ export default function StaggerModal({
                 <span className="text-[11px] text-studio-muted block mb-1">Sequence Order</span>
                 <select
                   value={order}
-                  onChange={(e) => setOrder(e.target.value as any)}
+                  onChange={(e) => setOrder(e.target.value as 'top-to-bottom' | 'bottom-to-top')}
                   className="w-full bg-studio-panel border border-studio-border rounded-lg px-2.5 py-1.5 text-white"
                 >
                   <option value="top-to-bottom">Top to Bottom (z-index)</option>

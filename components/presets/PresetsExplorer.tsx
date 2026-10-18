@@ -9,11 +9,8 @@ import {
   Pause,
   RotateCcw,
   ExternalLink,
-  Download,
   Code2,
   Sparkles,
-  SlidersHorizontal,
-  Layers,
 } from 'lucide-react';
 import {
   IconPreset,

@@ -4,20 +4,16 @@ import Header from '@/components/marketing/Header';
 import Footer from '@/components/marketing/Footer';
 import LivePreviewHero from '@/components/marketing/LivePreviewHero';
 import {
-  Sparkles,
   Play,
   Download,
-  Layers,
   ShieldCheck,
-  Zap,
   Sliders,
   Code2,
   Cpu,
   ArrowRight,
   CheckCircle2,
-  Laptop,
 } from 'lucide-react';
-import { EXAMPLES, BLOG_POSTS } from '@/lib/content/data';
+import { EXAMPLES } from '@/lib/content/data';
 
 export default function HomePage() {
   return (

@@ -6,7 +6,7 @@ import Footer from '@/components/marketing/Footer';
 import AdSlot from '@/components/ads/AdSlot';
 import { getExamples } from '@/lib/content/contentService';
 import { getAdsConfig } from '@/lib/ads/config';
-import { Sparkles, ArrowRight, Play } from 'lucide-react';
+
 
 export const metadata: Metadata = {
   title: 'Animation Examples — Looply Studio',

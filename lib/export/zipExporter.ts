@@ -44,7 +44,7 @@ export async function createProjectZip(project: ProjectData): Promise<Blob> {
             let decoded = payload;
             try {
               decoded = decodeURIComponent(payload);
-            } catch (e) {
+            } catch {
               decoded = payload;
             }
             assetsFolder.file(safeAssetName, decoded);

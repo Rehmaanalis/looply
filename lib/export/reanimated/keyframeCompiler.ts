@@ -5,18 +5,16 @@
  * 100% parity with CSS @keyframes without drift or phase mismatch.
  */
 
-import { ProjectData, LayerRecord, KeyframeRecord, KeyframeProperties, InterpolatedLayerState } from '@/types/animation';
+import { ProjectData, LayerRecord, KeyframeProperties } from '@/types/animation';
 import { interpolateLayer } from '@/lib/animation/interpolator';
 import {
   ReanimatedOutputMode,
-  ReanimatedLanguage,
   ReanimatedExportOptions,
   SharedValueRequirement,
   AnimatedStyleRequirement,
 } from './types';
 import {
   getAnimatedPropertyKeys,
-  getLayerBasePropertyValue,
   generateLayerVarPrefix,
   REANIMATED_PROPERTY_SPECS,
 } from './propertyMapper';
@@ -122,7 +120,7 @@ function compilePropertyTrack(
   const isReverse = project.settings.direction === 'alternate';
 
   // Compute exact value at each checkpoint using master interpolator (matching canvas and CSS)
-  const timelinePoints: { time: number; value: number; easing?: string; springConfig?: any }[] = [];
+  const timelinePoints: { time: number; value: number; easing?: string; springConfig?: { mass: number; stiffness: number; damping: number; initialVelocity: number } }[] = [];
 
   unifiedCheckpoints.forEach((t) => {
     const state = interpolateLayer(layer, t);
